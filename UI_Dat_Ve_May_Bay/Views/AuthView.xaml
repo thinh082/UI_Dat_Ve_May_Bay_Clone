@@ -1,0 +1,462 @@
+<UserControl x:Class="UI_Dat_Ve_May_Bay.Views.AuthView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:viewmodels="clr-namespace:UI_Dat_Ve_May_Bay.ViewModels"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance Type=viewmodels:AuthViewModel}"
+             d:DesignHeight="720" d:DesignWidth="1100" Background="White" FontFamily="Segoe UI">
+
+    <!-- Definitions for general styles -->
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+        
+        <!-- Style cho Border bo góc của Input -->
+        <Style x:Key="InputBorderStyle" TargetType="Border">
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="BorderBrush" Value="#E5E7EB"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Margin" Value="0,0,0,16"/>
+        </Style>
+
+        <!-- Style cho Textbox bên trong Border -->
+        <Style x:Key="InputTextBoxStyle" TargetType="TextBox">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="8,0,0,0"/>
+            <Setter Property="Foreground" Value="#374151"/>
+        </Style>
+
+        <!-- Style cho Passbox bên trong Border -->
+        <Style x:Key="InputPasswordBoxStyle" TargetType="PasswordBox">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="8,0,0,0"/>
+            <Setter Property="Foreground" Value="#374151"/>
+        </Style>
+        
+        <!-- Nút Đăng nhập/Đăng ký chính -->
+        <Style x:Key="PrimaryButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#0D6EFD"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                CornerRadius="20">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#0B5ED7"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Nút Social -->
+        <Style x:Key="SocialButtonStyle" TargetType="Button" BasedOn="{StaticResource PrimaryButtonStyle}">
+            <Setter Property="Margin" Value="0,0,0,12"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Background="White">
+        <Grid.ColumnDefinitions>
+            <!-- Ảnh bên trái chiếm 1 nửa -->
+            <ColumnDefinition Width="*"/>
+            <!-- Form bên phải chiếm 1 nửa -->
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Bên trái: Hình ảnh máy bay -->
+        <Border Grid.Column="0">
+            <Border.Background>
+                <ImageBrush ImageSource="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&amp;w=1000&amp;auto=format&amp;fit=crop" Stretch="UniformToFill"/>
+            </Border.Background>
+        </Border>
+
+        <!-- Bên phải: Vùng chứa Form -->
+        <Border Grid.Column="1" Padding="24">
+            
+            <!-- TabControl dùng để phân trang ẩn Header -->
+            <TabControl x:Name="MainTabControl" Background="Transparent" BorderThickness="0" Padding="0">
+                <TabControl.ItemContainerStyle>
+                    <Style TargetType="TabItem">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                    </Style>
+                </TabControl.ItemContainerStyle>
+
+                <!-- TAB 1: LOGIN -->
+                <TabItem Header="Login">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <!-- Giới hạn form rộng tối đa 350 để cân đối -->
+                        <StackPanel MaxWidth="350" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,40,0,40">
+                            
+                            <TextBlock Text="Đăng nhập" FontSize="28" FontWeight="Bold" Foreground="#212529" HorizontalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBlock Text="Vui lòng đăng nhập để tiếp tục" FontSize="14" Foreground="#6C757D" HorizontalAlignment="Center" Margin="0,0,0,32"/>
+                            
+                            <TextBlock Text="{Binding StatusMessage}" Foreground="#DC3545" FontSize="13" TextWrapping="Wrap" HorizontalAlignment="Center" Margin="0,0,0,12" />
+
+                            <Border Style="{StaticResource InputBorderStyle}" Height="40">
+                                <Grid Margin="12,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="✉" Grid.Column="0" VerticalAlignment="Center" FontSize="16" Foreground="#ADB5BD" Margin="0,0,8,0"/>
+                                    <TextBox Grid.Column="1" Style="{StaticResource InputTextBoxStyle}" Text="{Binding LoginTaiKhoan, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <TextBlock Grid.Column="1" Text="Tài khoản / Email" Foreground="#ADB5BD" VerticalAlignment="Center" Margin="8,0,0,0" IsHitTestVisible="False">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding LoginTaiKhoan}" Value="">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding LoginTaiKhoan}" Value="{x:Null}">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </Grid>
+                            </Border>
+
+                            <Border Style="{StaticResource InputBorderStyle}" Height="40">
+                                <Grid Margin="12,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <TextBlock Text="🔒" Grid.Column="0" VerticalAlignment="Center" FontSize="16" Foreground="#ADB5BD" Margin="0,0,8,0"/>
+                                    <TextBox x:Name="LoginVisiblePasswordBox" Grid.Column="1" Style="{StaticResource InputTextBoxStyle}" Visibility="Collapsed" Text="{Binding LoginMatKhau, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                    <PasswordBox x:Name="LoginPasswordBox" Grid.Column="1" Style="{StaticResource InputPasswordBoxStyle}" PasswordChanged="LoginPasswordBox_PasswordChanged"/>
+                                    
+                                    <TextBlock Grid.Column="1" Text="Mật khẩu" Foreground="#ADB5BD" VerticalAlignment="Center" Margin="8,0,0,0" IsHitTestVisible="False">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding LoginMatKhau}" Value="">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding LoginMatKhau}" Value="{x:Null}">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                    
+                                    <TextBlock x:Name="LoginEyeIcon" Text="👁" Grid.Column="2" VerticalAlignment="Center" FontSize="16" Foreground="#ADB5BD" Cursor="Hand" ToolTip="Hiển thị mật khẩu" MouseLeftButtonDown="ToggleLoginPassword_Click"/>
+                                </Grid>
+                            </Border>
+
+                            <DockPanel Margin="0,0,0,24">
+                                <CheckBox Content="Ghi nhớ tài khoản" Foreground="#6C757D" FontSize="14" VerticalContentAlignment="Center" DockPanel.Dock="Left"/>
+                                <TextBlock HorizontalAlignment="Right" DockPanel.Dock="Right" VerticalAlignment="Center">
+                                    <Hyperlink Foreground="#0D6EFD" FontSize="14" TextDecorations="None" Click="GoToForgot_Click">Quên mật khẩu?</Hyperlink>
+                                </TextBlock>
+                            </DockPanel>
+
+                            <Button Content="Đăng Nhập" Style="{StaticResource PrimaryButtonStyle}" Command="{Binding LoginCommand}" Background="#0D6EFD" Margin="0,0,0,24"/>
+
+                            <Button Style="{StaticResource SocialButtonStyle}" Command="{Binding LoginGoogleCommand}" Background="White" BorderBrush="#DEE2E6" BorderThickness="1" Foreground="#495057">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="G" Foreground="#EA4335" FontWeight="Bold" FontSize="16" Margin="0,0,12,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="Đăng nhập với Google" VerticalAlignment="Center" FontWeight="Medium"/>
+                                </StackPanel>
+                            </Button>
+
+                            <Button Style="{StaticResource SocialButtonStyle}" Command="{Binding LoginFacebookCommand}" Background="#1877F2">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="f" FontWeight="Bold" FontSize="18" Margin="0,0,12,0" VerticalAlignment="Center" FontFamily="Consolas"/>
+                                    <TextBlock Text="Đăng nhập với Facebook" VerticalAlignment="Center" FontWeight="Medium"/>
+                                </StackPanel>
+                            </Button>
+
+                            <Button Style="{StaticResource SocialButtonStyle}" Command="{Binding LoginZaloCommand}" Background="#0068FF">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="💬" FontSize="16" Margin="0,0,12,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="Đăng nhập qua ứng dụng Zalo" VerticalAlignment="Center" FontWeight="Medium"/>
+                                </StackPanel>
+                            </Button>
+
+                            <TextBlock HorizontalAlignment="Center" Margin="0,24,0,0" FontSize="14" Foreground="#6C757D">
+                                Bạn chưa có tài khoản? 
+                                <Hyperlink Foreground="#0D6EFD" TextDecorations="None" FontWeight="Medium" Click="GoToRegister_Click">Đăng ký</Hyperlink>
+                            </TextBlock>
+                        </StackPanel>
+                    </ScrollViewer>
+                </TabItem>
+
+                <!-- TAB 2: REGISTER -->
+                <TabItem Header="Register">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <StackPanel MaxWidth="350" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,40,0,40">
+                            <TextBlock Text="Đăng ký tài khoản" FontSize="28" FontWeight="Bold" Foreground="#212529" HorizontalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBlock Text="Vui lòng điền thông tin bên dưới" FontSize="14" Foreground="#6C757D" HorizontalAlignment="Center" Margin="0,0,0,32"/>
+                            
+                            <TextBlock Text="{Binding StatusMessage}" Foreground="#DC3545" FontSize="13" TextWrapping="Wrap" HorizontalAlignment="Center" Margin="0,0,0,12" />
+
+                            <Border Style="{StaticResource InputBorderStyle}" Height="40">
+                                <TextBox Style="{StaticResource InputTextBoxStyle}" Text="{Binding RegHoTen, UpdateSourceTrigger=PropertyChanged}" Padding="16,0"/>
+                            </Border>
+                            <TextBlock Text="Họ và tên" Foreground="#6C757D" Margin="16,-46,0,30" IsHitTestVisible="False">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding RegHoTen}" Value="">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding RegHoTen}" Value="{x:Null}">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+
+                            <Border Style="{StaticResource InputBorderStyle}" Height="40">
+                                <TextBox Style="{StaticResource InputTextBoxStyle}" Text="{Binding RegTaiKhoan, UpdateSourceTrigger=PropertyChanged}" Padding="16,0"/>
+                            </Border>
+                            <TextBlock Text="Tên đăng nhập" Foreground="#6C757D" Margin="16,-46,0,30" IsHitTestVisible="False">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding RegTaiKhoan}" Value="">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding RegTaiKhoan}" Value="{x:Null}">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+
+                            <Border Style="{StaticResource InputBorderStyle}" Height="40">
+                                <TextBox Style="{StaticResource InputTextBoxStyle}" Text="{Binding RegEmail, UpdateSourceTrigger=PropertyChanged}" Padding="16,0"/>
+                            </Border>
+                            <TextBlock Text="Email" Foreground="#6C757D" Margin="16,-46,0,30" IsHitTestVisible="False">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding RegEmail}" Value="">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding RegEmail}" Value="{x:Null}">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+
+                            <Border Style="{StaticResource InputBorderStyle}" Height="40">
+                                <TextBox Style="{StaticResource InputTextBoxStyle}" Text="{Binding RegSoDienThoai, UpdateSourceTrigger=PropertyChanged}" Padding="16,0"/>
+                            </Border>
+                            <TextBlock Text="Số điện thoại" Foreground="#6C757D" Margin="16,-46,0,30" IsHitTestVisible="False">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding RegSoDienThoai}" Value="">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding RegSoDienThoai}" Value="{x:Null}">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+
+                            <Border Style="{StaticResource InputBorderStyle}" Height="40">
+                                <PasswordBox x:Name="RegPasswordBox" Style="{StaticResource InputPasswordBoxStyle}" PasswordChanged="RegPasswordBox_PasswordChanged" Padding="16,0"/>
+                            </Border>
+                            <TextBlock Text="Mật khẩu" Foreground="#6C757D" Margin="16,-46,0,30" IsHitTestVisible="False">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding RegMatKhau}" Value="">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding RegMatKhau}" Value="{x:Null}">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+
+                            <Border Style="{StaticResource InputBorderStyle}" Height="40">
+                                <PasswordBox x:Name="RegConfirmPasswordBox" Style="{StaticResource InputPasswordBoxStyle}" PasswordChanged="RegConfirmPasswordBox_PasswordChanged" Padding="16,0"/>
+                            </Border>
+                            <TextBlock Text="Xác nhận mật khẩu" Foreground="#6C757D" Margin="16,-46,0,30" IsHitTestVisible="False">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding RegXacNhanMatKhau}" Value="">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding RegXacNhanMatKhau}" Value="{x:Null}">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+
+                            <!-- Checkbox chấp nhận chính sách -->
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                                <CheckBox x:Name="PolicyCheckBox" VerticalAlignment="Center" IsChecked="{Binding IsPolicyAccepted, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,8,0"/>
+                                <TextBlock VerticalAlignment="Center" FontSize="13" Foreground="#495057">
+                                    Tôi đồng ý với
+                                    <Hyperlink Foreground="#0D6EFD" TextDecorations="None" Click="ShowPolicy_Click">chính sách dịch vụ</Hyperlink>
+                                </TextBlock>
+                            </StackPanel>
+
+                            <Button Content="Tạo tài khoản" Style="{StaticResource PrimaryButtonStyle}" Command="{Binding RegisterCommand}" Background="#198754" Margin="0,8,0,24" IsEnabled="{Binding IsPolicyAccepted}"/>
+
+                            <TextBlock HorizontalAlignment="Center" Margin="0,8,0,0" FontSize="14" Foreground="#6C757D">
+                                Đã có tài khoản? 
+                                <Hyperlink Foreground="#0D6EFD" TextDecorations="None" FontWeight="Medium" Click="GoToLogin_Click">Đăng nhập</Hyperlink>
+                            </TextBlock>
+                        </StackPanel>
+                    </ScrollViewer>
+                </TabItem>
+
+                <!-- TAB 3: FORGOT PASSWORD -->
+                <TabItem Header="Forgot">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <StackPanel MaxWidth="350" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,40,0,40">
+                            
+                            <TextBlock Text="Khôi phục mật khẩu" FontSize="28" FontWeight="Bold" Foreground="#212529" HorizontalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBlock Text="Lấy lại mật khẩu qua email" FontSize="14" Foreground="#6C757D" HorizontalAlignment="Center" Margin="0,0,0,32"/>
+                            
+                            <TextBlock Text="{Binding StatusMessage}" Foreground="#1A73E8" FontSize="13" TextWrapping="Wrap" HorizontalAlignment="Center" Margin="0,0,0,12" />
+
+                            <!-- BƯỚC 1: NHẬP EMAIL -->
+                            <StackPanel Visibility="{Binding IsStepEmail, Converter={StaticResource BoolToVis}}">
+                                <Border Style="{StaticResource InputBorderStyle}" Height="40">
+                                    <TextBox Style="{StaticResource InputTextBoxStyle}" Text="{Binding FpEmail, UpdateSourceTrigger=PropertyChanged}" Padding="16,0"/>
+                                </Border>
+                                <TextBlock Text="Nhập địa chỉ Email" Foreground="#6C757D" Margin="16,-46,0,30" IsHitTestVisible="False">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding FpEmail}" Value="">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding FpEmail}" Value="{x:Null}">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                                <Button Content="Gửi mã OTP" Style="{StaticResource PrimaryButtonStyle}" Command="{Binding SendOtpCommand}"/>
+                            </StackPanel>
+
+                            <!-- BƯỚC 2: XÁC NHẬN OTP -->
+                            <StackPanel Visibility="{Binding IsStepOtp, Converter={StaticResource BoolToVis}}">
+                                <Border Style="{StaticResource InputBorderStyle}" Height="40">
+                                    <TextBox Style="{StaticResource InputTextBoxStyle}" Text="{Binding FpOtp, UpdateSourceTrigger=PropertyChanged}" Padding="16,0"/>
+                                </Border>
+                                <TextBlock Text="Nhập mã OTP (6 số)" Foreground="#6C757D" Margin="16,-46,0,30" IsHitTestVisible="False">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding FpOtp}" Value="">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding FpOtp}" Value="{x:Null}">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                                <Button Content="Xác nhận mã OTP" Style="{StaticResource PrimaryButtonStyle}" Command="{Binding VerifyOtpCommand}"/>
+                            </StackPanel>
+
+                            <!-- BƯỚC 3: ĐẶT LẠI MẬT KHẨU -->
+                            <StackPanel Visibility="{Binding IsStepReset, Converter={StaticResource BoolToVis}}">
+                                <Border Style="{StaticResource InputBorderStyle}" Height="40">
+                                    <PasswordBox x:Name="FpNewPasswordBox" Style="{StaticResource InputPasswordBoxStyle}" PasswordChanged="FpNewPasswordBox_PasswordChanged" Padding="16,0"/>
+                                </Border>
+                                <TextBlock Text="Mật khẩu mới" Foreground="#6C757D" Margin="16,-46,0,30" IsHitTestVisible="False">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding FpNewPassword}" Value="">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding FpNewPassword}" Value="{x:Null}">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+
+                                <Border Style="{StaticResource InputBorderStyle}" Height="40">
+                                    <PasswordBox x:Name="FpConfirmPasswordBox" Style="{StaticResource InputPasswordBoxStyle}" PasswordChanged="FpConfirmPasswordBox_PasswordChanged" Padding="16,0"/>
+                                </Border>
+                                <TextBlock Text="Xác nhận mật khẩu mới" Foreground="#6C757D" Margin="16,-46,0,30" IsHitTestVisible="False">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding FpConfirmPassword}" Value="">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding FpConfirmPassword}" Value="{x:Null}">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+
+                                <Button Content="Đổi mật khẩu" Style="{StaticResource PrimaryButtonStyle}" Command="{Binding ResetPasswordCommand}"/>
+                            </StackPanel>
+
+                            <TextBlock HorizontalAlignment="Center" Margin="0,32,0,0" FontSize="14" Foreground="#6C757D">
+                                <Hyperlink Foreground="#0D6EFD" TextDecorations="None" FontWeight="Medium" Click="GoToLogin_Click">Quay lại đăng nhập</Hyperlink>
+                            </TextBlock>
+                        </StackPanel>
+                    </ScrollViewer>
+                </TabItem>
+
+            </TabControl>
+        </Border>
+    </Grid>
+</UserControl>

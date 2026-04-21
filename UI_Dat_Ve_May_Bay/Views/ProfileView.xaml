@@ -1,0 +1,715 @@
+<UserControl x:Class="UI_Dat_Ve_May_Bay.Views.ProfileView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="#FFF8FAFC">
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+        
+        <Style x:Key="Card" TargetType="Border">
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="{StaticResource VnaBorderGray}"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="15" ShadowDepth="2" Opacity="0.05" Color="Black"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="PrimaryBtn" TargetType="Button">
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Padding" Value="24,0"/>
+            <Setter Property="Background" Value="{StaticResource VnaPrimaryBlue}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Opacity" Value="0.9"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="GhostBtn" TargetType="Button">
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Padding" Value="16,0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{StaticResource VnaPrimaryBlue}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource VnaPrimaryBlue}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource VnaLightBlue}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="InputLabel" TargetType="TextBlock">
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="{StaticResource VnaTextGray}"/>
+            <Setter Property="Margin" Value="0,0,0,6"/>
+            <Setter Property="FontSize" Value="12"/>
+        </Style>
+
+        <Style x:Key="RoundedTextBox" TargetType="TextBox">
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="Padding" Value="12,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="{StaticResource VnaBorderGray}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border x:Name="border" CornerRadius="6"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ScrollViewer x:Name="PART_ContentHost"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource VnaSecondaryTeal}"/>
+                                <Setter TargetName="border" Property="BorderThickness" Value="1"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="RoundedCombo" TargetType="ComboBox">
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="Padding" Value="12,0"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="{StaticResource VnaBorderGray}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <ToggleButton x:Name="ToggleButton" 
+                                          BorderBrush="{TemplateBinding BorderBrush}" 
+                                          BorderThickness="{TemplateBinding BorderThickness}" 
+                                          Background="{TemplateBinding Background}" 
+                                          Grid.ColumnSpan="2" Focusable="false" 
+                                          IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" 
+                                          ClickMode="Press">
+                                <ToggleButton.Template>
+                                    <ControlTemplate TargetType="ToggleButton">
+                                        <Border x:Name="border" CornerRadius="6" 
+                                                Background="{TemplateBinding Background}" 
+                                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                                BorderThickness="{TemplateBinding BorderThickness}">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="30"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Path x:Name="Arrow" Grid.Column="1" Fill="{StaticResource VnaTextGray}" 
+                                                      HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                                      Data="M 0 0 L 4 4 L 8 0 Z"/>
+                                            </Grid>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="true">
+                                                <Setter TargetName="border" Property="Background" Value="#F8FAFC"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </ToggleButton.Template>
+                            </ToggleButton>
+                            <ContentPresenter x:Name="ContentSite" IsHitTestVisible="False" 
+                                              Content="{TemplateBinding SelectionBoxItem}" 
+                                              ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" 
+                                              ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" 
+                                              Margin="12,3,30,3" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                            <Popup x:Name="Popup" Placement="Bottom" 
+                                   IsOpen="{TemplateBinding IsDropDownOpen}" 
+                                   AllowsTransparency="True" Focusable="False" PopupAnimation="Slide">
+                                <Grid x:Name="DropDown" SnapsToDevicePixels="True" 
+                                      MinWidth="{TemplateBinding ActualWidth}" MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                    <Border x:Name="DropDownBorder" Background="White" 
+                                            BorderBrush="{StaticResource VnaBorderGray}" BorderThickness="1" CornerRadius="0,0,6,6"/>
+                                    <ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True">
+                                        <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
+                                    </ScrollViewer>
+                                </Grid>
+                            </Popup>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="ToggleButton" Property="BorderBrush" Value="{StaticResource VnaSecondaryTeal}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="RoundedDatePicker" TargetType="DatePicker">
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="DatePicker">
+                        <Grid x:Name="PART_Root">
+                            <Border x:Name="border" CornerRadius="6" 
+                                    Background="White" 
+                                    BorderBrush="{StaticResource VnaBorderGray}" 
+                                    BorderThickness="1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Button x:Name="PART_Button" Grid.Column="1" 
+                                            Background="Transparent" BorderThickness="0" Cursor="Hand"
+                                            VerticalAlignment="Center" Margin="0,0,5,0">
+                                        <Button.Template>
+                                            <ControlTemplate TargetType="Button">
+                                                <ContentPresenter />
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                        <Image Source="https://cdn-icons-png.flaticon.com/512/2838/2838779.png" Width="16" Height="16" Opacity="0.6"/>
+                                    </Button>
+                                    <DatePickerTextBox x:Name="PART_TextBox" Grid.Column="0" 
+                                                       Focusable="True" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" 
+                                                       Padding="12,0" BorderThickness="0" Background="Transparent"/>
+                                </Grid>
+                            </Border>
+                            <Popup x:Name="PART_Popup" AllowsTransparency="True" Placement="Bottom" 
+                                   PlacementTarget="{Binding ElementName=border}" StaysOpen="False"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource VnaSecondaryTeal}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="FieldGroup" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="{StaticResource VnaBorderGray}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="16"/>
+            <Setter Property="Margin" Value="0,0,0,16"/>
+        </Style>
+
+        <Style x:Key="MainFormBorder" TargetType="Border">
+            <Setter Property="Background" Value="{StaticResource VnaLightBlue}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource VnaPrimaryBlue}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="15" ShadowDepth="2" Opacity="0.05" Color="Black"/>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Padding" Value="0"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Style="{StaticResource Card}" Grid.Row="0" Margin="0,0,0,20" Padding="24">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel>
+                    <TextBlock Text="Thông tin thành viên" FontSize="28" FontWeight="Bold" Foreground="{StaticResource VnaPrimaryBlue}"/>
+                    <TextBlock Text="Cập nhật thông tin cá nhân để nhận được nhiều ưu đãi hơn từ LotusMiles."
+                               Margin="0,8,0,0" Foreground="{StaticResource VnaTextGray}" FontSize="14"/>
+                    
+                    <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
+                         <Border Background="{StaticResource VnaLightBlue}" CornerRadius="4" Padding="12,6" Margin="0,0,12,0"
+                                Visibility="{Binding HasStatus, Converter={StaticResource BoolToVisibility}}">
+                            <TextBlock Text="{Binding Status}" Foreground="{StaticResource VnaPrimaryBlue}" FontSize="12" FontWeight="SemiBold"/>
+                        </Border>
+                        <Border Background="#FEE2E2" CornerRadius="4" Padding="12,6"
+                                Visibility="{Binding HasError, Converter={StaticResource BoolToVisibility}}">
+                            <TextBlock Text="{Binding Error}" Foreground="#DC2626" FontSize="12" FontWeight="SemiBold"/>
+                        </Border>
+                    </StackPanel>
+                </StackPanel>
+
+                <Button Grid.Column="1" Content="Tải lại dữ liệu" Style="{StaticResource GhostBtn}" Command="{Binding LoadAllCommand}" VerticalAlignment="Center" Width="130"/>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="1" Margin="0,20,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2.2*"/>
+                <ColumnDefinition Width="24"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Left: Form Section with Unified Frame -->
+            <Border Grid.Column="0" Style="{StaticResource MainFormBorder}">
+                <TabControl Background="Transparent" BorderThickness="0">
+                <TabControl.Resources>
+                    <Style TargetType="TabControl">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="TabControl">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                        <Border Grid.Row="0" Background="{StaticResource VnaPrimaryBlue}" CornerRadius="11,11,0,0" Padding="10,5">
+                                            <TabPanel IsItemsHost="True" HorizontalAlignment="Center"/>
+                                        </Border>
+                                        <Border Grid.Row="1" Background="{StaticResource VnaLightBlue}" Padding="20" CornerRadius="0,0,11,11">
+                                            <ContentPresenter ContentSource="SelectedContent"/>
+                                        </Border>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+
+                    <Style TargetType="TabItem">
+                        <Setter Property="Header" Value="{Binding Header}"/>
+                        <Setter Property="FontSize" Value="11"/>
+                        <Setter Property="FontWeight" Value="Bold"/>
+                        <Setter Property="Padding" Value="20,12"/>
+                        <Setter Property="Margin" Value="0"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="TabItem">
+                                    <Border x:Name="border" BorderThickness="0,0,0,3" Padding="{TemplateBinding Padding}">
+                                        <ContentPresenter x:Name="content" ContentSource="Header" RecognizesAccessKey="True" HorizontalAlignment="Center"/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource VnaGold}"/>
+                                            <Setter Property="Foreground" Value="White"/>
+                                        </Trigger>
+                                        <Trigger Property="IsSelected" Value="False">
+                                            <Setter Property="Foreground" Value="#A5B4FC"/>
+                                            <Setter TargetName="border" Property="BorderBrush" Value="Transparent"/>
+                                        </Trigger>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Foreground" Value="White"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </TabControl.Resources>
+
+                <!-- Basic Info -->
+                <TabItem Header="Thông tin cơ bản">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,15,0,0">
+                            <StackPanel>
+                                <Border Style="{StaticResource FieldGroup}">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+
+                                        <Grid Grid.Row="0" Margin="0,0,0,20">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="20"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Grid.Column="0">
+                                                <TextBlock Text="Họ và tên" Style="{StaticResource InputLabel}"/>
+                                                <TextBox Style="{StaticResource RoundedTextBox}" Text="{Binding TenKh, UpdateSourceTrigger=PropertyChanged}"/>
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="2">
+                                                <TextBlock Text="Email liên hệ" Style="{StaticResource InputLabel}"/>
+                                                <TextBox Style="{StaticResource RoundedTextBox}" Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}"/>
+                                            </StackPanel>
+                                        </Grid>
+
+                                        <Grid Grid.Row="1" Margin="0,0,0,20">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="20"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="20"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Grid.Column="0">
+                                                <TextBlock Text="Số điện thoại" Style="{StaticResource InputLabel}"/>
+                                                <TextBox Style="{StaticResource RoundedTextBox}" Text="{Binding SoDienThoai, UpdateSourceTrigger=PropertyChanged}"/>
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="2">
+                                                <TextBlock Text="Giới tính" Style="{StaticResource InputLabel}"/>
+                                                <ComboBox Style="{StaticResource RoundedCombo}" ItemsSource="{Binding GioiTinhOptions}" DisplayMemberPath="Ten" SelectedValuePath="Id" SelectedValue="{Binding GioiTinh, UpdateSourceTrigger=PropertyChanged}"/>
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="4">
+                                                <TextBlock Text="Số nhà / Đường" Style="{StaticResource InputLabel}"/>
+                                                <TextBox Style="{StaticResource RoundedTextBox}" Text="{Binding SoNha, UpdateSourceTrigger=PropertyChanged}"/>
+                                            </StackPanel>
+                                        </Grid>
+
+                                        <Grid Grid.Row="2">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="15"/>
+                                                <ColumnDefinition Width="0"/>
+                                                <ColumnDefinition Width="0"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="15"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Grid.Column="0">
+                                                <TextBlock Text="Tỉnh/TP" Style="{StaticResource InputLabel}"/>
+                                                <ComboBox Style="{StaticResource RoundedCombo}" ItemsSource="{Binding TinhOptions}" DisplayMemberPath="Ten" SelectedValuePath="Id" SelectedValue="{Binding IdTinh, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding HasTinhOptions, Converter={StaticResource BoolToVisibility}}"/>
+                                                <TextBox Style="{StaticResource RoundedTextBox}" Text="{Binding IdTinh, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding NoTinhOptions, Converter={StaticResource BoolToVisibility}}"/>
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="2">
+                                                <TextBlock Text="Quận/Huyện" Style="{StaticResource InputLabel}"/>
+                                                <ComboBox Style="{StaticResource RoundedCombo}" ItemsSource="{Binding QuanOptions}" DisplayMemberPath="Ten" SelectedValuePath="Id" SelectedValue="{Binding IdQuan, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding HasQuanOptions, Converter={StaticResource BoolToVisibility}}"/>
+                                                <TextBox Style="{StaticResource RoundedTextBox}" Text="{Binding IdQuan, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding NoQuanOptions, Converter={StaticResource BoolToVisibility}}"/>
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="4">
+                                                <TextBlock Text="Phường/Xã" Style="{StaticResource InputLabel}"/>
+                                                <ComboBox Style="{StaticResource RoundedCombo}" ItemsSource="{Binding PhuongOptions}" DisplayMemberPath="Ten" SelectedValuePath="Id" SelectedValue="{Binding IdPhuong, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding HasPhuongOptions, Converter={StaticResource BoolToVisibility}}"/>
+                                                <TextBox Style="{StaticResource RoundedTextBox}" Text="{Binding IdPhuong, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding NoPhuongOptions, Converter={StaticResource BoolToVisibility}}"/>
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="6">
+                                                <TextBlock Text="Quốc tịch" Style="{StaticResource InputLabel}"/>
+                                                <ComboBox Style="{StaticResource RoundedCombo}" ItemsSource="{Binding QuocTichOptions}" DisplayMemberPath="Ten" SelectedValuePath="Id" SelectedValue="{Binding IdQuocTich, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding HasQuocTichOptions, Converter={StaticResource BoolToVisibility}}"/>
+                                                <TextBox Style="{StaticResource RoundedTextBox}" Text="{Binding IdQuocTich, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding NoQuocTichOptions, Converter={StaticResource BoolToVisibility}}"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Grid>
+                                </Border>
+
+                                <StackPanel HorizontalAlignment="Center">
+                                    <Button Content="Lưu thông tin" Style="{StaticResource PrimaryBtn}" Command="{Binding SaveBasicCommand}" Width="160"/>
+                                    <TextBlock Text="Thông tin trên sẽ được dùng để xuất hóa đơn và vé." Foreground="{StaticResource VnaTextGray}" FontSize="11" FontStyle="Italic" Margin="0,8,0,0" HorizontalAlignment="Center"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </TabItem>
+
+                <!-- CCCD -->
+                <TabItem Header="Căn cước công dân (CCCD)">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,15,0,0">
+                            <StackPanel>
+                                <Border Style="{StaticResource FieldGroup}">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid Grid.Row="0" Margin="0,0,0,20">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="20"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Grid.Column="0">
+                                                <TextBlock Text="Số CCCD / ID Card" Style="{StaticResource InputLabel}"/>
+                                                <TextBox Style="{StaticResource RoundedTextBox}" Text="{Binding SoCccd, UpdateSourceTrigger=PropertyChanged}"/>
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="2">
+                                                <TextBlock Text="Họ và tên trên CCCD" Style="{StaticResource InputLabel}"/>
+                                                <TextBox Style="{StaticResource RoundedTextBox}" Text="{Binding TenTrenCccd, UpdateSourceTrigger=PropertyChanged}"/>
+                                            </StackPanel>
+                                        </Grid>
+                                        <StackPanel Grid.Row="1" Margin="0,0,0,20">
+                                            <TextBlock Text="Địa chỉ thường trú" Style="{StaticResource InputLabel}"/>
+                                            <TextBox Style="{StaticResource RoundedTextBox}" Text="{Binding NoiThuongTru, UpdateSourceTrigger=PropertyChanged}"/>
+                                        </StackPanel>
+                                        <Grid Grid.Row="2">
+                                            <StackPanel Width="250" HorizontalAlignment="Left">
+                                                <TextBlock Text="Quê quán" Style="{StaticResource InputLabel}"/>
+                                                <ComboBox Style="{StaticResource RoundedCombo}" ItemsSource="{Binding TinhOptions}" DisplayMemberPath="Ten" SelectedValuePath="Ten" SelectedValue="{Binding QueQuan, UpdateSourceTrigger=PropertyChanged}"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Grid>
+                                </Border>
+                                <StackPanel HorizontalAlignment="Center">
+                                    <Button Content="Lưu CCCD" Style="{StaticResource PrimaryBtn}" Command="{Binding SaveCccdCommand}" Width="160"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </TabItem>
+
+                <!-- Passport -->
+                <TabItem Header="Hộ Chiếu (Passport)">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,15,0,0">
+                            <StackPanel>
+                                <Border Style="{StaticResource FieldGroup}">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid Grid.Row="0" Margin="0,0,0,20">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="20"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Grid.Column="0">
+                                                <TextBlock Text="Số Hộ chiếu" Style="{StaticResource InputLabel}"/>
+                                                <TextBox Style="{StaticResource RoundedTextBox}" Text="{Binding SoPassport, UpdateSourceTrigger=PropertyChanged}"/>
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="2">
+                                                <TextBlock Text="Tên trên Hộ chiếu" Style="{StaticResource InputLabel}"/>
+                                                <TextBox Style="{StaticResource RoundedTextBox}" Text="{Binding TenTrenPassport, UpdateSourceTrigger=PropertyChanged}"/>
+                                            </StackPanel>
+                                        </Grid>
+
+                                        <Grid Grid.Row="1" Margin="0,0,0,20">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="15"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="15"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Grid.Column="0">
+                                                <TextBlock Text="Nơi cấp" Style="{StaticResource InputLabel}"/>
+                                                <ComboBox Style="{StaticResource RoundedCombo}" ItemsSource="{Binding TinhOptions}" DisplayMemberPath="Ten" SelectedValuePath="Ten" SelectedValue="{Binding NoiCap, UpdateSourceTrigger=PropertyChanged}"/>
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="2">
+                                                <TextBlock Text="Ngày cấp" Style="{StaticResource InputLabel}"/>
+                                                <DatePicker Style="{StaticResource RoundedDatePicker}" SelectedDate="{Binding NgayCap}"/>
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="4">
+                                                <TextBlock Text="Ngày hết hạn" Style="{StaticResource InputLabel}"/>
+                                                <DatePicker Style="{StaticResource RoundedDatePicker}" SelectedDate="{Binding NgayHetHan}"/>
+                                            </StackPanel>
+                                        </Grid>
+
+                                        <Grid Grid.Row="2" Margin="0,0,0,20">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="20"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Grid.Column="0">
+                                                <TextBlock Text="Quốc tịch" Style="{StaticResource InputLabel}"/>
+                                                <ComboBox Style="{StaticResource RoundedCombo}" ItemsSource="{Binding QuocTichOptions}" DisplayMemberPath="Ten" SelectedValuePath="Ten" SelectedValue="{Binding PassportQuocTich, UpdateSourceTrigger=PropertyChanged}"/>
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="2">
+                                                <TextBlock Text="Loại Passport" Style="{StaticResource InputLabel}"/>
+                                                <TextBox Style="{StaticResource RoundedTextBox}" Text="{Binding LoaiPassport, UpdateSourceTrigger=PropertyChanged}"/>
+                                            </StackPanel>
+                                        </Grid>
+
+                                        <StackPanel Grid.Row="3">
+                                            <TextBlock Text="Ghi chú thêm" Style="{StaticResource InputLabel}"/>
+                                            <TextBox Style="{StaticResource RoundedTextBox}" Text="{Binding GhiChuPassport, UpdateSourceTrigger=PropertyChanged}" Height="80" AcceptsReturn="True" VerticalContentAlignment="Top" Padding="12,8"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+
+                                <StackPanel HorizontalAlignment="Center">
+                                    <Button Content="Lưu Passport" Style="{StaticResource PrimaryBtn}" Command="{Binding SavePassportCommand}" Width="160"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </TabItem>
+                </TabControl>
+            </Border>
+
+            <!-- Right: Premium Member Card Card -->
+            <Grid Grid.Column="2">
+                <Border Style="{StaticResource Card}" VerticalAlignment="Top" Padding="0">
+                    <DockPanel>
+                        <!-- Card Header -->
+                        <Border DockPanel.Dock="Top" Background="{StaticResource VnaPrimaryBlue}" CornerRadius="12,12,0,0" Padding="25">
+                            <StackPanel>
+                                <Grid>
+                                    <TextBlock Text="HÀNH KHÁCH" Foreground="{StaticResource VnaGold}" FontWeight="Bold" FontSize="14"/>
+                                    <TextBlock Text="✈" Foreground="White" HorizontalAlignment="Right" FontSize="22"/>
+                                </Grid>
+                                <TextBlock Text="{Binding TenKh, Mode=OneWay}" Foreground="White" FontSize="24" FontWeight="Bold" Margin="0,20,0,0"/>
+                            </StackPanel>
+                        </Border>
+
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <StackPanel Margin="24">
+                                <TextBlock Text="TÓM TẮT HỒ SƠ" FontSize="14" FontWeight="Bold" Foreground="{StaticResource VnaPrimaryBlue}" Margin="0,0,0,20"/>
+
+                                <!-- Section: Basic Info -->
+                                <Border Background="{StaticResource VnaLightBlue}" CornerRadius="8" Padding="16" Margin="0,0,0,16">
+                                    <StackPanel>
+                                        <TextBlock Text="THÔNG TIN CƠ BẢN" FontSize="11" FontWeight="Bold" Foreground="{StaticResource VnaPrimaryBlue}" Margin="0,0,0,12"/>
+                                        
+                                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                                            <TextBlock Text="Họ tên: " Foreground="{StaticResource VnaTextGray}" FontSize="12"/>
+                                            <TextBlock Text="{Binding TenKh, Mode=OneWay}" Foreground="{StaticResource VnaTextDark}" FontSize="12" FontWeight="SemiBold" TextWrapping="Wrap"/>
+                                        </StackPanel>
+                                        
+                                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                                            <TextBlock Text="Email: " Foreground="{StaticResource VnaTextGray}" FontSize="12"/>
+                                            <TextBlock Text="{Binding Email, Mode=OneWay}" Foreground="{StaticResource VnaTextDark}" FontSize="12" FontWeight="SemiBold" TextWrapping="Wrap"/>
+                                        </StackPanel>
+                                        
+                                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                                            <TextBlock Text="SĐT: " Foreground="{StaticResource VnaTextGray}" FontSize="12"/>
+                                            <TextBlock Text="{Binding SoDienThoai, Mode=OneWay}" Foreground="{StaticResource VnaTextDark}" FontSize="12" FontWeight="SemiBold"/>
+                                        </StackPanel>
+
+                                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                                            <TextBlock Text="Giới tính: " Foreground="{StaticResource VnaTextGray}" FontSize="12"/>
+                                            <TextBlock Text="{Binding GioiTinhText, Mode=OneWay}" Foreground="{StaticResource VnaTextDark}" FontSize="12" FontWeight="SemiBold"/>
+                                        </StackPanel>
+
+                                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                                            <TextBlock Text="Quốc tịch: " Foreground="{StaticResource VnaTextGray}" FontSize="12"/>
+                                            <TextBlock Text="{Binding QuocTichText, Mode=OneWay}" Foreground="{StaticResource VnaTextDark}" FontSize="12" FontWeight="SemiBold"/>
+                                        </StackPanel>
+                                        
+                                        <StackPanel Margin="0,5,0,2">
+                                            <TextBlock Foreground="{StaticResource VnaTextDark}" FontSize="12" FontWeight="SemiBold" TextWrapping="Wrap">
+                                                <Run Text="Địa chỉ: " Foreground="{StaticResource VnaTextGray}" FontWeight="Normal"/>
+                                                <Run Text="{Binding SoNha, Mode=OneWay}"/>
+                                                <Run Text="{Binding PhuongText, Mode=OneWay, StringFormat=', \{0\}'}"/>
+                                                <Run Text="{Binding QuanText, Mode=OneWay, StringFormat=', \{0\}'}"/>
+                                                <Run Text="{Binding TinhText, Mode=OneWay, StringFormat=', \{0\}'}"/>
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- Section: CCCD -->
+                                <Border Background="#F0FDF4" CornerRadius="8" Padding="16" Margin="0,0,0,16">
+                                    <StackPanel>
+                                        <TextBlock Text="CCCD / ĐỊNH DANH" FontSize="11" FontWeight="Bold" Foreground="#166534" Margin="0,0,0,12"/>
+                                        
+                                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                                            <TextBlock Text="Số CCCD: " Foreground="#166534" FontSize="12"/>
+                                            <TextBlock Text="{Binding SoCccd, Mode=OneWay}" Foreground="{StaticResource VnaTextDark}" FontSize="12" FontWeight="Bold"/>
+                                        </StackPanel>
+
+                                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                                            <TextBlock Text="Họ tên: " Foreground="#166534" FontSize="12"/>
+                                            <TextBlock Text="{Binding TenTrenCccd, Mode=OneWay}" Foreground="{StaticResource VnaTextDark}" FontSize="12" FontWeight="SemiBold"/>
+                                        </StackPanel>
+
+                                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                                            <TextBlock Text="Quê quán: " Foreground="#166534" FontSize="12"/>
+                                            <TextBlock Text="{Binding QueQuan, Mode=OneWay}" Foreground="{StaticResource VnaTextDark}" FontSize="12" FontWeight="SemiBold"/>
+                                        </StackPanel>
+
+                                        <StackPanel Margin="0,5,0,2">
+                                            <TextBlock Foreground="{StaticResource VnaTextDark}" FontSize="12" FontWeight="SemiBold" TextWrapping="Wrap">
+                                                <Run Text="Thường trú: " Foreground="#166534" FontWeight="Normal"/>
+                                                <Run Text="{Binding NoiThuongTru, Mode=OneWay}"/>
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- Section: Passport -->
+                                <Border Background="#FAF5FF" CornerRadius="8" Padding="16" Margin="0,0,0,16">
+                                    <StackPanel>
+                                        <TextBlock Text="HỘ CHIẾU (PASSPORT)" FontSize="11" FontWeight="Bold" Foreground="#7C3AED" Margin="0,0,0,12"/>
+
+                                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                                            <TextBlock Text="Số Passport: " Foreground="#7C3AED" FontSize="12"/>
+                                            <TextBlock Text="{Binding SoPassport, Mode=OneWay}" Foreground="{StaticResource VnaTextDark}" FontSize="12" FontWeight="Bold"/>
+                                        </StackPanel>
+
+                                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                                            <TextBlock Text="Họ tên: " Foreground="#7C3AED" FontSize="12"/>
+                                            <TextBlock Text="{Binding TenTrenPassport, Mode=OneWay}" Foreground="{StaticResource VnaTextDark}" FontSize="12" FontWeight="SemiBold"/>
+                                        </StackPanel>
+
+                                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                                            <TextBlock Text="Nơi cấp: " Foreground="#7C3AED" FontSize="12"/>
+                                            <TextBlock Text="{Binding NoiCap, Mode=OneWay}" Foreground="{StaticResource VnaTextDark}" FontSize="12" FontWeight="SemiBold"/>
+                                        </StackPanel>
+
+                                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                                            <TextBlock Text="Ngày cấp: " Foreground="#7C3AED" FontSize="12"/>
+                                            <TextBlock Text="{Binding NgayCap, Mode=OneWay, StringFormat='\{0:dd/MM/yyyy\}'}" Foreground="{StaticResource VnaTextDark}" FontSize="12" FontWeight="SemiBold"/>
+                                        </StackPanel>
+
+                                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                                            <TextBlock Text="Hạn dùng: " Foreground="#7C3AED" FontSize="12"/>
+                                            <TextBlock Text="{Binding NgayHetHan, Mode=OneWay, StringFormat='\{0:dd/MM/yyyy\}'}" Foreground="{StaticResource VnaTextDark}" FontSize="12" FontWeight="Bold"/>
+                                        </StackPanel>
+
+                                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                                            <TextBlock Text="Quốc tịch: " Foreground="#7C3AED" FontSize="12"/>
+                                            <TextBlock Text="{Binding PassportQuocTich, Mode=OneWay}" Foreground="{StaticResource VnaTextDark}" FontSize="12" FontWeight="SemiBold"/>
+                                        </StackPanel>
+
+                                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                                            <TextBlock Text="Loại Passport: " Foreground="#7C3AED" FontSize="12"/>
+                                            <TextBlock Text="{Binding LoaiPassport, Mode=OneWay}" Foreground="{StaticResource VnaTextDark}" FontSize="12" FontWeight="SemiBold"/>
+                                        </StackPanel>
+
+                                        <StackPanel Margin="0,5,0,2">
+                                            <TextBlock Foreground="{StaticResource VnaTextDark}" FontSize="12" FontWeight="SemiBold" TextWrapping="Wrap">
+                                                <Run Text="Ghi chú: " Foreground="#7C3AED" FontWeight="Normal"/>
+                                                <Run Text="{Binding GhiChuPassport, Mode=OneWay}"/>
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Border>
+
+                                <Border BorderBrush="{StaticResource VnaBorderGray}" BorderThickness="1" CornerRadius="8" Padding="12" Margin="0,0,0,10">
+                                    <StackPanel>
+                                        <TextBlock Text="ẢNH ĐẠI DIỆN" FontSize="10" FontWeight="Bold" Foreground="{StaticResource VnaTextGray}" Margin="0,0,0,5"/>
+                                        <TextBlock Text="{Binding AvatarUrl, Mode=OneWay}" Foreground="{StaticResource VnaTextGray}" FontSize="10" TextWrapping="Wrap" FontStyle="Italic"/>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </DockPanel>
+                </Border>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

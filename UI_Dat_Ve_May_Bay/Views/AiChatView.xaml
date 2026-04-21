@@ -1,0 +1,122 @@
+<UserControl x:Class="UI_Dat_Ve_May_Bay.Views.AiChatView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <UserControl.Resources>
+        <DataTemplate x:Key="MessageTemplate">
+            <Border x:Name="Bubble"
+                    Margin="0,6"
+                    Padding="12,10"
+                    CornerRadius="12"
+                    Background="#EFF6FF"
+                    HorizontalAlignment="Left"
+                    MaxWidth="820">
+                <StackPanel>
+                    <TextBlock x:Name="SenderText"
+                               Text="{Binding Sender}"
+                               FontSize="11"
+                               FontWeight="SemiBold"
+                               Foreground="#6B7280" />
+                    <TextBlock x:Name="ContentText"
+                               Text="{Binding Content}"
+                               Margin="0,4,0,0"
+                               TextWrapping="Wrap"
+                               Foreground="#1F2937"
+                               FontSize="14" />
+                </StackPanel>
+            </Border>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding IsFromUser}" Value="True">
+                    <Setter TargetName="Bubble" Property="Background" Value="#1D4ED8" />
+                    <Setter TargetName="Bubble" Property="HorizontalAlignment" Value="Right" />
+                    <Setter TargetName="Bubble" Property="Margin" Value="60,6,0,6" />
+                    <Setter TargetName="SenderText" Property="Foreground" Value="#DBEAFE" />
+                    <Setter TargetName="ContentText" Property="Foreground" Value="White" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsFromUser}" Value="False">
+                    <Setter TargetName="Bubble" Property="Margin" Value="0,6,60,6" />
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <Grid Background="#F8FAFC" Margin="24,20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0"
+                Background="White"
+                BorderBrush="#E5E7EB"
+                BorderThickness="1"
+                CornerRadius="14"
+                Padding="18,14">
+            <StackPanel>
+                <TextBlock Text="Hoi dap voi AI"
+                           FontSize="22"
+                           FontWeight="Bold"
+                           Foreground="#111827" />
+                <TextBlock Text="{Binding StatusMessage}"
+                           Margin="0,6,0,0"
+                           Foreground="#374151"
+                           FontSize="13" />
+                <TextBlock Text="{Binding ApiKeyHint}"
+                           Margin="0,2,0,0"
+                           Foreground="#6B7280"
+                           FontSize="12"
+                           TextWrapping="Wrap" />
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Row="1"
+                Margin="0,14,0,14"
+                Background="White"
+                BorderBrush="#E5E7EB"
+                BorderThickness="1"
+                CornerRadius="14"
+                Padding="14">
+            <ScrollViewer x:Name="MessagesScrollViewer" VerticalScrollBarVisibility="Auto">
+                <ItemsControl ItemsSource="{Binding Messages}"
+                              ItemTemplate="{StaticResource MessageTemplate}" />
+            </ScrollViewer>
+        </Border>
+
+        <Border Grid.Row="2"
+                Background="White"
+                BorderBrush="#E5E7EB"
+                BorderThickness="1"
+                CornerRadius="14"
+                Padding="12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBox Grid.Column="0"
+                         Margin="0,0,12,0"
+                         Padding="12,10"
+                         MinHeight="46"
+                         MaxHeight="120"
+                         VerticalContentAlignment="Top"
+                         TextWrapping="Wrap"
+                         AcceptsReturn="True"
+                         KeyDown="InputTextBox_KeyDown"
+                         IsEnabled="{Binding CanChat}"
+                         Text="{Binding UserInput, UpdateSourceTrigger=PropertyChanged}" />
+
+                <Button Grid.Column="1"
+                        MinWidth="112"
+                        Height="46"
+                        Background="#1D4ED8"
+                        Foreground="White"
+                        BorderThickness="0"
+                        FontWeight="SemiBold"
+                        Content="Gui cau hoi"
+                        IsEnabled="{Binding CanChat}"
+                        Command="{Binding SendMessageCommand}" />
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

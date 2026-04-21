@@ -1,0 +1,449 @@
+<UserControl x:Class="UI_Dat_Ve_May_Bay.Views.Admin.QuanLyLichSuThanhToanView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             Background="#EEF4FA">
+    <UserControl.Resources>
+        <Style x:Key="CardStyle" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#D8E5F2"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="18"/>
+        </Style>
+        <Style x:Key="SectionTitleStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="17"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="#102A43"/>
+        </Style>
+        <Style x:Key="LabelStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="#486581"/>
+            <Setter Property="Margin" Value="0,0,0,6"/>
+        </Style>
+        <Style x:Key="InputTextBoxStyle" TargetType="TextBox">
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="Background" Value="#F8FBFF"/>
+            <Setter Property="BorderBrush" Value="#C8D7E6"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FontSize" Value="13"/>
+        </Style>
+        <Style x:Key="PrimaryButtonStyle" TargetType="Button">
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Padding" Value="14,10"/>
+            <Setter Property="Background" Value="#0F6CBD"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+        <Style x:Key="SecondaryButtonStyle" TargetType="Button">
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Padding" Value="14,10"/>
+            <Setter Property="Background" Value="#EAF2FF"/>
+            <Setter Property="Foreground" Value="#0F6CBD"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+        <Style x:Key="GridHeaderStyle" TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="#0F4C81"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="10,10"/>
+            <Setter Property="BorderBrush" Value="#0F4C81"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+        <Style x:Key="GridCellStyle" TargetType="DataGridCell">
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="#243B53"/>
+        </Style>
+        <Style x:Key="GridRowStyle" TargetType="DataGridRow">
+            <Setter Property="MinHeight" Value="36"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="#243B53"/>
+            <Setter Property="BorderBrush" Value="#E6EEF7"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#F5FAFF"/>
+                </Trigger>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#DCEEFB"/>
+                    <Setter Property="Foreground" Value="#102A43"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Margin="18">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Margin="0,0,0,14" Padding="18" CornerRadius="22">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#123B63" Offset="0"/>
+                    <GradientStop Color="#1B6497" Offset="1"/>
+                </LinearGradientBrush>
+            </Border.Background>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2.2*"/>
+                    <ColumnDefinition Width="0.9*"/>
+                    <ColumnDefinition Width="0.9*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Margin="0,0,18,0">
+                    <TextBlock FontSize="24" FontWeight="Bold" Foreground="White" Text="Qu&#x1EA3;n l&#xFD; l&#x1ECB;ch s&#x1EED; thanh to&#xE1;n"/>
+                    <TextBlock Margin="0,8,0,0" Foreground="#D9EAF7" Text="L&#x1ECD;c giao d&#x1ECB;ch, xem chi ti&#x1EBF;t, th&#x1ED1;ng k&#xEA; nhanh v&#xE0; xu&#x1EA5;t Excel tr&#xEA;n c&#xF9;ng m&#x1ED9;t m&#xE0;n h&#xEC;nh." TextWrapping="Wrap"/>
+                </StackPanel>
+                <Border Grid.Column="1" Margin="0,0,12,0" Padding="14" Background="#26FFFFFF" CornerRadius="16">
+                    <StackPanel>
+                        <TextBlock Foreground="#D9EAF7" FontSize="11" Text="T&#x1ED5;ng giao d&#x1ECB;ch"/>
+                        <TextBlock Margin="0,6,0,0" Foreground="White" FontSize="24" FontWeight="Bold" Text="{Binding TongSoGiaoDich}"/>
+                    </StackPanel>
+                </Border>
+                <Border Grid.Column="2" Padding="14" Background="#26FFFFFF" CornerRadius="16">
+                    <StackPanel>
+                        <TextBlock Foreground="#D9EAF7" FontSize="11" Text="T&#x1ED5;ng ti&#x1EC1;n"/>
+                        <TextBlock Margin="0,6,0,0" Foreground="White" FontSize="20" FontWeight="Bold" Text="{Binding TongTienText}"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="1" Style="{StaticResource CardStyle}" Margin="0,0,0,14" Padding="16">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid Margin="0,0,0,12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Style="{StaticResource SectionTitleStyle}" VerticalAlignment="Center" Text="B&#x1ED9; l&#x1ECD;c giao d&#x1ECB;ch"/>
+                    <Border Grid.Column="1" Padding="12,8" Background="#F2F7FC" CornerRadius="14" VerticalAlignment="Center" Visibility="{Binding FilterBadgeVisibility}">
+                        <TextBlock Foreground="#1F3A56" FontWeight="SemiBold" Text="{Binding FilterBadgeText}"/>
+                    </Border>
+                </Grid>
+
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1.1*"/>
+                        <ColumnDefinition Width="1.1*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="320"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Margin="0,0,12,0">
+                        <TextBlock Style="{StaticResource LabelStyle}" Text="T&#x1EEB; ng&#xE0;y thanh to&#xE1;n"/>
+                        <DatePicker Padding="8" Background="#F8FBFF" BorderBrush="#C8D7E6" BorderThickness="1" SelectedDate="{Binding NgayThanhToanFrom}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Margin="0,0,12,0">
+                        <TextBlock Style="{StaticResource LabelStyle}" Text="&#x110;&#x1EBF;n ng&#xE0;y thanh to&#xE1;n"/>
+                        <DatePicker Padding="8" Background="#F8FBFF" BorderBrush="#C8D7E6" BorderThickness="1" SelectedDate="{Binding NgayThanhToanTo}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2" Margin="0,0,12,0">
+                        <TextBlock Style="{StaticResource LabelStyle}" Text="S&#x1ED1; ti&#x1EC1;n min"/>
+                        <TextBox Style="{StaticResource InputTextBoxStyle}" Text="{Binding SoTienMin, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="3" Margin="0,0,12,0">
+                        <TextBlock Style="{StaticResource LabelStyle}" Text="S&#x1ED1; ti&#x1EC1;n max"/>
+                        <TextBox Style="{StaticResource InputTextBoxStyle}" Text="{Binding SoTienMax, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+                    <Grid Grid.Column="4" VerticalAlignment="Bottom">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" Margin="0,0,10,0" Style="{StaticResource SecondaryButtonStyle}" Command="{Binding ResetBoLocCommand}" Content="&#x110;&#x1EB7;t l&#x1EA1;i"/>
+                        <Button Grid.Column="1" Margin="0,0,10,0" Style="{StaticResource SecondaryButtonStyle}" Command="{Binding ExportExcelCommand}" Content="Xu&#x1EA5;t Excel"/>
+                        <Button Grid.Column="2" Style="{StaticResource PrimaryButtonStyle}" Command="{Binding LoadDanhSachCommand}" Content="T&#x1EA3;i d&#x1EEF; li&#x1EC7;u"/>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1.65*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Style="{StaticResource CardStyle}" Padding="16" Margin="0,0,14,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Margin="0,0,0,12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <TextBlock Style="{StaticResource SectionTitleStyle}" Text="Danh s&#xE1;ch giao d&#x1ECB;ch"/>
+                            <TextBlock Margin="0,4,0,0" Foreground="#6B7C93" Text="Ch&#x1ECD;n m&#x1ED9;t d&#xF2;ng &#x111;&#x1EC3; xem chi ti&#x1EBF;t v&#xE0; th&#x1ED1;ng k&#xEA; li&#xEA;n quan."/>
+                        </StackPanel>
+                        <Border Grid.Column="1" Padding="12,8" Background="#F2F7FC" CornerRadius="14" VerticalAlignment="Center">
+                            <TextBlock Foreground="#1F3A56" FontWeight="SemiBold" Text="{Binding PagingText}"/>
+                        </Border>
+                    </Grid>
+
+                    <Border Grid.Row="1" Background="#F8FBFF" BorderBrush="#E3EDF7" BorderThickness="1" CornerRadius="14">
+                        <Grid>
+                        <DataGrid x:Name="ThanhToanDataGrid"
+                                  ItemsSource="{Binding DanhSachLichSuThanhToan}"
+                                  SelectedItem="{Binding SelectedLichSuThanhToan, Mode=TwoWay}"
+                                  AutoGenerateColumns="False"
+                                  CanUserAddRows="False"
+                                  IsReadOnly="True"
+                                  HeadersVisibility="Column"
+                                  GridLinesVisibility="None"
+                                  RowHeaderWidth="0"
+                                  BorderThickness="0"
+                                  Background="Transparent"
+                                  RowStyle="{StaticResource GridRowStyle}"
+                                  CellStyle="{StaticResource GridCellStyle}"
+                                  ColumnHeaderStyle="{StaticResource GridHeaderStyle}"
+                                  RowBackground="White"
+                                  AlternatingRowBackground="#F7FBFF">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="M&#xE3; GD" Binding="{Binding MaThanhToan}" Width="120"/>
+                                <DataGridTextColumn Header="Kh&#xE1;ch h&#xE0;ng" Binding="{Binding KhachHangText}" Width="*"/>
+                                <DataGridTextColumn Header="SDT" Binding="{Binding SoDienThoai}" Width="120"/>
+                                <DataGridTextColumn Header="S&#x1ED1; ti&#x1EC1;n" Binding="{Binding SoTienText}" Width="140"/>
+                                <DataGridTextColumn Header="Ph&#x1B0;&#x1A1;ng th&#x1EE9;c" Binding="{Binding PhuongThucThanhToan}" Width="130"/>
+                                <DataGridTemplateColumn Header="Tr&#x1EA1;ng th&#xE1;i" Width="130">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Border HorizontalAlignment="Left"
+                                                    Padding="10,5"
+                                                    Background="{Binding TrangThai, Converter={StaticResource AdminStatusBrushConverter}}"
+                                                    CornerRadius="14">
+                                                <TextBlock Foreground="{Binding TrangThai, Converter={StaticResource AdminStatusBrushConverter}, ConverterParameter=foreground}"
+                                                           FontWeight="SemiBold"
+                                                           Text="{Binding TrangThai}"/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="Ng&#xE0;y thanh to&#xE1;n" Binding="{Binding NgayThanhToanText}" Width="150"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <Border Background="#F8FBFF"
+                                Visibility="{Binding ElementName=ThanhToanDataGrid, Path=HasItems, Converter={StaticResource InverseBoolToVis}}">
+                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock FontSize="40"
+                                           FontFamily="Segoe MDL2 Assets"
+                                           Foreground="#9FB3C8"
+                                           HorizontalAlignment="Center"
+                                           Text="&#xE8C7;"/>
+                                <TextBlock Margin="0,12,0,0"
+                                           FontSize="18"
+                                           FontWeight="Bold"
+                                           Foreground="#102A43"
+                                           HorizontalAlignment="Center"
+                                           Text="Chưa có giao dịch phù hợp"/>
+                            </StackPanel>
+                        </Border>
+                        </Grid>
+                    </Border>
+
+                    <Grid Grid.Row="2" Margin="0,12,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="1" Margin="0,0,10,0" Width="110" Style="{StaticResource SecondaryButtonStyle}" Command="{Binding PreviousPageCommand}" Content="Trang tr&#x1B0;&#x1EDB;c"/>
+                        <Button Grid.Column="2" Width="110" Style="{StaticResource PrimaryButtonStyle}" Command="{Binding NextPageCommand}" Content="Trang sau"/>
+                    </Grid>
+                </Grid>
+            </Border>
+
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Border Style="{StaticResource CardStyle}" Padding="16" Margin="0,0,0,12">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Padding="14,8" Background="#EAF2FF" CornerRadius="14" VerticalAlignment="Center">
+                            <TextBlock Foreground="#0F6CBD" FontSize="18" FontWeight="Bold" Text="{Binding SelectedTransactionLabel}"/>
+                        </Border>
+                        <StackPanel Grid.Column="1" Margin="16,0,16,0">
+                            <TextBlock Foreground="#102A43" FontWeight="SemiBold" Text="{Binding SelectedCustomerText}" TextTrimming="CharacterEllipsis"/>
+                            <TextBlock Margin="0,4,0,0" Foreground="#486581" Text="{Binding ChiTietLichSuThanhToan.PhuongThucThanhToan.TenPhuongThuc, TargetNullValue=--}"/>
+                        </StackPanel>
+                        <Border Grid.Column="2" Padding="12,8" Background="{Binding SelectedStatusBackground}" CornerRadius="14" VerticalAlignment="Center">
+                            <TextBlock Foreground="{Binding SelectedStatusForeground}" FontWeight="SemiBold" Text="{Binding SelectedStatusText}"/>
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <Border Grid.Row="1" Style="{StaticResource CardStyle}" Padding="16" Margin="0,0,0,12">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Style="{StaticResource SectionTitleStyle}" Text="T&#x1ED5;ng quan"/>
+                        <Grid Grid.Row="1" Margin="0,12,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <StackPanel Margin="0,0,12,12">
+                                <TextBlock Style="{StaticResource LabelStyle}" Text="T&#x1ED5;ng ti&#x1EC1;n"/>
+                                <TextBlock Foreground="#D64545" FontSize="18" FontWeight="Bold" Text="{Binding TongTienText}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Margin="0,0,0,12">
+                                <TextBlock Style="{StaticResource LabelStyle}" Text="Trung b&#xEC;nh"/>
+                                <TextBlock Foreground="#102A43" FontSize="18" FontWeight="Bold" Text="{Binding TrungBinhGiaTriText}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="1" Margin="0,0,12,0">
+                                <TextBlock Style="{StaticResource LabelStyle}" Text="Th&#xE0;nh c&#xF4;ng"/>
+                                <TextBlock Foreground="#166534" FontSize="18" FontWeight="Bold" Text="{Binding GiaoDichThanhCong}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="1" Grid.Column="1">
+                                <TextBlock Style="{StaticResource LabelStyle}" Text="Th&#x1EA5;t b&#x1EA1;i"/>
+                                <TextBlock Foreground="#991B1B" FontSize="18" FontWeight="Bold" Text="{Binding GiaoDichThatBai}"/>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                </Border>
+
+                <Grid Grid.Row="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Border Style="{StaticResource CardStyle}" Padding="16" Margin="0,0,0,12">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Style="{StaticResource SectionTitleStyle}" Text="Chi ti&#x1EBF;t giao d&#x1ECB;ch"/>
+                            <Grid Grid.Row="1" Margin="0,12,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <StackPanel Margin="0,0,12,12">
+                                    <TextBlock Style="{StaticResource LabelStyle}" Text="Email"/>
+                                    <TextBlock Foreground="#102A43" FontWeight="SemiBold" Text="{Binding ChiTietLichSuThanhToan.TaiKhoan.Email, TargetNullValue=--}" TextWrapping="Wrap"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1" Margin="0,0,0,12">
+                                    <TextBlock Style="{StaticResource LabelStyle}" Text="S&#x1ED1; &#x111;i&#x1EC7;n tho&#x1EA1;i"/>
+                                    <TextBlock Foreground="#102A43" FontWeight="SemiBold" Text="{Binding ChiTietLichSuThanhToan.TaiKhoan.SoDienThoai, TargetNullValue=--}"/>
+                                </StackPanel>
+                                <StackPanel Grid.Row="1" Margin="0,0,12,12">
+                                    <TextBlock Style="{StaticResource LabelStyle}" Text="Lo&#x1EA1;i d&#x1ECB;ch v&#x1EE5;"/>
+                                    <TextBlock Foreground="#102A43" FontWeight="SemiBold" Text="{Binding ChiTietLichSuThanhToan.LoaiDichVu, TargetNullValue=--}"/>
+                                </StackPanel>
+                                <StackPanel Grid.Row="1" Grid.Column="1" Margin="0,0,0,12">
+                                    <TextBlock Style="{StaticResource LabelStyle}" Text="Ng&#xE0;y thanh to&#xE1;n"/>
+                                    <TextBlock Foreground="#102A43" FontWeight="SemiBold" Text="{Binding ChiTietLichSuThanhToan.NgayThanhToanText, TargetNullValue=--}"/>
+                                </StackPanel>
+                                <StackPanel Grid.Row="2" Margin="0,0,12,0">
+                                    <TextBlock Style="{StaticResource LabelStyle}" Text="C&#x1ED5;ng thanh to&#xE1;n"/>
+                                    <TextBlock Foreground="#102A43" FontWeight="SemiBold" Text="{Binding ChiTietLichSuThanhToan.PhuongThucThanhToan.TenPhuongThuc, TargetNullValue=--}"/>
+                                </StackPanel>
+                                <StackPanel Grid.Row="2" Grid.Column="1">
+                                    <TextBlock Style="{StaticResource LabelStyle}" Text="S&#x1ED1; ti&#x1EC1;n"/>
+                                    <TextBlock Foreground="#D64545" FontSize="18" FontWeight="Bold" Text="{Binding ChiTietLichSuThanhToan.SoTienText, TargetNullValue=--}"/>
+                                </StackPanel>
+                            </Grid>
+                        </Grid>
+                    </Border>
+
+                    <Border Grid.Row="1" Style="{StaticResource CardStyle}" Padding="16" Margin="0,0,0,12">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Style="{StaticResource SectionTitleStyle}" Text="Th&#x1ED1;ng k&#xEA; theo ph&#x1B0;&#x1A1;ng th&#x1EE9;c"/>
+                            <ItemsControl Grid.Row="1" Margin="0,12,0,0" ItemsSource="{Binding ThongKeTheoPhuongThuc}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Width="160" Margin="0,0,10,10" Padding="12" Background="#F8FBFF" BorderBrush="#E3EDF7" BorderThickness="1" CornerRadius="14">
+                                            <StackPanel>
+                                                <TextBlock Foreground="#102A43" FontWeight="Bold" Text="{Binding Label}"/>
+                                                <TextBlock Margin="0,8,0,0" Foreground="#486581" Text="{Binding SoLuong, StringFormat=S&#x1ED1; l&#x1B0;&#x1EE3;ng: {0}}"/>
+                                                <TextBlock Margin="0,4,0,0" Foreground="#0F6CBD" FontWeight="SemiBold" Text="{Binding TongTienText}"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </Grid>
+                    </Border>
+
+                    <Border Grid.Row="2" Style="{StaticResource CardStyle}" Padding="16">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Style="{StaticResource SectionTitleStyle}" Text="Th&#x1ED1;ng k&#xEA; theo tr&#x1EA1;ng th&#xE1;i"/>
+                            <ItemsControl Grid.Row="1" Margin="0,12,0,0" ItemsSource="{Binding ThongKeTheoTrangThai}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Width="160" Margin="0,0,10,10" Padding="12" Background="#F8FBFF" BorderBrush="#E3EDF7" BorderThickness="1" CornerRadius="14">
+                                            <StackPanel>
+                                                <TextBlock Foreground="#102A43" FontWeight="Bold" Text="{Binding Label}"/>
+                                                <TextBlock Margin="0,8,0,0" Foreground="#486581" Text="{Binding SoLuong, StringFormat=S&#x1ED1; l&#x1B0;&#x1EE3;ng: {0}}"/>
+                                                <TextBlock Margin="0,4,0,0" Foreground="#0F6CBD" FontWeight="SemiBold" Text="{Binding TrungBinhText}"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

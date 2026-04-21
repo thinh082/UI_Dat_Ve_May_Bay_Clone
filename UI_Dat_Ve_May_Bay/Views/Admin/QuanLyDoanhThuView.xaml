@@ -1,0 +1,201 @@
+<UserControl x:Class="UI_Dat_Ve_May_Bay.Views.Admin.QuanLyDoanhThuView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
+             mc:Ignorable="d"
+             Background="{StaticResource AdminPageBg}">
+    <UserControl.Resources>
+        <Style x:Key="CardStyle" TargetType="Border" BasedOn="{StaticResource AdminCardStyle}"/>
+        <Style x:Key="SectionTitleStyle" TargetType="TextBlock" BasedOn="{StaticResource AdminSectionTitleStyle}"/>
+        <Style x:Key="LabelStyle" TargetType="TextBlock" BasedOn="{StaticResource AdminLabelStyle}"/>
+        <Style x:Key="InputTextBoxStyle" TargetType="TextBox" BasedOn="{StaticResource AdminInputTextBoxStyle}"/>
+        <Style x:Key="PrimaryButtonStyle" TargetType="Button" BasedOn="{StaticResource AdminPrimaryButtonStyle}"/>
+    </UserControl.Resources>
+
+    <Grid Margin="18">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Margin="0,0,0,14" Padding="20" CornerRadius="24">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#123B63" Offset="0"/>
+                    <GradientStop Color="#1B6497" Offset="1"/>
+                </LinearGradientBrush>
+            </Border.Background>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2.4*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Margin="0,0,18,0">
+                    <TextBlock FontSize="24" FontWeight="Bold" Foreground="White" Text="Quản lý doanh thu"/>
+                    <TextBlock Margin="0,8,0,0"
+                               Foreground="#D9EAF7"
+                               Text="Theo dõi doanh thu theo ngày, tháng và năm với phần nhìn trực quan hơn cho admin."
+                               TextWrapping="Wrap"/>
+                </StackPanel>
+
+                <Border Grid.Column="1" Padding="14" Background="#26FFFFFF" CornerRadius="16" VerticalAlignment="Center">
+                    <StackPanel>
+                        <TextBlock Foreground="#D9EAF7" FontSize="11" Text="Tổng hợp nhanh"/>
+                        <TextBlock Margin="0,6,0,0" Foreground="White" FontSize="20" FontWeight="Bold" Text="{Binding TongHopDoanhThuText}"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="1" Style="{StaticResource CardStyle}" Margin="0,0,0,14" Padding="16">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="200"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Margin="0,0,12,0">
+                    <TextBlock Style="{StaticResource LabelStyle}" Text="Ngày (dd-MM-yyyy)"/>
+                    <TextBox Style="{StaticResource InputTextBoxStyle}" Text="{Binding Ngay, UpdateSourceTrigger=PropertyChanged}"/>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Margin="0,0,12,0">
+                    <TextBlock Style="{StaticResource LabelStyle}" Text="Tháng (MM-yyyy)"/>
+                    <TextBox Style="{StaticResource InputTextBoxStyle}" Text="{Binding Thang, UpdateSourceTrigger=PropertyChanged}"/>
+                </StackPanel>
+                <StackPanel Grid.Column="2" Margin="0,0,12,0">
+                    <TextBlock Style="{StaticResource LabelStyle}" Text="Năm (yyyy)"/>
+                    <TextBox Style="{StaticResource InputTextBoxStyle}" Text="{Binding Nam, UpdateSourceTrigger=PropertyChanged}"/>
+                </StackPanel>
+                <Button Grid.Column="3"
+                        VerticalAlignment="Bottom"
+                        Style="{StaticResource PrimaryButtonStyle}"
+                        Command="{Binding TaiTatCaCommand}"
+                        Content="Làm mới tổng hợp"/>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Margin="0,0,0,14">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Border Style="{StaticResource CardStyle}" Padding="18" Margin="0,0,12,0">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Style="{StaticResource SectionTitleStyle}" Text="Doanh thu ngày"/>
+                        <TextBlock Grid.Row="1" Margin="0,8,0,0" Foreground="#486581" Text="Lấy doanh thu theo một ngày cụ thể."/>
+                        <TextBox Grid.Row="2" Margin="0,16,0,0" Style="{StaticResource InputTextBoxStyle}" Text="{Binding Ngay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <StackPanel Grid.Row="3" Margin="0,18,0,0">
+                            <TextBlock Foreground="#D64545" FontSize="24" FontWeight="Bold" Text="{Binding DoanhThuNgayText}"/>
+                            <Button Margin="0,16,0,0" Style="{StaticResource PrimaryButtonStyle}" Command="{Binding TaiDoanhThuNgayCommand}" Content="Tính doanh thu ngày"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <Border Grid.Column="1" Style="{StaticResource CardStyle}" Padding="18" Margin="0,0,12,0">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Style="{StaticResource SectionTitleStyle}" Text="Doanh thu tháng"/>
+                        <TextBlock Grid.Row="1" Margin="0,8,0,0" Foreground="#486581" Text="Tổng hợp doanh thu trong một tháng."/>
+                        <TextBox Grid.Row="2" Margin="0,16,0,0" Style="{StaticResource InputTextBoxStyle}" Text="{Binding Thang, UpdateSourceTrigger=PropertyChanged}"/>
+                        <StackPanel Grid.Row="3" Margin="0,18,0,0">
+                            <TextBlock Foreground="#0F6CBD" FontSize="24" FontWeight="Bold" Text="{Binding DoanhThuThangText}"/>
+                            <Button Margin="0,16,0,0" Style="{StaticResource PrimaryButtonStyle}" Command="{Binding TaiDoanhThuThangCommand}" Content="Tính doanh thu tháng"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <Border Grid.Column="2" Style="{StaticResource CardStyle}" Padding="18">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Style="{StaticResource SectionTitleStyle}" Text="Doanh thu năm"/>
+                        <TextBlock Grid.Row="1" Margin="0,8,0,0" Foreground="#486581" Text="Theo dõi tổng doanh thu theo năm."/>
+                        <TextBox Grid.Row="2" Margin="0,16,0,0" Style="{StaticResource InputTextBoxStyle}" Text="{Binding Nam, UpdateSourceTrigger=PropertyChanged}"/>
+                        <StackPanel Grid.Row="3" Margin="0,18,0,0">
+                            <TextBlock Foreground="#166534" FontSize="24" FontWeight="Bold" Text="{Binding DoanhThuNamText}"/>
+                            <Button Margin="0,16,0,0" Style="{StaticResource PrimaryButtonStyle}" Command="{Binding TaiDoanhThuNamCommand}" Content="Tính doanh thu năm"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </Grid>
+
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1.15*"/>
+                    <ColumnDefinition Width="1.25*"/>
+                </Grid.ColumnDefinitions>
+
+                <Border Style="{StaticResource CardStyle}" Padding="18" Margin="0,0,14,0">
+                    <StackPanel>
+                        <TextBlock Style="{StaticResource SectionTitleStyle}" Text="Tổng hợp nổi bật"/>
+                        <TextBlock Margin="0,10,0,0" Foreground="#486581" Text="Mốc nổi bật hiện tại"/>
+                        <TextBlock Margin="0,8,0,0" Foreground="#102A43" FontSize="26" FontWeight="Bold" Text="{Binding MocNoiBatText}"/>
+                        <TextBlock Margin="0,18,0,0" Foreground="#486581" Text="Tổng doanh thu đã theo dõi"/>
+                        <TextBlock Margin="0,8,0,0" Foreground="#D64545" FontSize="30" FontWeight="Bold" Text="{Binding TongHopDoanhThuText}"/>
+
+                        <Border Margin="0,20,0,0" Padding="14" Background="#F8FBFF" CornerRadius="14" BorderBrush="#E3EDF7" BorderThickness="1">
+                            <StackPanel>
+                                <TextBlock Style="{StaticResource SectionTitleStyle}" FontSize="16" Text="Ghi chú định dạng"/>
+                                <TextBlock Margin="0,12,0,0" Foreground="#102A43" FontWeight="SemiBold" Text="Ngày: dd-MM-yyyy"/>
+                                <TextBlock Margin="0,6,0,0" Foreground="#102A43" FontWeight="SemiBold" Text="Tháng: MM-yyyy"/>
+                                <TextBlock Margin="0,6,0,0" Foreground="#102A43" FontWeight="SemiBold" Text="Năm: yyyy"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="1" Style="{StaticResource CardStyle}" Padding="18">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <StackPanel>
+                            <TextBlock Style="{StaticResource SectionTitleStyle}" Text="Biểu đồ doanh thu"/>
+                            <TextBlock Margin="0,8,0,0"
+                                       Foreground="#486581"
+                                       Text="So sánh nhanh doanh thu theo ngày, tháng và năm đang chọn."
+                                       TextWrapping="Wrap"/>
+                        </StackPanel>
+                        <lvc:CartesianChart Grid.Row="1"
+                                            Margin="0,16,0,0"
+                                            Series="{Binding RevenueSeries}"
+                                            XAxes="{Binding RevenueXAxes}"
+                                            YAxes="{Binding RevenueYAxes}"
+                                            LegendPosition="Bottom"
+                                            TooltipPosition="Top"/>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

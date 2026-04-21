@@ -1,0 +1,252 @@
+<UserControl x:Class="UI_Dat_Ve_May_Bay.Views.Admin.QuanLyPhieuGiamGiaView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             Background="{StaticResource AdminPageBg}">
+    <UserControl.Resources>
+        <Style x:Key="CardStyle" TargetType="Border" BasedOn="{StaticResource AdminCardStyle}"/>
+        <Style x:Key="LabelStyle" TargetType="TextBlock" BasedOn="{StaticResource AdminLabelStyle}"/>
+        <Style x:Key="InputTextBoxStyle" TargetType="TextBox" BasedOn="{StaticResource AdminInputTextBoxStyle}"/>
+        <Style x:Key="PrimaryButtonStyle" TargetType="Button" BasedOn="{StaticResource AdminPrimaryButtonStyle}"/>
+        <Style x:Key="SecondaryButtonStyle" TargetType="Button" BasedOn="{StaticResource AdminSecondaryButtonStyle}"/>
+        <Style x:Key="DangerButtonStyle" TargetType="Button" BasedOn="{StaticResource AdminDangerButtonStyle}"/>
+    </UserControl.Resources>
+
+    <Grid Margin="18">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Margin="0,0,0,14" Padding="18" CornerRadius="22">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#123B63" Offset="0"/>
+                    <GradientStop Color="#1B6497" Offset="1"/>
+                </LinearGradientBrush>
+            </Border.Background>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2.4*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel>
+                    <TextBlock FontSize="24" FontWeight="Bold" Foreground="White" Text="Quản lý phiếu giảm giá"/>
+                    <TextBlock Margin="0,8,0,0" Foreground="#D9EAF7" Text="Danh sách, bật tắt trạng thái, cập nhật và xóa phiếu giảm giá trong cùng một không gian gọn hơn."/>
+                </StackPanel>
+                <Border Grid.Column="1" Padding="12,8" Background="#26FFFFFF" CornerRadius="14" VerticalAlignment="Center">
+                    <TextBlock Foreground="White" FontWeight="SemiBold" Text="{Binding TongSoPhieu, StringFormat=Tổng cộng: {0} phiếu}"/>
+                </Border>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1.6*"/>
+                <ColumnDefinition Width="0.9*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Style="{StaticResource CardStyle}" Padding="16" Margin="0,0,14,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <DockPanel Margin="0,0,0,12">
+                        <StackPanel DockPanel.Dock="Left">
+                            <TextBlock FontSize="17" FontWeight="Bold" Foreground="#102A43" Text="Danh sách phiếu"/>
+                            <TextBlock Margin="0,4,0,0" Foreground="#6B7C93" Text="Chọn một dòng để xem nhanh thông tin và mở ngăn chỉnh sửa khi cần."/>
+                        </StackPanel>
+                        <Button DockPanel.Dock="Right"
+                                Width="168"
+                                Style="{StaticResource PrimaryButtonStyle}"
+                                Command="{Binding OpenEditorCommand}"
+                                Content="Tạo hoặc chỉnh sửa"/>
+                    </DockPanel>
+
+                    <Border Grid.Row="1" Background="#F8FBFF" BorderBrush="#E3EDF7" BorderThickness="1" CornerRadius="14">
+                        <Grid>
+                            <DataGrid x:Name="VoucherDataGrid"
+                                      Style="{StaticResource AdminDataGridStyle}"
+                                      ItemsSource="{Binding DanhSachPhieuGiamGia}"
+                                      SelectedItem="{Binding SelectedPhieuGiamGia, Mode=TwoWay}"
+                                      IsReadOnly="True"
+                                      ColumnHeaderStyle="{StaticResource AdminDataGridHeaderStyle}"
+                                      CellStyle="{StaticResource AdminDataGridCellStyle}"
+                                      RowStyle="{StaticResource AdminDataGridRowStyle}">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Mã" Binding="{Binding MaGiamGia}" Width="120"/>
+                                    <DataGridTextColumn Header="Giá trị giảm" Binding="{Binding GiaTriGiamText}" Width="130"/>
+                                    <DataGridTextColumn Header="Loại" Binding="{Binding LoaiGiamGia}" Width="120"/>
+                                    <DataGridTextColumn Header="Ngày hết hạn" Binding="{Binding NgayKetThucText}" Width="130"/>
+                                    <DataGridTemplateColumn Header="Trạng thái" Width="110">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Border HorizontalAlignment="Left"
+                                                        Padding="8,3"
+                                                        Background="{Binding TrangThaiText, Converter={StaticResource AdminStatusBrushConverter}}"
+                                                        CornerRadius="14">
+                                                    <TextBlock Foreground="{Binding TrangThaiText, Converter={StaticResource AdminStatusBrushConverter}, ConverterParameter=foreground}"
+                                                               FontSize="12"
+                                                               FontWeight="SemiBold"
+                                                               Text="{Binding TrangThaiText}"/>
+                                                </Border>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTextColumn Header="Nội dung" Binding="{Binding NoiDung}" Width="*"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+
+                            <Border Background="#F8FBFF"
+                                    Visibility="{Binding ElementName=VoucherDataGrid, Path=HasItems, Converter={StaticResource InverseBoolToVis}}">
+                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <TextBlock FontSize="40" FontFamily="Segoe MDL2 Assets" Foreground="#9FB3C8" HorizontalAlignment="Center" Text="&#xE8F1;"/>
+                                    <TextBlock Margin="0,12,0,0" FontSize="18" FontWeight="Bold" Foreground="#102A43" HorizontalAlignment="Center" Text="Chưa có phiếu giảm giá"/>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Border>
+
+            <Border Grid.Column="1" Style="{StaticResource CardStyle}" Padding="16">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <DockPanel>
+                        <TextBlock DockPanel.Dock="Left" FontSize="18" FontWeight="Bold" Foreground="#102A43" Text="Tóm tắt voucher"/>
+                        <Border DockPanel.Dock="Right"
+                                Padding="10,6"
+                                Background="{Binding SelectedPhieuGiamGia.TrangThaiText, Converter={StaticResource AdminStatusBrushConverter}}"
+                                CornerRadius="12">
+                            <TextBlock Foreground="{Binding SelectedPhieuGiamGia.TrangThaiText, Converter={StaticResource AdminStatusBrushConverter}, ConverterParameter=foreground}"
+                                       FontWeight="SemiBold"
+                                       Text="{Binding SelectedPhieuGiamGia.TrangThaiText, TargetNullValue=--}"/>
+                        </Border>
+                    </DockPanel>
+
+                    <Border Grid.Row="1" Margin="0,14,0,12" Padding="14" Background="#F8FBFF" BorderBrush="#E3EDF7" BorderThickness="1" CornerRadius="16">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Foreground="#102A43" FontSize="20" FontWeight="Bold" Text="{Binding SelectedPhieuGiamGia.MaGiamGia, TargetNullValue=Chưa chọn phiếu}"/>
+                            <TextBlock Grid.Row="1" Margin="0,8,0,0" Foreground="#486581" Text="{Binding SelectedPhieuGiamGia.GiaTriGiamText, TargetNullValue=--}"/>
+                            <TextBlock Grid.Row="2" Margin="0,8,0,0" Foreground="#486581" Text="{Binding SelectedPhieuGiamGia.NgayKetThucText, StringFormat=Hết hạn: {0}, TargetNullValue=Hết hạn: --}"/>
+                        </Grid>
+                    </Border>
+
+                    <TextBlock Grid.Row="2" Foreground="#486581" Text="{Binding SelectedPhieuGiamGia.NoiDung, TargetNullValue=Chọn một phiếu để xem nội dung chi tiết.}" TextWrapping="Wrap"/>
+
+                    <UniformGrid Grid.Row="3" Columns="2" Margin="0,16,0,0">
+                        <Button Margin="0,0,10,10" Style="{StaticResource SecondaryButtonStyle}" Command="{Binding OpenEditorCommand}" Content="Mở trình chỉnh sửa"/>
+                        <Button Margin="0,0,0,10" Style="{StaticResource SecondaryButtonStyle}" Command="{Binding DoiTrangThaiCommand}" Content="Bật / Tắt"/>
+                        <Button Margin="0,0,10,0" Style="{StaticResource PrimaryButtonStyle}" Command="{Binding CreateNewCommand}" Content="Tạo phiếu mới"/>
+                        <Button Style="{StaticResource DangerButtonStyle}" Command="{Binding XoaPhieuGiamGiaCommand}" Content="Xóa phiếu"/>
+                    </UniformGrid>
+                </Grid>
+            </Border>
+
+            <Border Background="#BBD7EBF7"
+                    CornerRadius="18"
+                    Visibility="{Binding IsEditorOpen, Converter={StaticResource BoolToVis}}">
+                <Grid>
+                    <Border Width="460"
+                            HorizontalAlignment="Right"
+                            Margin="18"
+                            Padding="20"
+                            Style="{StaticResource CardStyle}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <DockPanel>
+                                <StackPanel DockPanel.Dock="Left">
+                                    <TextBlock FontSize="18" FontWeight="Bold" Foreground="#102A43" Text="Chỉnh sửa phiếu giảm giá"/>
+                                    <TextBlock Margin="0,4,0,0" Foreground="#5B708B" Text="Tách riêng form thao tác để màn danh sách thoáng hơn."/>
+                                </StackPanel>
+                                <Button DockPanel.Dock="Right"
+                                        Width="42"
+                                        Height="42"
+                                        Style="{StaticResource SecondaryButtonStyle}"
+                                        Command="{Binding CloseEditorCommand}"
+                                        Content="✕"/>
+                            </DockPanel>
+
+                            <Grid Grid.Row="1" Margin="0,18,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Margin="0,0,10,0">
+                                    <TextBlock Style="{StaticResource LabelStyle}" Text="ID"/>
+                                    <TextBox Style="{StaticResource InputTextBoxStyle}" Text="{Binding Id}"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock Style="{StaticResource LabelStyle}" Text="Mã giảm giá"/>
+                                    <TextBox Style="{StaticResource InputTextBoxStyle}" Text="{Binding MaGiamGia}"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <Grid Grid.Row="2" Margin="0,12,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Margin="0,0,10,0">
+                                    <TextBlock Style="{StaticResource LabelStyle}" Text="Giá trị giảm"/>
+                                    <TextBox Style="{StaticResource InputTextBoxStyle}" Text="{Binding GiaTriGiam}"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1" Margin="0,0,10,0">
+                                    <TextBlock Style="{StaticResource LabelStyle}" Text="Ngày kết thúc"/>
+                                    <DatePicker Padding="8" Background="{StaticResource AdminInputBg}" BorderBrush="{StaticResource AdminInputBorder}" BorderThickness="1" SelectedDate="{Binding NgayKetThuc}"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="2">
+                                    <TextBlock Style="{StaticResource LabelStyle}" Text="ID loại giảm giá"/>
+                                    <TextBox Style="{StaticResource InputTextBoxStyle}" Text="{Binding IdLoaiGiamGia}"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <StackPanel Grid.Row="3" Margin="0,12,0,0">
+                                <TextBlock Style="{StaticResource LabelStyle}" Text="Nội dung"/>
+                                <TextBox MinHeight="180"
+                                         Padding="12,10"
+                                         Background="{StaticResource AdminInputBg}"
+                                         BorderBrush="{StaticResource AdminInputBorder}"
+                                         BorderThickness="1"
+                                         TextWrapping="Wrap"
+                                         AcceptsReturn="True"
+                                         VerticalScrollBarVisibility="Auto"
+                                         Text="{Binding NoiDung}"/>
+                                <CheckBox Margin="0,12,0,0" IsChecked="{Binding Active}" Content="Kích hoạt phiếu sau khi lưu"/>
+                            </StackPanel>
+
+                            <UniformGrid Grid.Row="4" Columns="3" Margin="0,18,0,0">
+                                <Button Margin="0,0,10,0" Style="{StaticResource SecondaryButtonStyle}" Command="{Binding CloseEditorCommand}" Content="Đóng"/>
+                                <Button Margin="0,0,10,0" Style="{StaticResource SecondaryButtonStyle}" Command="{Binding DoiTrangThaiCommand}" Content="Bật / Tắt"/>
+                                <Button Style="{StaticResource PrimaryButtonStyle}" Command="{Binding LuuPhieuGiamGiaCommand}" Content="Lưu phiếu"/>
+                            </UniformGrid>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

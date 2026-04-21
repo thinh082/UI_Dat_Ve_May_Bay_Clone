@@ -1,0 +1,401 @@
+<UserControl x:Class="UI_Dat_Ve_May_Bay.Views.VoucherView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:core="clr-namespace:UI_Dat_Ve_May_Bay.Core"
+             mc:Ignorable="d"
+             Background="#FFF8FAFC">
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+        <core:BoolToStatusTextConverter x:Key="BoolToStatusTextConverter"/>
+
+        <Style x:Key="Card" TargetType="Border">
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="{StaticResource VnaBorderGray}"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="15" ShadowDepth="2" Opacity="0.05" Color="Black"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="PrimaryBtn" TargetType="Button">
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="Padding" Value="20,0"/>
+            <Setter Property="Background" Value="{StaticResource VnaPrimaryBlue}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Opacity" Value="0.9"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="border" Property="Background" Value="#FFCBD5E1"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="GhostBtn" TargetType="Button">
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="Padding" Value="16,0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{StaticResource VnaPrimaryBlue}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource VnaPrimaryBlue}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource VnaLightBlue}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="border" Property="Opacity" Value="0.5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Style="{StaticResource Card}" Grid.Row="0" Margin="0,0,0,20" Padding="24">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel>
+                    <TextBlock Text="Voucher &amp; Ưu đãi" FontSize="28" FontWeight="Bold" Foreground="{StaticResource VnaPrimaryBlue}"/>
+                    <TextBlock Text="Duyệt và áp dụng các mã giảm giá hấp dẫn cho chuyến bay của bạn."
+                               Margin="0,8,0,0" Foreground="{StaticResource VnaTextGray}" FontSize="14"/>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
+                        <Border Background="{StaticResource VnaLightBlue}" CornerRadius="4" Padding="12,6" Margin="0,0,12,0"
+                                Visibility="{Binding HasStatus, Converter={StaticResource BoolToVisibility}}">
+                            <TextBlock Text="{Binding Status}" Foreground="{StaticResource VnaPrimaryBlue}" FontSize="12" FontWeight="SemiBold"/>
+                        </Border>
+                        <Border Background="#FEE2E2" CornerRadius="4" Padding="12,6"
+                                Visibility="{Binding HasError, Converter={StaticResource BoolToVisibility}}">
+                            <TextBlock Text="{Binding Error}" Foreground="#DC2626" FontSize="12" FontWeight="SemiBold"/>
+                        </Border>
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Border CornerRadius="8" BorderThickness="1" BorderBrush="{StaticResource VnaBorderGray}" Background="#FFF9FAFB" Padding="4" Margin="0,0,12,0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="200"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox Grid.Column="0" Text="{Binding SearchCode, UpdateSourceTrigger=PropertyChanged}" 
+                                     BorderThickness="0" Background="Transparent" Padding="12,0" VerticalContentAlignment="Center"
+                                     FontSize="14" Tag="Nhập mã voucher..."/>
+                            <Button Grid.Column="1" Content="Tìm kiếm" Style="{StaticResource PrimaryBtn}" Command="{Binding SearchCommand}"/>
+                        </Grid>
+                    </Border>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="420"/>
+                <ColumnDefinition Width="24"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Left: List Card -->
+            <Border Grid.Column="0" Style="{StaticResource Card}" Padding="0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Border Background="{StaticResource VnaPrimaryBlue}" CornerRadius="11,11,0,0" Padding="0">
+                        <UniformGrid Columns="2" Rows="1" Height="45">
+                            <ToggleButton Content="VOUCHER CỦA TÔI" 
+                                          IsChecked="{Binding LoadMyVouchersCommand.IsRunning, Mode=OneWay}"
+                                          Command="{Binding LoadMyVouchersCommand}"
+                                          Style="{StaticResource {x:Type ToggleButton}}"
+                                          Background="Transparent" Foreground="White" BorderThickness="0,0,1,0" BorderBrush="#20FFFFFF"
+                                          FontSize="11" FontWeight="Bold"/>
+                            <ToggleButton Content="TẤT CẢ VOUCHER" 
+                                          IsChecked="{Binding LoadAllVouchersCommand.IsRunning, Mode=OneWay}"
+                                          Command="{Binding LoadAllVouchersCommand}"
+                                          Style="{StaticResource {x:Type ToggleButton}}"
+                                          Background="Transparent" Foreground="White" BorderThickness="0"
+                                          FontSize="11" FontWeight="Bold"/>
+                        </UniformGrid>
+                    </Border>
+
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                        <ListBox ItemsSource="{Binding Vouchers}"
+                                 SelectedItem="{Binding SelectedVoucher}"
+                                 BorderThickness="0"
+                                 Background="Transparent"
+                                 Padding="16"
+                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="ListBoxItem">
+                                    <Setter Property="Margin" Value="0,0,0,16"/>
+                                    <Setter Property="Padding" Value="0"/>
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="ListBoxItem">
+                                                <Border x:Name="bd"
+                                                        CornerRadius="10"
+                                                        BorderThickness="1"
+                                                        BorderBrush="{StaticResource VnaBorderGray}"
+                                                        Background="White"
+                                                        Margin="0,0,0,2">
+                                                    <Grid>
+                                                        <!-- Fake Punch Hole Design -->
+                                                        <Border Width="16" Height="16" CornerRadius="8" Background="#FFF8FAFC" HorizontalAlignment="Left" Margin="-9,0,0,0" VerticalAlignment="Center" BorderBrush="{StaticResource VnaBorderGray}" BorderThickness="1"/>
+                                                        <Border Width="16" Height="16" CornerRadius="8" Background="#FFF8FAFC" HorizontalAlignment="Right" Margin="0,0,-9,0" VerticalAlignment="Center" BorderBrush="{StaticResource VnaBorderGray}" BorderThickness="1"/>
+                                                        
+                                                        <ContentPresenter/>
+                                                    </Grid>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsSelected" Value="True">
+                                                        <Setter TargetName="bd" Property="Background" Value="{StaticResource VnaLightBlue}"/>
+                                                        <Setter TargetName="bd" Property="BorderBrush" Value="#FF93C5FD"/>
+                                                    </Trigger>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter TargetName="bd" Property="BorderBrush" Value="#FFCBD5E1"/>
+                                                        <Setter TargetName="bd" Property="Effect">
+                                                            <Setter.Value>
+                                                                <DropShadowEffect BlurRadius="8" ShadowDepth="1" Opacity="0.1" Color="Black"/>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Padding="20,12">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="1"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <StackPanel Width="80" VerticalAlignment="Center" Margin="0,0,15,0">
+                                            <TextBlock Text="{Binding DisplayValue}" FontWeight="Bold" FontSize="18" Foreground="{StaticResource VnaPrimaryBlue}" HorizontalAlignment="Center"/>
+                                            <TextBlock Text="GIẢM" FontSize="9" FontWeight="Bold" Foreground="{StaticResource VnaTextGray}" HorizontalAlignment="Center" Margin="0,2,0,0"/>
+                                        </StackPanel>
+
+                                        <Border Grid.Column="1" BorderBrush="{StaticResource VnaBorderGray}" BorderThickness="1,0,0,0" Margin="0,5" SnapsToDevicePixels="True" Opacity="0.5"/>
+
+                                        <StackPanel Grid.Column="2" Margin="15,0,0,0">
+                                            <TextBlock Text="{Binding DisplayCode}" FontWeight="Bold" FontSize="14" Foreground="{StaticResource VnaTextDark}"/>
+                                            <TextBlock Text="{Binding DisplayContent}" Foreground="{StaticResource VnaTextGray}" FontSize="12" Margin="0,4,0,0" TextTrimming="CharacterEllipsis"/>
+                                            
+                                            <DockPanel Margin="0,8,0,0">
+                                                <TextBlock Text="{Binding DisplayExpiry, StringFormat='{}Hạn: {0}'}" FontSize="11" Foreground="{StaticResource VnaTextGray}"/>
+                                                <Border DockPanel.Dock="Right" CornerRadius="4" Padding="8,2" HorizontalAlignment="Right">
+                                                    <Border.Style>
+                                                        <Style TargetType="Border">
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding Active}" Value="True">
+                                                                    <Setter Property="Background" Value="#DCFCE7"/>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding Active}" Value="False">
+                                                                    <Setter Property="Background" Value="#FEE2E2"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Border.Style>
+                                                    <TextBlock Text="{Binding Active, Converter={StaticResource BoolToStatusTextConverter}}" FontSize="10" FontWeight="Bold">
+                                                        <TextBlock.Style>
+                                                            <Style TargetType="TextBlock">
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding Active}" Value="True">
+                                                                        <Setter Property="Foreground" Value="#166534"/>
+                                                                    </DataTrigger>
+                                                                    <DataTrigger Binding="{Binding Active}" Value="False">
+                                                                        <Setter Property="Foreground" Value="#991B1B"/>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </TextBlock.Style>
+                                                    </TextBlock>
+                                                </Border>
+                                            </DockPanel>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+
+            <!-- Right: Detail Card -->
+            <Border Grid.Column="2" Style="{StaticResource Card}" Padding="0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Border Background="{StaticResource VnaLightBlue}" CornerRadius="11,11,0,0" Padding="30,25">
+                        <StackPanel>
+                            <TextBlock Text="{Binding SelectedVoucher.DisplayCode, FallbackValue='CHI TIẾT VOUCHER'}" 
+                                       FontSize="24" FontWeight="Bold" Foreground="{StaticResource VnaPrimaryBlue}"/>
+                            <TextBlock Text="{Binding SelectedVoucher.DisplayContent}" 
+                                       Margin="0,8,0,0" Foreground="{StaticResource VnaTextGray}" FontSize="14" TextWrapping="Wrap">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding SelectedVoucher}" Value="{x:Null}">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </StackPanel>
+                    </Border>
+
+                    <ScrollViewer Grid.Row="1" Padding="30" VerticalScrollBarVisibility="Auto">
+                        <Grid>
+                            <!-- Empty State -->
+                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,50,0,0">
+                                <StackPanel.Style>
+                                    <Style TargetType="StackPanel">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding SelectedVoucher}" Value="{x:Null}">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </Style>
+                                </StackPanel.Style>
+                                <TextBlock Text="🎟" FontSize="64" Foreground="#E5E7EB" HorizontalAlignment="Center"/>
+                                <TextBlock Text="Chọn một voucher để xem thông tin chi tiết." 
+                                           Foreground="{StaticResource VnaTextGray}" FontSize="16" Margin="0,20,0,0"/>
+                            </StackPanel>
+
+                            <!-- Content -->
+                            <StackPanel>
+                                <StackPanel.Style>
+                                    <Style TargetType="StackPanel">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding SelectedVoucher}" Value="{x:Null}">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </StackPanel.Style>
+                                <TextBlock Text="Thông tin ưu đãi" FontSize="16" FontWeight="SemiBold" Foreground="{StaticResource VnaTextDark}" Margin="0,0,0,16"/>
+                                
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="150"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="12"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="12"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="12"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <TextBlock Grid.Row="0" Text="Mức giảm giá:" Foreground="{StaticResource VnaTextGray}"/>
+                                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding SelectedVoucher.DisplayValue}" FontWeight="Bold" Foreground="{StaticResource VnaPrimaryBlue}"/>
+
+                                    <TextBlock Grid.Row="2" Text="Loại giảm giá:" Foreground="{StaticResource VnaTextGray}"/>
+                                    <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding SelectedVoucher.LoaiGiamGia}" Foreground="{StaticResource VnaTextDark}"/>
+
+                                    <TextBlock Grid.Row="4" Text="Hạn sử dụng:" Foreground="{StaticResource VnaTextGray}"/>
+                                    <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding SelectedVoucher.DisplayExpiry}" Foreground="{StaticResource VnaTextDark}" FontWeight="SemiBold"/>
+
+                                    <TextBlock Grid.Row="6" Text="Trạng thái:" Foreground="{StaticResource VnaTextGray}"/>
+                                    <TextBlock Grid.Row="6" Grid.Column="1" Text="{Binding SelectedVoucher.Active, Converter={StaticResource BoolToStatusTextConverter}}" FontWeight="Bold">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding SelectedVoucher.Active}" Value="True">
+                                                        <Setter Property="Foreground" Value="#166534"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding SelectedVoucher.Active}" Value="False">
+                                                        <Setter Property="Foreground" Value="#991B1B"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </Grid>
+                            </StackPanel>
+                        </Grid>
+                    </ScrollViewer>
+
+                    <Border Grid.Row="2" Padding="30,20" BorderBrush="{StaticResource VnaBorderGray}" BorderThickness="0,1,0,0">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Visibility" Value="Visible"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SelectedVoucher}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <Button Content="SỬ DỤNG VOUCHER NÀY" Style="{StaticResource PrimaryBtn}" Height="45" FontSize="14"
+                                Command="{Binding ApplySelectedCommand}"/>
+                    </Border>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

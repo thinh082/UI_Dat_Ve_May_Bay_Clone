@@ -1,0 +1,252 @@
+<UserControl x:Class="UI_Dat_Ve_May_Bay.Views.Admin.QuanLyThongKeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
+             mc:Ignorable="d"
+             Background="{StaticResource AdminPageBg}">
+    <UserControl.Resources>
+        <Style x:Key="CardStyle" TargetType="Border" BasedOn="{StaticResource AdminCardStyle}"/>
+        <Style x:Key="LabelStyle" TargetType="TextBlock" BasedOn="{StaticResource AdminLabelStyle}"/>
+        <Style x:Key="PrimaryButtonStyle" TargetType="Button" BasedOn="{StaticResource AdminPrimaryButtonStyle}"/>
+        <Style x:Key="SecondaryButtonStyle" TargetType="Button" BasedOn="{StaticResource AdminSecondaryButtonStyle}"/>
+    </UserControl.Resources>
+
+    <Grid Margin="18">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Margin="0,0,0,14" Padding="20" CornerRadius="24">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#123B63" Offset="0"/>
+                    <GradientStop Color="#1B6497" Offset="1"/>
+                </LinearGradientBrush>
+            </Border.Background>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2.2*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Margin="0,0,18,0">
+                    <TextBlock FontSize="24" FontWeight="Bold" Foreground="White" Text="Quản lý thống kê"/>
+                    <TextBlock Margin="0,8,0,0"
+                               Foreground="#D9EAF7"
+                               Text="Tập trung KPI, doanh thu theo ngày và diễn biến bán vé trong cùng một dashboard trực quan hơn cho admin."
+                               TextWrapping="Wrap"/>
+                </StackPanel>
+
+                <Border Grid.Column="1" Padding="14" Background="#26FFFFFF" CornerRadius="16" VerticalAlignment="Center">
+                    <StackPanel>
+                        <TextBlock Foreground="#D9EAF7" FontSize="11" Text="Khoảng đang xem"/>
+                        <TextBlock Margin="0,6,0,0" Foreground="White" FontSize="18" FontWeight="Bold" Text="{Binding KhoangNgayText}"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="1" Style="{StaticResource CardStyle}" Margin="0,0,0,14" Padding="16">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="220"/>
+                    <ColumnDefinition Width="220"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="140"/>
+                    <ColumnDefinition Width="140"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Margin="0,0,12,0">
+                    <TextBlock Style="{StaticResource LabelStyle}" Text="Từ ngày"/>
+                    <DatePicker SelectedDate="{Binding TuNgay}" Height="40"/>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Margin="0,0,12,0">
+                    <TextBlock Style="{StaticResource LabelStyle}" Text="Đến ngày"/>
+                    <DatePicker SelectedDate="{Binding DenNgay}" Height="40"/>
+                </StackPanel>
+
+                <Border Grid.Column="2" VerticalAlignment="Bottom" HorizontalAlignment="Left" Padding="14,8" Background="#EEF6FF" CornerRadius="16">
+                    <TextBlock Foreground="#0F4C81" FontWeight="SemiBold" Text="{Binding TongDoanhThuRangeText}"/>
+                </Border>
+                <Button Grid.Column="3"
+                        Margin="12,0,0,0"
+                        VerticalAlignment="Bottom"
+                        Style="{StaticResource SecondaryButtonStyle}"
+                        Command="{Binding DatLaiKhoangNgayCommand}"
+                        Content="Mặc định"/>
+                <Button Grid.Column="4"
+                        Margin="12,0,0,0"
+                        VerticalAlignment="Bottom"
+                        Style="{StaticResource PrimaryButtonStyle}"
+                        Command="{Binding TaiThongKeCommand}"
+                        Content="Làm mới"/>
+            </Grid>
+        </Border>
+
+        <UniformGrid Grid.Row="2" Columns="4" Margin="0,0,0,14">
+            <Border Style="{StaticResource CardStyle}" Margin="0,0,12,0" Padding="16">
+                <StackPanel>
+                    <TextBlock Foreground="#486581" FontSize="11" Text="Doanh thu hôm nay"/>
+                    <TextBlock Margin="0,10,0,0" FontSize="24" FontWeight="Bold" Foreground="#D64545" Text="{Binding DoanhThuHomNayText}"/>
+                    <TextBlock Margin="0,8,0,0"
+                               Foreground="{Binding RevenueTrendBrush}"
+                               FontWeight="SemiBold"
+                               Text="{Binding RevenueTrendText}"
+                               TextWrapping="Wrap"/>
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource CardStyle}" Margin="0,0,12,0" Padding="16">
+                <StackPanel>
+                    <TextBlock Foreground="#486581" FontSize="11" Text="Tổng vé đã bán"/>
+                    <TextBlock Margin="0,10,0,0" FontSize="24" FontWeight="Bold" Foreground="#0F6CBD" Text="{Binding TongVeDaBan}"/>
+                    <TextBlock Margin="0,8,0,0"
+                               Foreground="{Binding TicketTrendBrush}"
+                               FontWeight="SemiBold"
+                               Text="{Binding TicketTrendText}"
+                               TextWrapping="Wrap"/>
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource CardStyle}" Margin="0,0,12,0" Padding="16">
+                <StackPanel>
+                    <TextBlock Foreground="#486581" FontSize="11" Text="Người dùng hoạt động"/>
+                    <TextBlock Margin="0,10,0,0" FontSize="24" FontWeight="Bold" Foreground="#166534" Text="{Binding NguoiDungHoatDong}"/>
+                    <TextBlock Margin="0,8,0,0" Foreground="#486581" Text="Theo KPI dashboard thời gian thực"/>
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource CardStyle}" Padding="16">
+                <StackPanel>
+                    <TextBlock Foreground="#486581" FontSize="11" Text="Tỷ lệ hủy"/>
+                    <TextBlock Margin="0,10,0,0" FontSize="24" FontWeight="Bold" Foreground="#7C3AED" Text="{Binding TiLeHuyText}"/>
+                    <TextBlock Margin="0,8,0,0" Foreground="#486581" Text="Tỷ lệ giúp nhận biết rủi ro vận hành"/>
+                </StackPanel>
+            </Border>
+        </UniformGrid>
+
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1.15*"/>
+                <ColumnDefinition Width="1.05*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="235"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource CardStyle}" Margin="0,0,14,14" Padding="18">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel>
+                        <TextBlock FontSize="18" FontWeight="Bold" Foreground="#102A43" Text="Doanh thu theo ngày"/>
+                        <TextBlock Margin="0,8,0,0"
+                                   Foreground="#486581"
+                                   Text="Theo dõi biến động doanh thu hằng ngày trong khoảng đang chọn để nhìn nhanh đà tăng giảm."
+                                   TextWrapping="Wrap"/>
+                    </StackPanel>
+
+                    <lvc:CartesianChart Grid.Row="1"
+                                        Margin="0,16,0,0"
+                                        Series="{Binding RevenueSeries}"
+                                        XAxes="{Binding RevenueXAxes}"
+                                        YAxes="{Binding RevenueYAxes}"
+                                        LegendPosition="Bottom"
+                                        TooltipPosition="Top"/>
+                </Grid>
+            </Border>
+
+            <Border Grid.Row="0" Grid.Column="1" Style="{StaticResource CardStyle}" Margin="0,0,0,14" Padding="18">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel>
+                        <TextBlock FontSize="18" FontWeight="Bold" Foreground="#102A43" Text="Biến động vé"/>
+                        <TextBlock Margin="0,8,0,0"
+                                   Foreground="#486581"
+                                   Text="So sánh tổng vé, đã đặt, checkin và hủy theo từng ngày để nhìn ra xu hướng tiêu thụ."
+                                   TextWrapping="Wrap"/>
+                    </StackPanel>
+
+                    <lvc:CartesianChart Grid.Row="1"
+                                        Margin="0,16,0,0"
+                                        Series="{Binding TicketSeries}"
+                                        XAxes="{Binding TicketXAxes}"
+                                        YAxes="{Binding TicketYAxes}"
+                                        LegendPosition="Bottom"
+                                        TooltipPosition="Top"/>
+                </Grid>
+            </Border>
+
+            <Border Grid.Row="1" Grid.Column="0" Style="{StaticResource CardStyle}" Margin="0,0,14,0" Padding="18">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Margin="0,0,12,0">
+                        <TextBlock FontSize="18" FontWeight="Bold" Foreground="#102A43" Text="Tổng hợp nhanh"/>
+                        <TextBlock Margin="0,14,0,0" Foreground="#486581" Text="Doanh thu trong khoảng"/>
+                        <TextBlock Margin="0,6,0,0" FontSize="26" FontWeight="Bold" Foreground="#D64545" Text="{Binding TongDoanhThuRangeText}"/>
+                        <TextBlock Margin="0,18,0,0" Foreground="#486581" Text="Tổng vé trong khoảng"/>
+                        <TextBlock Margin="0,6,0,0" FontSize="24" FontWeight="Bold" Foreground="#0F6CBD" Text="{Binding TongVeRangeText}"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Foreground="#486581" Text="Ngày doanh thu cao nhất"/>
+                        <TextBlock Margin="0,6,0,0" Foreground="#102A43" FontWeight="SemiBold" Text="{Binding NgayDoanhThuCaoNhatText}" TextWrapping="Wrap"/>
+                        <TextBlock Margin="0,16,0,0" Foreground="#486581" Text="Ngày bán vé cao nhất"/>
+                        <TextBlock Margin="0,6,0,0" Foreground="#102A43" FontWeight="SemiBold" Text="{Binding NgayVeCaoNhatText}" TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <Border Grid.Row="1" Grid.Column="1" Style="{StaticResource CardStyle}" Padding="18">
+                <StackPanel>
+                    <TextBlock FontSize="18" FontWeight="Bold" Foreground="#102A43" Text="So sánh nhanh"/>
+                    <TextBlock Margin="0,12,0,0"
+                               Foreground="#486581"
+                               Text="Hai chỉ số dưới đây giúp đọc dashboard nhanh hơn mà không cần soi trực tiếp từng điểm trên biểu đồ."
+                               TextWrapping="Wrap"/>
+
+                    <Border Margin="0,16,0,0" Padding="14" Background="#F8FBFF" BorderBrush="#E3EDF7" BorderThickness="1" CornerRadius="16">
+                        <StackPanel>
+                            <TextBlock Foreground="#486581" Text="Xu hướng doanh thu 7 ngày"/>
+                            <TextBlock Margin="0,6,0,0"
+                                       Foreground="{Binding RevenueTrendBrush}"
+                                       FontSize="18"
+                                       FontWeight="Bold"
+                                       Text="{Binding RevenueTrendText}"
+                                       TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Margin="0,12,0,0" Padding="14" Background="#F8FBFF" BorderBrush="#E3EDF7" BorderThickness="1" CornerRadius="16">
+                        <StackPanel>
+                            <TextBlock Foreground="#486581" Text="Xu hướng vé 7 ngày"/>
+                            <TextBlock Margin="0,6,0,0"
+                                       Foreground="{Binding TicketTrendBrush}"
+                                       FontSize="18"
+                                       FontWeight="Bold"
+                                       Text="{Binding TicketTrendText}"
+                                       TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

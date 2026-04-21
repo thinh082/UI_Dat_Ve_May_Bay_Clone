@@ -1,0 +1,196 @@
+﻿<UserControl x:Class="UI_Dat_Ve_May_Bay.Views.Admin.AdminMainView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <Style x:Key="AdminNavButtonBaseStyle" TargetType="Button">
+            <Setter Property="Height" Value="54"/>
+            <Setter Property="Margin" Value="0,0,0,12"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Background" Value="{StaticResource AdminShellSurface}"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="#E2E8F0"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="OuterBorder" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" CornerRadius="16">
+                            <Grid>
+                                <Border Background="{TemplateBinding BorderBrush}" HorizontalAlignment="Left" Width="5" CornerRadius="16,0,0,16"/>
+                                <ContentPresenter Margin="18,0,16,0" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="OuterBorder" Property="Background" Value="#1B4C77"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="OuterBorder" Property="Background" Value="#245B8D"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="AdminNavIconStyle" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Foreground" Value="#CFE7FF"/>
+            <Setter Property="Margin" Value="0,0,14,0"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="QuanLyVeButtonStyle" TargetType="Button" BasedOn="{StaticResource AdminNavButtonBaseStyle}">
+            <Style.Triggers><DataTrigger Binding="{Binding CurrentSectionKey}" Value="ve"><Setter Property="Background" Value="{StaticResource AdminShellActive}"/><Setter Property="BorderBrush" Value="{StaticResource AdminShellAccent}"/><Setter Property="Foreground" Value="White"/></DataTrigger></Style.Triggers>
+        </Style>
+        <Style x:Key="QuanLyPhieuGiamGiaButtonStyle" TargetType="Button" BasedOn="{StaticResource AdminNavButtonBaseStyle}">
+            <Style.Triggers><DataTrigger Binding="{Binding CurrentSectionKey}" Value="phieu-giam-gia"><Setter Property="Background" Value="{StaticResource AdminShellActive}"/><Setter Property="BorderBrush" Value="{StaticResource AdminShellAccent}"/><Setter Property="Foreground" Value="White"/></DataTrigger></Style.Triggers>
+        </Style>
+        <Style x:Key="LichSuThanhToanButtonStyle" TargetType="Button" BasedOn="{StaticResource AdminNavButtonBaseStyle}">
+            <Style.Triggers><DataTrigger Binding="{Binding CurrentSectionKey}" Value="lich-su-thanh-toan"><Setter Property="Background" Value="{StaticResource AdminShellActive}"/><Setter Property="BorderBrush" Value="{StaticResource AdminShellAccent}"/><Setter Property="Foreground" Value="White"/></DataTrigger></Style.Triggers>
+        </Style>
+        <Style x:Key="QuanLyChuyenBayButtonStyle" TargetType="Button" BasedOn="{StaticResource AdminNavButtonBaseStyle}">
+            <Style.Triggers><DataTrigger Binding="{Binding CurrentSectionKey}" Value="chuyen-bay"><Setter Property="Background" Value="{StaticResource AdminShellActive}"/><Setter Property="BorderBrush" Value="{StaticResource AdminShellAccent}"/><Setter Property="Foreground" Value="White"/></DataTrigger></Style.Triggers>
+        </Style>
+        <Style x:Key="QuanLyDoanhThuButtonStyle" TargetType="Button" BasedOn="{StaticResource AdminNavButtonBaseStyle}">
+            <Style.Triggers><DataTrigger Binding="{Binding CurrentSectionKey}" Value="doanh-thu"><Setter Property="Background" Value="{StaticResource AdminShellActive}"/><Setter Property="BorderBrush" Value="{StaticResource AdminShellAccent}"/><Setter Property="Foreground" Value="White"/></DataTrigger></Style.Triggers>
+        </Style>
+        <Style x:Key="QuanLyNguoiDungButtonStyle" TargetType="Button" BasedOn="{StaticResource AdminNavButtonBaseStyle}">
+            <Style.Triggers><DataTrigger Binding="{Binding CurrentSectionKey}" Value="nguoi-dung"><Setter Property="Background" Value="{StaticResource AdminShellActive}"/><Setter Property="BorderBrush" Value="{StaticResource AdminShellAccent}"/><Setter Property="Foreground" Value="White"/></DataTrigger></Style.Triggers>
+        </Style>
+        <Style x:Key="QuanLyThongKeButtonStyle" TargetType="Button" BasedOn="{StaticResource AdminNavButtonBaseStyle}">
+            <Style.Triggers><DataTrigger Binding="{Binding CurrentSectionKey}" Value="thong-ke"><Setter Property="Background" Value="{StaticResource AdminShellActive}"/><Setter Property="BorderBrush" Value="{StaticResource AdminShellAccent}"/><Setter Property="Foreground" Value="White"/></DataTrigger></Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Background="{StaticResource AdminPageBg}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="280"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Column="0" Background="{StaticResource AdminShellBg}">
+            <Grid Margin="18">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Margin="0,10,0,24">
+                    <DockPanel>
+                        <Border Width="58" Height="58" CornerRadius="29" Background="#1F5E91" DockPanel.Dock="Left">
+                            <TextBlock Text="AD" Foreground="White" FontSize="19" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel Margin="14,4,0,0">
+                            <TextBlock Foreground="White" FontSize="24" FontWeight="Bold" Text="Admin Panel"/>
+                            <TextBlock Margin="0,4,0,0" Foreground="#C2D4E8" FontSize="12" Text="Workspace quản trị cho điều hành chuyến bay"/>
+                        </StackPanel>
+                    </DockPanel>
+                    <Border Margin="0,18,0,0" Padding="12" Background="#123758" CornerRadius="16">
+                        <StackPanel>
+                            <TextBlock Foreground="#CFE7FF" FontSize="11" Text="Hôm nay"/>
+                            <TextBlock Margin="0,6,0,0" Foreground="White" FontSize="18" FontWeight="Bold" Text="{Binding TodayText}"/>
+                            <TextBlock Margin="0,6,0,0" Foreground="#C2D4E8" Text="Tập trung trạng thái dữ liệu, tác vụ và KPI trong một luồng quản lý." TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                    <StackPanel>
+                        <Button Style="{StaticResource QuanLyVeButtonStyle}" Command="{Binding GoQuanLyVeCommand}"><DockPanel><TextBlock Style="{StaticResource AdminNavIconStyle}" Text="&#xE8AB;"/><TextBlock Text="Quản lý vé" VerticalAlignment="Center"/></DockPanel></Button>
+                        <Button Style="{StaticResource QuanLyPhieuGiamGiaButtonStyle}" Command="{Binding GoQuanLyPhieuGiamGiaCommand}"><DockPanel><TextBlock Style="{StaticResource AdminNavIconStyle}" Text="&#xE8F1;"/><TextBlock Text="Quản lý phiếu giảm giá" VerticalAlignment="Center"/></DockPanel></Button>
+                        <Button Style="{StaticResource LichSuThanhToanButtonStyle}" Command="{Binding GoQuanLyLichSuThanhToanCommand}"><DockPanel><TextBlock Style="{StaticResource AdminNavIconStyle}" Text="&#xE9D9;"/><TextBlock Text="Lịch sử thanh toán" VerticalAlignment="Center"/></DockPanel></Button>
+                        <Button Style="{StaticResource QuanLyChuyenBayButtonStyle}" Command="{Binding GoQuanLyChuyenBayCommand}"><DockPanel><TextBlock Style="{StaticResource AdminNavIconStyle}" Text="&#xE804;"/><TextBlock Text="Quản lý chuyến bay" VerticalAlignment="Center"/></DockPanel></Button>
+                        <Button Style="{StaticResource QuanLyDoanhThuButtonStyle}" Command="{Binding GoQuanLyDoanhThuCommand}"><DockPanel><TextBlock Style="{StaticResource AdminNavIconStyle}" Text="&#xE9D2;"/><TextBlock Text="Quản lý doanh thu" VerticalAlignment="Center"/></DockPanel></Button>
+                        <Button Style="{StaticResource QuanLyNguoiDungButtonStyle}" Command="{Binding GoQuanLyNguoiDungCommand}"><DockPanel><TextBlock Style="{StaticResource AdminNavIconStyle}" Text="&#xE716;"/><TextBlock Text="Quản lý người dùng" VerticalAlignment="Center"/></DockPanel></Button>
+                        <Button Style="{StaticResource QuanLyThongKeButtonStyle}" Command="{Binding GoQuanLyThongKeCommand}"><DockPanel><TextBlock Style="{StaticResource AdminNavIconStyle}" Text="&#xE9D2;"/><TextBlock Text="Quản lý thống kê" VerticalAlignment="Center"/></DockPanel></Button>
+                    </StackPanel>
+                </ScrollViewer>
+
+                <Button Grid.Row="2" Height="52" Padding="18,0" Background="#8E1F1F" Foreground="White" BorderThickness="0" FontWeight="SemiBold" HorizontalContentAlignment="Left" Command="{Binding LogoutCommand}">
+                    <DockPanel>
+                        <TextBlock Style="{StaticResource AdminNavIconStyle}" Text="&#xE8AC;"/>
+                        <TextBlock Text="Đăng xuất" VerticalAlignment="Center"/>
+                    </DockPanel>
+                </Button>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Column="1" Margin="16">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0" Background="White" BorderBrush="#D8E5F2" BorderThickness="1" CornerRadius="20" Padding="20" Margin="0,0,0,14">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Border Width="52" Height="52" CornerRadius="16" Background="#EAF2FF" Margin="0,0,16,0">
+                        <TextBlock Text="{Binding CurrentIconGlyph}" FontFamily="Segoe MDL2 Assets" FontSize="22" Foreground="#0F6CBD" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock FontSize="26" FontWeight="Bold" Foreground="#102A43" Text="{Binding CurrentTitle}"/>
+                        <TextBlock Margin="0,6,0,0" Foreground="#5B708B" Text="{Binding CurrentSubtitle}" TextWrapping="Wrap"/>
+                    </StackPanel>
+                    <Button Grid.Column="2" Width="132" Margin="18,0,12,0" Style="{StaticResource AdminSecondaryButtonStyle}" Command="{Binding RefreshCurrentCommand}" Content="Tải lại trang"/>
+                    <Border Grid.Column="3" Width="52" Height="52" CornerRadius="26" Background="#123B63">
+                        <TextBlock Text="{Binding CurrentIconGlyph}" FontFamily="Segoe MDL2 Assets" FontSize="18" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </Grid>
+            </Border>
+
+            <Grid Grid.Row="1">
+                <Border Background="Transparent" CornerRadius="14">
+                    <ContentControl Content="{Binding CurrentViewModel}"/>
+                </Border>
+
+                <Border Background="#DDEDF6FF" CornerRadius="18" Visibility="{Binding IsCurrentViewBusy, Converter={StaticResource BoolToVis}}">
+                    <Grid>
+                        <Border Width="420"
+                                Padding="28"
+                                Background="#F9FCFF"
+                                BorderBrush="#D8E5F2"
+                                BorderThickness="1"
+                                CornerRadius="26"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center">
+                            <StackPanel>
+                                <Border Width="92" Height="92" CornerRadius="46" Background="White" BorderBrush="#CFE0F1" BorderThickness="1" HorizontalAlignment="Center">
+                                    <ProgressBar Width="52" Height="14" IsIndeterminate="True" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                </Border>
+                                <TextBlock Margin="0,20,0,0"
+                                           FontSize="18"
+                                           FontWeight="Bold"
+                                           Foreground="#102A43"
+                                           Text="Đang tải dữ liệu quản trị"
+                                           HorizontalAlignment="Center"/>
+                                <TextBlock Margin="0,8,0,0"
+                                           Foreground="#5B708B"
+                                           Text="Dữ liệu sẽ xuất hiện ngay khi tab hiện tại hoàn tất tải."
+                                           HorizontalAlignment="Center"
+                                           TextAlignment="Center"
+                                           TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <Border Width="360" Padding="16,14" Background="{Binding ToastBackground}" CornerRadius="18" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,12,12,0" Visibility="{Binding IsToastVisible, Converter={StaticResource BoolToVis}}">
+                    <TextBlock Foreground="White" FontWeight="SemiBold" Text="{Binding ToastMessage}" TextWrapping="Wrap"/>
+                </Border>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

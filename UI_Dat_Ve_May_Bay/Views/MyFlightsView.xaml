@@ -1,0 +1,264 @@
+﻿<UserControl x:Class="UI_Dat_Ve_May_Bay.Views.MyFlightsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:core="clr-namespace:UI_Dat_Ve_May_Bay.Core"
+             mc:Ignorable="d"
+             Background="#F8FAFC">
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+
+        <Style x:Key="Card" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#E5E7EB"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="14"/>
+            <Setter Property="Padding" Value="16"/>
+        </Style>
+
+        <Style x:Key="PrimaryBtn" TargetType="Button">
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Padding" Value="18,0"/>
+            <Setter Property="Background" Value="{StaticResource VnaPrimaryBlue}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="10">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="DangerBtn" TargetType="Button" BasedOn="{StaticResource PrimaryBtn}">
+            <Setter Property="Background" Value="#DC2626"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Style="{StaticResource Card}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel>
+                    <TextBlock Text="Chuyến bay của bạn" FontSize="30" FontWeight="Bold" Foreground="#1F2937"/>
+                    <TextBlock Text="Lấy dữ liệu từ endpoint dịch vụ và chỉ hiển thị Vé máy bay." Foreground="#6B7280" FontSize="13" Margin="0,4,0,0"/>
+                </StackPanel>
+
+                <Button Grid.Column="1" Style="{StaticResource PrimaryBtn}" Content="Làm mới" Command="{Binding RefreshCommand}" Width="120"/>
+            </Grid>
+        </Border>
+
+        <StackPanel Grid.Row="1" Margin="0,12,0,12">
+            <Border Background="#EEF6FF" BorderBrush="#BFDBFE" BorderThickness="1" CornerRadius="10" Padding="10,8"
+                    Visibility="{Binding HasStatus, Converter={StaticResource BoolToVisibility}}">
+                <TextBlock Text="{Binding Status}" Foreground="#1D4ED8" FontWeight="SemiBold"/>
+            </Border>
+            <Border Background="#FEF2F2" BorderBrush="#FECACA" BorderThickness="1" CornerRadius="10" Padding="10,8" Margin="0,8,0,0"
+                    Visibility="{Binding HasError, Converter={StaticResource BoolToVisibility}}">
+                <TextBlock Text="{Binding Error}" Foreground="#B91C1C" FontWeight="SemiBold"/>
+            </Border>
+        </StackPanel>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1.1*"/>
+                <ColumnDefinition Width="1.4*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Style="{StaticResource Card}" Margin="0,0,12,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <DockPanel Grid.Row="0" Margin="0,0,0,10">
+                        <TextBlock Text="Danh sách vé máy bay" FontSize="18" FontWeight="Bold" Foreground="#111827"/>
+                        <TextBlock DockPanel.Dock="Right" Text="{Binding Flights.Count, StringFormat='{}{0} vé'}" Foreground="#6B7280" VerticalAlignment="Bottom"/>
+                    </DockPanel>
+
+                    <Grid Grid.Row="1">
+                        <ListBox ItemsSource="{Binding Flights}" SelectedItem="{Binding SelectedFlight}" BorderThickness="0" Background="Transparent">
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="ListBoxItem">
+                                    <Setter Property="Padding" Value="0"/>
+                                    <Setter Property="Margin" Value="0,0,0,10"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="ListBoxItem">
+                                                <Border x:Name="bd" BorderThickness="1" BorderBrush="#E5E7EB" Background="White" CornerRadius="10" Padding="12">
+                                                    <ContentPresenter/>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter TargetName="bd" Property="BorderBrush" Value="#93C5FD"/>
+                                                    </Trigger>
+                                                    <Trigger Property="IsSelected" Value="True">
+                                                        <Setter TargetName="bd" Property="BorderBrush" Value="#3B82F6"/>
+                                                        <Setter TargetName="bd" Property="Background" Value="#EFF6FF"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding RouteText}" FontWeight="Bold" FontSize="15" Foreground="#1F2937"/>
+                                        <TextBlock Text="{Binding BookedAtText, StringFormat='{}Ngày đặt: {0}'}" FontSize="12" Foreground="#6B7280" Margin="0,4,0,0"/>
+                                        <TextBlock Text="{Binding StartText, StringFormat='{}Khởi hành: {0}'}" FontSize="12" Foreground="#374151" Margin="0,2,0,0"/>
+                                        <TextBlock Text="{Binding EndText, StringFormat='{}Kết thúc: {0}'}" FontSize="12" Foreground="#374151" Margin="0,2,0,0"/>
+                                        <TextBlock Text="{Binding StatusText, StringFormat='{}Trạng thái: {0}'}" FontSize="12" Foreground="#0E7490" Margin="0,4,0,0"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+
+                        <Border Background="Transparent">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding HasFlights}" Value="False">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <TextBlock Text="Chưa có vé máy bay nào." Foreground="#9CA3AF" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </Grid>
+                </Grid>
+            </Border>
+
+            <Border Grid.Column="1" Style="{StaticResource Card}" Margin="12,0,0,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <DockPanel Grid.Row="0" Margin="0,0,0,12">
+                        <TextBlock Text="Chi tiết chuyến bay" FontSize="18" FontWeight="Bold" Foreground="#111827"/>
+                        <TextBlock DockPanel.Dock="Right" Text="ChiTietDichVu" Foreground="#94A3B8"/>
+                    </DockPanel>
+
+                    <Grid Grid.Row="1">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto"
+                                      HorizontalScrollBarVisibility="Disabled"
+                                      Margin="0,0,4,0"
+                                      Visibility="{Binding HasSelection, Converter={StaticResource BoolToVisibility}}">
+                            <StackPanel>
+                            <Grid Margin="0,0,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="180"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Mã đặt vé:" Foreground="#6B7280"/>
+                                <TextBlock Grid.Column="1" Text="{Binding SelectedDetail.Id}" FontWeight="SemiBold" Foreground="#111827"/>
+                            </Grid>
+
+                            <Grid Margin="0,0,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="180"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Chặng bay:" Foreground="#6B7280"/>
+                                <TextBlock Grid.Column="1" Text="{Binding SelectedDetail.RouteText}" FontWeight="SemiBold" Foreground="#111827"/>
+                            </Grid>
+
+                            <Grid Margin="0,0,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="180"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Mã sân bay:" Foreground="#6B7280"/>
+                                <TextBlock Grid.Column="1" Text="{Binding SelectedDetail.RouteCodeText}" FontWeight="SemiBold" Foreground="#111827"/>
+                            </Grid>
+
+                            <Grid Margin="0,0,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="180"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Ngày đặt:" Foreground="#6B7280"/>
+                                <TextBlock Grid.Column="1" Text="{Binding SelectedDetail.BookedAtText}" FontWeight="SemiBold" Foreground="#111827"/>
+                            </Grid>
+
+                            <Grid Margin="0,0,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="180"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Khởi hành:" Foreground="#6B7280"/>
+                                <TextBlock Grid.Column="1" Text="{Binding SelectedDetail.StartText}" FontWeight="SemiBold" Foreground="#111827"/>
+                            </Grid>
+
+                            <Grid Margin="0,0,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="180"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Kết thúc:" Foreground="#6B7280"/>
+                                <TextBlock Grid.Column="1" Text="{Binding SelectedDetail.EndText}" FontWeight="SemiBold" Foreground="#111827"/>
+                            </Grid>
+
+                            <TextBlock Text="Lý do hủy:" Foreground="#6B7280" Margin="0,2,0,6"/>
+                            <TextBox Text="{Binding CancelReason, UpdateSourceTrigger=PropertyChanged}"
+                                     Height="72" AcceptsReturn="True" TextWrapping="Wrap" VerticalContentAlignment="Top"
+                                     Padding="10,8" BorderBrush="#FCA5A5" BorderThickness="1" Margin="0,0,0,10"/>
+
+                            <TextBlock Text="Tên ngân hàng:" Foreground="#6B7280" Margin="0,2,0,6"/>
+                            <TextBox Text="{Binding BankName, UpdateSourceTrigger=PropertyChanged}"
+                                     Height="40" VerticalContentAlignment="Center"
+                                     Padding="10,8" BorderBrush="#E5E7EB" BorderThickness="1" Margin="0,0,0,10"/>
+
+                            <TextBlock Text="Số tài khoản ngân hàng:" Foreground="#6B7280" Margin="0,2,0,6"/>
+                            <TextBox Text="{Binding BankAccountNumber, UpdateSourceTrigger=PropertyChanged}"
+                                     Height="40" VerticalContentAlignment="Center"
+                                     Padding="10,8" BorderBrush="#E5E7EB" BorderThickness="1" Margin="0,0,0,10"/>
+
+                            <Button Content="Hủy vé" Style="{StaticResource DangerBtn}" Width="140" Margin="0,4,0,0"
+                                    Command="{Binding CancelTicketCommand}"/>
+                            </StackPanel>
+                        </ScrollViewer>
+
+                        <TextBlock Text="Chọn một vé bên trái để xem chi tiết." Foreground="#9CA3AF" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding HasSelection}" Value="False">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

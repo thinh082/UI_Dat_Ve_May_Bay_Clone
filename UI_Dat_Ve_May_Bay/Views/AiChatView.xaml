@@ -53,12 +53,8 @@
                 CornerRadius="14"
                 Padding="18,14">
             <StackPanel>
-                <TextBlock Text="Hoi dap voi AI"
-                           FontSize="22"
-                           FontWeight="Bold"
-                           Foreground="#111827" />
                 <TextBlock Text="{Binding StatusMessage}"
-                           Margin="0,6,0,0"
+                           Margin="0,0,0,0"
                            Foreground="#374151"
                            FontSize="13" />
                 <TextBlock Text="{Binding ApiKeyHint}"

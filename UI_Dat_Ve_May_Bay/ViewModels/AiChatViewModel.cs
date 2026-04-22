@@ -23,27 +23,10 @@ namespace UI_Dat_Ve_May_Bay.ViewModels
             Messages = new ObservableCollection<AiChatMessage>();
             SendMessageCommand = new AsyncRelayCommand(SendMessageAsync, CanSendMessage);
 
-            var apiKey = Environment.GetEnvironmentVariable(GroqChatService.ApiKeyEnvironmentVariable)?.Trim();
-            if (string.IsNullOrWhiteSpace(apiKey))
-            {
-                _canChat = false;
-            }
-            else
-            {
-                _canChat = true;
-            }
-
-            if (_canChat)
-            {
-                _chatService = new GroqChatService(apiKey!);
-                StatusMessage = $"Connected to Groq ({GroqChatService.DefaultModel}).";
-                ApiKeyHint = "AI chat is ready (using env key).";
-            }
-            else
-            {
-                StatusMessage = "Groq API key is missing.";
-                ApiKeyHint = $"Set env var {GroqChatService.ApiKeyEnvironmentVariable} then restart app.";
-            }
+            _canChat = true;
+            _chatService = new GroqChatService();
+            StatusMessage = "Connected to AI chat.";
+            ApiKeyHint = "AI chat is ready.";
 
             AddAssistantMessage("Xin chao! Minh la tro ly AI. Ban hay dat cau hoi ve chuyen bay, dat ve, hanh ly hoac lich trinh.");
         }

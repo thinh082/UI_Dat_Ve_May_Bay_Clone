@@ -126,6 +126,10 @@ namespace UI_Dat_Ve_May_Bay.ViewModels
         {
             await RunSafe(async () =>
             {
+                // ✅ FIX: Clear status trước khi kiểm tra input
+                Status = "";
+                Error = "";
+                
                 if (string.IsNullOrWhiteSpace(SearchCode))
                 {
                     UI_Dat_Ve_May_Bay.Services.DialogService.ShowWarning("Nhập mã giảm giá để tìm.", "Thiếu dữ liệu");

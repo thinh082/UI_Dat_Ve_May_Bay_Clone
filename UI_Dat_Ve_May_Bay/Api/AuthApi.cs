@@ -59,7 +59,15 @@ namespace UI_Dat_Ve_May_Bay.Api
             if (!res.IsSuccessStatusCode)
                 return (false, $"HTTP {(int)res.StatusCode}: {TryReadMessage(json) ?? "Đăng ký thất bại"}");
 
-            return (true, TryReadMessage(json) ?? "Đăng ký thành công");
+            // ✅ FIX: Kiểm tra statusCode trong response body để phát hiện lỗi ngay cả khi HTTP 200
+            var msg = TryReadMessage(json) ?? "Đăng ký thành công";
+            var statusCode = TryReadStatusCode(json);
+            
+            // Nếu statusCode trong body >= 400, coi như lỗi
+            if (statusCode >= 400)
+                return (false, msg);
+
+            return (true, msg);
         }
 
         public async Task<(bool ok, string message)> ForgotPasswordSendOtpAsync(string email)
@@ -73,7 +81,13 @@ namespace UI_Dat_Ve_May_Bay.Api
             if (!res.IsSuccessStatusCode)
                 return (false, $"HTTP {(int)res.StatusCode}: {TryReadMessage(json) ?? "Gửi OTP thất bại"}");
 
-            return (true, TryReadMessage(json) ?? "Đã gửi OTP");
+            // ✅ FIX: Kiểm tra statusCode trong response body
+            var msg = TryReadMessage(json) ?? "Đã gửi OTP";
+            var statusCode = TryReadStatusCode(json);
+            if (statusCode >= 400)
+                return (false, msg);
+
+            return (true, msg);
         }
 
         public async Task<(bool ok, string message)> VerifyOtpAsync(string email, string otp)
@@ -88,7 +102,13 @@ namespace UI_Dat_Ve_May_Bay.Api
             if (!res.IsSuccessStatusCode)
                 return (false, $"HTTP {(int)res.StatusCode}: {TryReadMessage(json) ?? "Xác nhận OTP thất bại"}");
 
-            return (true, TryReadMessage(json) ?? "OTP hợp lệ");
+            // ✅ FIX: Kiểm tra statusCode trong response body
+            var msg = TryReadMessage(json) ?? "OTP hợp lệ";
+            var statusCode = TryReadStatusCode(json);
+            if (statusCode >= 400)
+                return (false, msg);
+
+            return (true, msg);
         }
 
         public async Task<(bool ok, string message)> ResetPasswordAsync(string email, string matKhau, string xacNhanMatKhau)
@@ -103,7 +123,13 @@ namespace UI_Dat_Ve_May_Bay.Api
             if (!res.IsSuccessStatusCode)
                 return (false, $"HTTP {(int)res.StatusCode}: {TryReadMessage(json) ?? "Đổi mật khẩu thất bại"}");
 
-            return (true, TryReadMessage(json) ?? "Đổi mật khẩu thành công");
+            // ✅ FIX: Kiểm tra statusCode trong response body
+            var msg = TryReadMessage(json) ?? "Đổi mật khẩu thành công";
+            var statusCode = TryReadStatusCode(json);
+            if (statusCode >= 400)
+                return (false, msg);
+
+            return (true, msg);
         }
 
         // ==========================
@@ -178,6 +204,26 @@ namespace UI_Dat_Ve_May_Bay.Api
             }
             catch { }
             return null;
+        }
+
+        // ✅ FIX: Helper để đọc statusCode từ response body
+        private static int TryReadStatusCode(string json)
+        {
+            try
+            {
+                using var doc = JsonDocument.Parse(json);
+                var root = doc.RootElement;
+
+                if (root.ValueKind == JsonValueKind.Object)
+                {
+                    if (root.TryGetProperty("statusCode", out var sc) && sc.ValueKind == JsonValueKind.Number)
+                        return sc.GetInt32();
+                    if (root.TryGetProperty("StatusCode", out var sc2) && sc2.ValueKind == JsonValueKind.Number)
+                        return sc2.GetInt32();
+                }
+            }
+            catch { }
+            return 200; // Mặc định là thành công nếu không tìm thấy
         }
 
         private static string? ExtractToken(string json)

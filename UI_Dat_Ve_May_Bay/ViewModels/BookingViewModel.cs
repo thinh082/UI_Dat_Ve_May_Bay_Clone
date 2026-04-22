@@ -342,6 +342,8 @@ namespace UI_Dat_Ve_May_Bay.ViewModels
             catch (Exception ex)
             {
                 Error = ex.Message;
+                // ✅ FIX: Restore seat state khi lỗi
+                seat.IsSelected = true;
             }
             finally
             {
@@ -938,7 +940,6 @@ namespace UI_Dat_Ve_May_Bay.ViewModels
 
                 var finalMsg = string.IsNullOrWhiteSpace(bizMsg) ? "Đặt vé thành công." : bizMsg;
                 Info = finalMsg;
-                DialogService.ShowSuccess(finalMsg, "Thông báo");
 
                 // Save booked seats locally
                 foreach(var id in _heldSeatIds) _myBookedSeatIds.Add(id);
@@ -947,10 +948,16 @@ namespace UI_Dat_Ve_May_Bay.ViewModels
                 _heldSeatIds.Clear();
                 await LoadSeatsAsync();
                 await LoadVouchersAsync();
+                
+                // ✅ FIX: Hiển thị dialog ở cuối sau khi tất cả xử lý thành công
+                DialogService.ShowSuccess(finalMsg, "Thông báo");
             }
             catch (Exception ex)
             {
                 Error = ex.Message;
+                // ✅ FIX: Clear held seats khi lỗi để reset state
+                _heldSeatIds.Clear();
+                RecalcTotals();
                 DialogService.ShowError($"Đặt vé thất bại: {ex.Message}", "Lỗi");
             }
             finally

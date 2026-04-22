@@ -156,6 +156,9 @@ namespace UI_Dat_Ve_May_Bay.ViewModels
 
                 OnPropertyChanged(nameof(HasFlights));
 
+                // ✅ FIX: Clear SelectedDetail trước khi set SelectedFlight
+                SelectedDetail = null;
+                
                 if (Flights.Count > 0)
                 {
                     SelectedFlight = Flights.FirstOrDefault(x => x.Id == selectedId) ?? Flights[0];
@@ -163,7 +166,6 @@ namespace UI_Dat_Ve_May_Bay.ViewModels
                 else
                 {
                     SelectedFlight = null;
-                    SelectedDetail = null;
                 }
 
                 Status = Flights.Count == 0

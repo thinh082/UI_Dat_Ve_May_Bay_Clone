@@ -683,9 +683,9 @@ namespace UI_Dat_Ve_May_Bay.ViewModels
 
                 var (ok, msg) = await _authApi.RegisterAsync(body);
                 StatusMessage = msg;
+                // ✅ FIX: Chỉ reset form khi đăng ký thành công, không reset khi lỗi
                 if (ok)
                 {
-                    UI_Dat_Ve_May_Bay.Services.DialogService.ShowSuccess("Đăng ký tài khoản thành công!\nVui lòng chuyển sang trang Đăng nhập để tiếp tục.", "Thành công");
                     ResetRegisterFlow();
                 }
             }
@@ -984,7 +984,6 @@ namespace UI_Dat_Ve_May_Bay.ViewModels
                 StatusMessage = msg;
                 if (ok)
                 {
-                    UI_Dat_Ve_May_Bay.Services.DialogService.ShowSuccess("Đổi mật khẩu thành công!\nVui lòng chuyển sang trang Đăng nhập để tiếp tục.", "Thành công");
                     ResetForgotFlow();
                 }
 

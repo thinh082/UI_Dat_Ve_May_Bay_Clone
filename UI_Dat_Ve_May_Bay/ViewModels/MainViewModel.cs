@@ -228,7 +228,16 @@ namespace UI_Dat_Ve_May_Bay.ViewModels
                 selected,
                 () => {
                     _bookingVM = null; // Xoá session khi nhấn Quay lại
-                    NavigateFlight();
+                    // ✅ FIX: Không tạo FlightViewModel mới, giữ lại trạng thái cũ
+                    if (_flightVM != null)
+                    {
+                        CurrentTabName = "Chuyến bay";
+                        CurrentViewModel = _flightVM;
+                    }
+                    else
+                    {
+                        NavigateFlight();
+                    }
                 }
             );
 

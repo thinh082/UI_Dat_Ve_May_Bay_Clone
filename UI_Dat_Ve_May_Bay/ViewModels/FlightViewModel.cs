@@ -694,8 +694,9 @@ namespace UI_Dat_Ve_May_Bay.ViewModels
                     "Ghế còn nhiều nhất" => g.Schedules.OrderByDescending(x => x.SoLuongGhe),
                     "Giá tăng dần" => g.Schedules.OrderBy(x => x.Gia),
                     "Giá giảm dần" => g.Schedules.OrderByDescending(x => x.Gia),
-                    "Giờ đi sớm nhất" => g.Schedules.OrderBy(x => x.GioDiLocal),
-                    "Giờ đi muộn nhất" => g.Schedules.OrderByDescending(x => x.GioDiLocal),
+                    // ✅ FIX: Sắp xếp theo giờ hiển thị (HH:mm) thay vì DateTime object
+                    "Giờ đi sớm nhất" => g.Schedules.OrderBy(x => x.GioDi),
+                    "Giờ đi muộn nhất" => g.Schedules.OrderByDescending(x => x.GioDi),
                     _ => g.Schedules
                 };
 

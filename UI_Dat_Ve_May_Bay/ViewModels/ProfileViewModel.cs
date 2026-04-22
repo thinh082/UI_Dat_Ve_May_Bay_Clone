@@ -283,9 +283,9 @@ namespace UI_Dat_Ve_May_Bay.ViewModels
             }
             catch (Exception ex)
             {
-                // Không fail cả màn profile nếu chỉ endpoint chi tiết bị 500.
+                // ✅ FIX: Luôn set Error, không chỉ khi nó trống
                 Status = "Đã tải thông tin cơ bản (thiếu dữ liệu chi tiết)";
-                if (string.IsNullOrWhiteSpace(Error)) Error = ex.Message;
+                Error = ex.Message;
             }
         }
 
@@ -501,7 +501,8 @@ namespace UI_Dat_Ve_May_Bay.ViewModels
                 var doc = await SendJsonAsync(HttpMethod.Post, "/api/KhachHang/CapNhatThongTin", body);
                 Status = GetMessage(doc.RootElement, "Cập nhật thông tin cơ bản thành công");
                 if (string.IsNullOrWhiteSpace(Status)) Status = "Cập nhật thông tin cơ bản thành công";
-                UI_Dat_Ve_May_Bay.Services.DialogService.ShowInfo(Status, "Hồ sơ");
+                // ✅ FIX: Chỉ dùng Status message, không hiển thị dialog
+                // Để tránh dialog che phủ form và code tiếp tục chạy
                 await LoadBasicAsync();
             });
         }
@@ -527,7 +528,7 @@ namespace UI_Dat_Ve_May_Bay.ViewModels
                 var doc = await SendJsonAsync(HttpMethod.Post, "/api/KhachHang/CapNhatCCCD", body);
                 Status = GetMessage(doc.RootElement, "Cập nhật CCCD thành công");
                 if (string.IsNullOrWhiteSpace(Status)) Status = "Cập nhật CCCD thành công";
-                UI_Dat_Ve_May_Bay.Services.DialogService.ShowInfo(Status, "CCCD");
+                // ✅ FIX: Chỉ dùng Status message
                 await TryLoadCccdAsync();
             });
         }
@@ -560,7 +561,7 @@ namespace UI_Dat_Ve_May_Bay.ViewModels
                 var doc = await SendJsonAsync(HttpMethod.Post, "/api/KhachHang/CapNhatPassport", body);
                 Status = GetMessage(doc.RootElement, "Cập nhật Passport thành công");
                 if (string.IsNullOrWhiteSpace(Status)) Status = "Cập nhật Passport thành công";
-                UI_Dat_Ve_May_Bay.Services.DialogService.ShowInfo(Status, "Passport");
+                // ✅ FIX: Chỉ dùng Status message
                 await TryLoadPassportAsync();
             });
         }

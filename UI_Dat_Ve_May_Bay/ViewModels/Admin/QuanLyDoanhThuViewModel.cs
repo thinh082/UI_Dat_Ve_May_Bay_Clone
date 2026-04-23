@@ -2,6 +2,7 @@
 using LiveChartsCore.Measure;
 using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
+using LiveChartsCore.SkiaSharpView.Extensions;
 using SkiaSharp;
 using System;
 using System.Threading.Tasks;
@@ -49,6 +50,7 @@ namespace UI_Dat_Ve_May_Bay.ViewModels.Admin
             TaiTatCaCommand = new AsyncRelayCommand(TaiTatCaAsync, () => !IsBusy);
 
             UpdateChart();
+            UpdateAirlineRevenueChart();
             _ = TaiTatCaAsync();
         }
 
@@ -148,6 +150,9 @@ namespace UI_Dat_Ve_May_Bay.ViewModels.Admin
         public ISeries[] RevenueSeries { get; private set; } = Array.Empty<ISeries>();
         public Axis[] RevenueXAxes { get; }
         public Axis[] RevenueYAxes { get; }
+        
+        // Biểu đồ tròn - Doanh thu theo hãng bay
+        public ISeries[] AirlineRevenuePieSeries { get; private set; } = Array.Empty<ISeries>();
 
         public AsyncRelayCommand TaiDoanhThuNgayCommand { get; }
         public AsyncRelayCommand TaiDoanhThuThangCommand { get; }
@@ -255,6 +260,42 @@ namespace UI_Dat_Ve_May_Bay.ViewModels.Admin
             };
 
             OnPropertyChanged(nameof(RevenueSeries));
+        }
+
+        private void UpdateAirlineRevenueChart()
+        {
+            // Mock data - Doanh thu theo hãng bay (cần API thực tế)
+            var airlines = new[]
+            {
+                new { Name = "Vietnam Airlines", Revenue = 12500000m, Color = new SKColor(15, 108, 189) },
+                new { Name = "Bamboo Airways", Revenue = 8300000m, Color = new SKColor(21, 128, 61) },
+                new { Name = "Vietjet Air", Revenue = 9800000m, Color = new SKColor(220, 38, 38) },
+                new { Name = "Vietravel Airlines", Revenue = 3200000m, Color = new SKColor(124, 58, 237) },
+                new { Name = "Pacific Airlines", Revenue = 2100000m, Color = new SKColor(234, 179, 8) }
+            };
+
+            var totalRevenue = 0m;
+            foreach (var airline in airlines)
+                totalRevenue += airline.Revenue;
+
+            var series = new ISeries[airlines.Length];
+            for (int i = 0; i < airlines.Length; i++)
+            {
+                var airline = airlines[i];
+                series[i] = new PieSeries<decimal>
+                {
+                    Name = airline.Name,
+                    Values = new[] { airline.Revenue },
+                    Fill = new SolidColorPaint(airline.Color),
+                    DataLabelsPaint = new SolidColorPaint(new SKColor(255, 255, 255)),
+                    DataLabelsSize = 13,
+                    DataLabelsPosition = PolarLabelsPosition.Middle,
+                    DataLabelsFormatter = point => $"{(point.Coordinate.PrimaryValue / (double)totalRevenue * 100):0.#}%"
+                };
+            }
+
+            AirlineRevenuePieSeries = series;
+            OnPropertyChanged(nameof(AirlineRevenuePieSeries));
         }
 
         public Task RefreshAsync() => TaiTatCaAsync();

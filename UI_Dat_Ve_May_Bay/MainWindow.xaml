@@ -135,7 +135,7 @@ Title="UI Đặt Vé Máy Bay" Height="800" Width="1200"
                     <Button Style="{StaticResource SideNavButtonStyle}" Command="{Binding GoAiChatCommand}">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="AI" FontSize="13" FontWeight="Bold" Margin="0,0,16,0" Width="20" TextAlignment="Center"/>
-                            <TextBlock Text="H&#7887;i &#273;&#225;p v&#7899;i AI"/>
+                            <TextBlock Text="Hỏi đáp với AI"/>
                         </StackPanel>
                     </Button>
 
@@ -184,7 +184,7 @@ Title="UI Đặt Vé Máy Bay" Height="800" Width="1200"
                     <!-- Profile Circle -->
                     <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" VerticalAlignment="Center">
                         <Border Background="#F3F4F6" CornerRadius="20" Width="38" Height="38">
-                            <TextBlock Text="đŸ‘¤" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
+                            <TextBlock Text="👤" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
                         </Border>
                     </StackPanel>
                 </DockPanel>
@@ -193,9 +193,8 @@ Title="UI Đặt Vé Máy Bay" Height="800" Width="1200"
             <!-- AUTH SCREEN / MAIN CONTENT -->
             <ContentControl Grid.Row="1"
                             Content="{Binding CurrentViewModel}">
-                <!-- Há»§y Margin máº·c Ä‘á»‹nh cá»§a MainWindow cÅ© Ä‘á»ƒ cĂ¡c View tá»± control -->
+                <!-- Để Margin mặc định của MainWindow cũ để các View tự control -->
             </ContentControl>
         </Grid>
     </Grid>
 </Window>
-

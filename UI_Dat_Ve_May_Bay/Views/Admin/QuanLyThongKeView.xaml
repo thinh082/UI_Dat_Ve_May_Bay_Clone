@@ -13,13 +13,16 @@
         <Style x:Key="SecondaryButtonStyle" TargetType="Button" BasedOn="{StaticResource AdminSecondaryButtonStyle}"/>
     </UserControl.Resources>
 
-    <Grid Margin="18">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Margin="18">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
         <Border Grid.Row="0" Margin="0,0,0,14" Padding="20" CornerRadius="24">
             <Border.Background>
@@ -130,17 +133,14 @@
             </Border>
         </UniformGrid>
 
+        <!-- Biểu đồ chính: Doanh thu và Biến động vé -->
         <Grid Grid.Row="3">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1.15*"/>
                 <ColumnDefinition Width="1.05*"/>
             </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="235"/>
-            </Grid.RowDefinitions>
 
-            <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource CardStyle}" Margin="0,0,14,14" Padding="18">
+            <Border Grid.Column="0" Style="{StaticResource CardStyle}" Margin="0,0,14,14" Padding="18" MinHeight="350">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -165,7 +165,7 @@
                 </Grid>
             </Border>
 
-            <Border Grid.Row="0" Grid.Column="1" Style="{StaticResource CardStyle}" Margin="0,0,0,14" Padding="18">
+            <Border Grid.Column="1" Style="{StaticResource CardStyle}" Margin="0,0,0,14" Padding="18" MinHeight="350">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -189,8 +189,74 @@
                                         TooltipPosition="Top"/>
                 </Grid>
             </Border>
+        </Grid>
 
-            <Border Grid.Row="1" Grid.Column="0" Style="{StaticResource CardStyle}" Margin="0,0,14,0" Padding="18">
+        <!-- Biểu đồ phụ: Phân bố vé và Top tuyến đường -->
+        <Grid Grid.Row="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Biểu đồ tròn - Tỷ lệ vé theo trạng thái -->
+            <Border Grid.Column="0" Style="{StaticResource CardStyle}" Margin="0,0,14,14" Padding="18" MinHeight="380">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel>
+                        <TextBlock FontSize="18" FontWeight="Bold" Foreground="#102A43" Text="Phân bố vé theo trạng thái"/>
+                        <TextBlock Margin="0,8,0,0"
+                                   Foreground="#486581"
+                                   Text="Tỷ lệ phần trăm vé đã đặt, check-in, hủy và chưa sử dụng trong khoảng thời gian."
+                                   TextWrapping="Wrap"/>
+                    </StackPanel>
+
+                    <lvc:PieChart Grid.Row="1"
+                                  Margin="0,16,0,0"
+                                  Series="{Binding TicketStatusPieSeries}"
+                                  LegendPosition="Right"
+                                  InitialRotation="-90"/>
+                </Grid>
+            </Border>
+
+            <!-- Biểu đồ cột - Top tuyến đường -->
+            <Border Grid.Column="1" Style="{StaticResource CardStyle}" Margin="0,0,0,14" Padding="18" MinHeight="380">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel>
+                        <TextBlock FontSize="18" FontWeight="Bold" Foreground="#102A43" Text="Top tuyến đường bán chạy"/>
+                        <TextBlock Margin="0,8,0,0"
+                                   Foreground="#486581"
+                                   Text="8 tuyến đường có số lượng vé bán cao nhất giúp tối ưu chiến lược kinh doanh."
+                                   TextWrapping="Wrap"/>
+                    </StackPanel>
+
+                    <lvc:CartesianChart Grid.Row="1"
+                                        Margin="0,16,0,0"
+                                        Series="{Binding TopRoutesSeries}"
+                                        XAxes="{Binding TopRoutesXAxes}"
+                                        YAxes="{Binding TopRoutesYAxes}"
+                                        LegendPosition="Hidden"
+                                        TooltipPosition="Top"/>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- Tổng hợp và So sánh nhanh -->
+        <Grid Grid.Row="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1.3*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Style="{StaticResource CardStyle}" Margin="0,0,14,0" Padding="18">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -214,7 +280,7 @@
                 </Grid>
             </Border>
 
-            <Border Grid.Row="1" Grid.Column="1" Style="{StaticResource CardStyle}" Padding="18">
+            <Border Grid.Column="1" Style="{StaticResource CardStyle}" Padding="18">
                 <StackPanel>
                     <TextBlock FontSize="18" FontWeight="Bold" Foreground="#102A43" Text="So sánh nhanh"/>
                     <TextBlock Margin="0,12,0,0"
@@ -249,4 +315,5 @@
             </Border>
         </Grid>
     </Grid>
+</ScrollViewer>
 </UserControl>

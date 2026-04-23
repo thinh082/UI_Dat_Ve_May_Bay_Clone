@@ -2,8 +2,10 @@
 using LiveChartsCore.Measure;
 using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
+using LiveChartsCore.SkiaSharpView.Extensions;
 using SkiaSharp;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -37,6 +39,10 @@ namespace UI_Dat_Ve_May_Bay.ViewModels.Admin
             TicketYAxes = BuildTicketYAxes();
             RevenueSeries = Array.Empty<ISeries>();
             TicketSeries = Array.Empty<ISeries>();
+            TicketStatusPieSeries = Array.Empty<ISeries>();
+            TopRoutesSeries = Array.Empty<ISeries>();
+            TopRoutesXAxes = Array.Empty<Axis>();
+            TopRoutesYAxes = BuildTopRoutesYAxes();
 
             _ = TaiThongKeAsync();
         }
@@ -149,6 +155,14 @@ namespace UI_Dat_Ve_May_Bay.ViewModels.Admin
         public ISeries[] TicketSeries { get; private set; }
         public Axis[] TicketXAxes { get; private set; }
         public Axis[] TicketYAxes { get; }
+        
+        // Biểu đồ tròn - Tỷ lệ vé theo trạng thái
+        public ISeries[] TicketStatusPieSeries { get; private set; }
+        
+        // Biểu đồ cột - Top tuyến đường
+        public ISeries[] TopRoutesSeries { get; private set; }
+        public Axis[] TopRoutesXAxes { get; private set; }
+        public Axis[] TopRoutesYAxes { get; }
 
         public AsyncRelayCommand TaiThongKeCommand { get; }
         public RelayCommand DatLaiKhoangNgayCommand { get; }
@@ -279,10 +293,102 @@ namespace UI_Dat_Ve_May_Bay.ViewModels.Admin
                 }
             };
 
+            // Biểu đồ tròn - Tỷ lệ vé theo trạng thái
+            var totalTickets = VeTheoNgay.Sum(x => x.TongVe);
+            var totalBooked = VeTheoNgay.Sum(x => x.VeDaDat);
+            var totalCheckedIn = VeTheoNgay.Sum(x => x.VeDaCheckin);
+            var totalCancelled = VeTheoNgay.Sum(x => x.VeDaHuy);
+            var totalUnused = totalTickets - totalBooked - totalCheckedIn - totalCancelled;
+
+            TicketStatusPieSeries = new ISeries[]
+            {
+                new PieSeries<int>
+                {
+                    Name = "Đã đặt",
+                    Values = new[] { totalBooked },
+                    Fill = new SolidColorPaint(new SKColor(21, 128, 61)),
+                    DataLabelsPaint = new SolidColorPaint(new SKColor(255, 255, 255)),
+                    DataLabelsSize = 14,
+                    DataLabelsPosition = PolarLabelsPosition.Middle,
+                    DataLabelsFormatter = point => $"{point.Coordinate.PrimaryValue}\n({(point.Coordinate.PrimaryValue / (double)totalTickets * 100):0.#}%)"
+                },
+                new PieSeries<int>
+                {
+                    Name = "Check-in",
+                    Values = new[] { totalCheckedIn },
+                    Fill = new SolidColorPaint(new SKColor(124, 58, 237)),
+                    DataLabelsPaint = new SolidColorPaint(new SKColor(255, 255, 255)),
+                    DataLabelsSize = 14,
+                    DataLabelsPosition = PolarLabelsPosition.Middle,
+                    DataLabelsFormatter = point => $"{point.Coordinate.PrimaryValue}\n({(point.Coordinate.PrimaryValue / (double)totalTickets * 100):0.#}%)"
+                },
+                new PieSeries<int>
+                {
+                    Name = "Đã hủy",
+                    Values = new[] { totalCancelled },
+                    Fill = new SolidColorPaint(new SKColor(220, 38, 38)),
+                    DataLabelsPaint = new SolidColorPaint(new SKColor(255, 255, 255)),
+                    DataLabelsSize = 14,
+                    DataLabelsPosition = PolarLabelsPosition.Middle,
+                    DataLabelsFormatter = point => $"{point.Coordinate.PrimaryValue}\n({(point.Coordinate.PrimaryValue / (double)totalTickets * 100):0.#}%)"
+                },
+                new PieSeries<int>
+                {
+                    Name = "Chưa sử dụng",
+                    Values = new[] { totalUnused },
+                    Fill = new SolidColorPaint(new SKColor(100, 116, 139)),
+                    DataLabelsPaint = new SolidColorPaint(new SKColor(255, 255, 255)),
+                    DataLabelsSize = 14,
+                    DataLabelsPosition = PolarLabelsPosition.Middle,
+                    DataLabelsFormatter = point => $"{point.Coordinate.PrimaryValue}\n({(point.Coordinate.PrimaryValue / (double)totalTickets * 100):0.#}%)"
+                }
+            };
+
+            // Biểu đồ cột - Top tuyến đường (mock data - cần API thực tế)
+            var topRoutes = new[]
+            {
+                new { Route = "SGN → HAN", Count = 450 },
+                new { Route = "HAN → SGN", Count = 420 },
+                new { Route = "SGN → DAD", Count = 280 },
+                new { Route = "DAD → SGN", Count = 260 },
+                new { Route = "SGN → PQC", Count = 180 },
+                new { Route = "HAN → DAD", Count = 150 },
+                new { Route = "SGN → CXR", Count = 120 },
+                new { Route = "HAN → PQC", Count = 100 }
+            };
+
+            TopRoutesXAxes = new[]
+            {
+                new Axis
+                {
+                    Labels = topRoutes.Select(x => x.Route).ToArray(),
+                    LabelsRotation = 45,
+                    TextSize = 11,
+                    LabelsPaint = new SolidColorPaint(new SKColor(72, 101, 129))
+                }
+            };
+
+            TopRoutesSeries = new ISeries[]
+            {
+                new ColumnSeries<int>
+                {
+                    Name = "Số vé bán",
+                    Values = topRoutes.Select(x => x.Count).ToArray(),
+                    Fill = new SolidColorPaint(new SKColor(15, 108, 189)),
+                    DataLabelsPaint = new SolidColorPaint(new SKColor(16, 42, 67)),
+                    DataLabelsPosition = DataLabelsPosition.Top,
+                    DataLabelsSize = 12,
+                    DataLabelsFormatter = point => $"{point.Coordinate.PrimaryValue}"
+                }
+            };
+
             OnPropertyChanged(nameof(RevenueXAxes));
             OnPropertyChanged(nameof(RevenueSeries));
             OnPropertyChanged(nameof(TicketXAxes));
             OnPropertyChanged(nameof(TicketSeries));
+            OnPropertyChanged(nameof(TicketStatusPieSeries));
+            OnPropertyChanged(nameof(TopRoutesXAxes));
+            OnPropertyChanged(nameof(TopRoutesSeries));
         }
 
         private Axis[] BuildRevenueYAxes()
@@ -300,6 +406,19 @@ namespace UI_Dat_Ve_May_Bay.ViewModels.Admin
         }
 
         private Axis[] BuildTicketYAxes()
+        {
+            return new[]
+            {
+                new Axis
+                {
+                    TextSize = 11,
+                    LabelsPaint = new SolidColorPaint(new SKColor(72, 101, 129)),
+                    SeparatorsPaint = new SolidColorPaint(new SKColor(223, 232, 242)) { StrokeThickness = 1 }
+                }
+            };
+        }
+
+        private Axis[] BuildTopRoutesYAxes()
         {
             return new[]
             {

@@ -99,6 +99,10 @@ namespace UI_Dat_Ve_May_Bay.ViewModels
 
                 Status = Vouchers.Count == 0 ? "Không có voucher." : $"Đã tải {Vouchers.Count} voucher.";
                 Error = "";
+                
+                // ✅ FIX: Hiển thị dialog thành công
+                if (Vouchers.Count > 0)
+                    UI_Dat_Ve_May_Bay.Services.DialogService.ShowSuccess($"Đã tải {Vouchers.Count} voucher.", "Tải thành công");
             });
         }
 
@@ -119,6 +123,10 @@ namespace UI_Dat_Ve_May_Bay.ViewModels
 
                 Status = Vouchers.Count == 0 ? "Không có voucher." : $"Đã tải {Vouchers.Count} voucher.";
                 Error = "";
+                
+                // ✅ FIX: Hiển thị dialog thành công
+                if (Vouchers.Count > 0)
+                    UI_Dat_Ve_May_Bay.Services.DialogService.ShowSuccess($"Đã tải {Vouchers.Count} voucher.", "Tải thành công");
             });
         }
 
@@ -149,6 +157,8 @@ namespace UI_Dat_Ve_May_Bay.ViewModels
                     foreach (var m in localMatches) Vouchers.Add(m);
                     Status = $"Tìm thấy {Vouchers.Count} voucher (local).";
                     Error = "";
+                    // ✅ FIX: Hiển thị dialog thành công
+                    UI_Dat_Ve_May_Bay.Services.DialogService.ShowSuccess($"Tìm thấy {Vouchers.Count} voucher.", "Tìm kiếm thành công");
                     return;
                 }
 
@@ -159,6 +169,12 @@ namespace UI_Dat_Ve_May_Bay.ViewModels
 
                 Status = Vouchers.Count == 0 ? "Không tìm thấy voucher." : $"Tìm thấy {Vouchers.Count} voucher.";
                 Error = "";
+                
+                // ✅ FIX: Hiển thị dialog kết quả
+                if (Vouchers.Count > 0)
+                    UI_Dat_Ve_May_Bay.Services.DialogService.ShowSuccess($"Tìm thấy {Vouchers.Count} voucher.", "Tìm kiếm thành công");
+                else
+                    UI_Dat_Ve_May_Bay.Services.DialogService.ShowWarning("Không tìm thấy voucher với mã này.", "Không có kết quả");
             });
         }
 
@@ -182,7 +198,8 @@ namespace UI_Dat_Ve_May_Bay.ViewModels
                 Status = "Đang áp dụng voucher...";
                 var res = await _voucherApi.ApplyVoucherAsync(id);
 
-                UI_Dat_Ve_May_Bay.Services.DialogService.ShowInfo(res.Message ?? "Apply voucher OK", "Kết quả");
+                // ✅ FIX: Hiển thị dialog thành công
+                UI_Dat_Ve_May_Bay.Services.DialogService.ShowSuccess(res.Message ?? "Áp dụng voucher thành công!", "Thành công");
 
                 // Sau khi apply, thường hợp lý là load lại voucher của tôi
                 await LoadMyVouchersAsync();
@@ -201,6 +218,10 @@ namespace UI_Dat_Ve_May_Bay.ViewModels
 
                 Status = Vouchers.Count == 0 ? "Không có chi tiết voucher." : $"Đã tải {Vouchers.Count} dòng chi tiết.";
                 Error = "";
+                
+                // ✅ FIX: Hiển thị dialog thành công
+                if (Vouchers.Count > 0)
+                    UI_Dat_Ve_May_Bay.Services.DialogService.ShowSuccess($"Đã tải {Vouchers.Count} chi tiết voucher.", "Tải thành công");
             });
         }
 
@@ -215,7 +236,8 @@ namespace UI_Dat_Ve_May_Bay.ViewModels
             {
                 Status = "Lỗi.";
                 Error = ex.Message;
-                // MessageBox.Show(ex.Message, "Lỗi Voucher", MessageBoxButton.OK, MessageBoxImage.Error);
+                // ✅ FIX: Hiển thị dialog lỗi
+                UI_Dat_Ve_May_Bay.Services.DialogService.ShowError(ex.Message, "Lỗi");
             }
             finally
             {

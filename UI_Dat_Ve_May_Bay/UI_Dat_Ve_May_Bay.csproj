@@ -12,6 +12,7 @@
     <Folder Include="Api\Admin\" />
     <Folder Include="Assets\" />
     <Folder Include="Models\Admin\" />
+    <Folder Include="Setup\Output\" />
     <Folder Include="ViewModels\Admin\" />
     <Folder Include="Views\Admin\" />
   </ItemGroup>

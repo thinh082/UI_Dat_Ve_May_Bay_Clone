@@ -683,17 +683,25 @@ namespace UI_Dat_Ve_May_Bay.ViewModels
 
                 var (ok, msg) = await _authApi.RegisterAsync(body);
                 StatusMessage = msg;
-                // ✅ FIX: Chỉ reset form khi đăng ký thành công, không reset khi lỗi
+                
                 if (ok)
                 {
+                    // ✅ FIX: Hiển thị dialog thành công
+                    DialogService.ShowSuccess(msg, "Đăng ký thành công");
                     ResetRegisterFlow();
+                }
+                else
+                {
+                    // ✅ FIX: Hiển thị dialog lỗi
+                    DialogService.ShowError(msg, "Đăng ký thất bại");
                 }
             }
             catch (Exception ex)
 
             {
-
                 StatusMessage = "Lỗi đăng ký: " + ex.Message;
+                // ✅ FIX: Hiển thị dialog lỗi exception
+                DialogService.ShowError($"Lỗi đăng ký: {ex.Message}", "Lỗi");
 
             }
 

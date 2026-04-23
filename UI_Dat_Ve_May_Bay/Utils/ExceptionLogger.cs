@@ -22,7 +22,8 @@ namespace UI_Dat_Ve_May_Bay.Utils
         private static void DispatcherUnhandledException(object? sender, DispatcherUnhandledExceptionEventArgs e)
         {
             Log(e.Exception);
-            MessageBox.Show($"Unhandled UI exception: {e.Exception.Message}\nLog: {LogPath}", "Unhandled exception", MessageBoxButton.OK, MessageBoxImage.Error);
+            // ✅ FIX: Chỉ log exception, không hiển thị dialog
+            // Điều này tránh làm phiền người dùng với các exception nhỏ
             e.Handled = true;
         }
 

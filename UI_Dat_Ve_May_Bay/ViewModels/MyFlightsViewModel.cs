@@ -174,11 +174,17 @@ namespace UI_Dat_Ve_May_Bay.ViewModels
 
                 if (!string.IsNullOrWhiteSpace(message) && Flights.Count == 0)
                     Status = message;
+                
+                // ✅ FIX: Hiển thị dialog thành công
+                if (Flights.Count > 0)
+                    UI_Dat_Ve_May_Bay.Services.DialogService.ShowSuccess($"Đã tải {Flights.Count} chuyến bay.", "Tải thành công");
             }
             catch (Exception ex)
             {
                 Error = ex.Message;
                 Status = "Không tải được danh sách chuyến bay.";
+                // ✅ FIX: Hiển thị dialog lỗi
+                UI_Dat_Ve_May_Bay.Services.DialogService.ShowError(ex.Message, "Lỗi tải chuyến bay");
             }
             finally
             {
@@ -264,6 +270,10 @@ namespace UI_Dat_Ve_May_Bay.ViewModels
                     : CancelReason.Trim();
 
                 var message = await _dichVuApi.HuyVeMayBayAsync(SelectedFlight.Id, reason);
+                
+                // ✅ FIX: Hiển thị dialog thành công
+                UI_Dat_Ve_May_Bay.Services.DialogService.ShowSuccess(message ?? "Hủy vé thành công!", "Thành công");
+                
                 await LoadFlightsAsync();
                 Status = message;
                 CancelReason = string.Empty;
@@ -274,6 +284,8 @@ namespace UI_Dat_Ve_May_Bay.ViewModels
             {
                 Error = ex.Message;
                 Status = "Hủy vé thất bại.";
+                // ✅ FIX: Hiển thị dialog lỗi
+                UI_Dat_Ve_May_Bay.Services.DialogService.ShowError(ex.Message, "Lỗi hủy vé");
             }
             finally
             {

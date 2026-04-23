@@ -105,12 +105,17 @@ namespace UI_Dat_Ve_May_Bay.ViewModels
 
                 // reset detail khi reload
                 SelectedDetail = null;
+                
+                // ✅ FIX: Hiển thị dialog thành công
+                if (Notifications.Count > 0)
+                    UI_Dat_Ve_May_Bay.Services.DialogService.ShowSuccess($"Đã tải {Notifications.Count} thông báo.", "Tải thành công");
             }
             catch (Exception ex)
             {
                 Status = "Lỗi tải thông báo.";
                 Error = ex.Message;
-                // MessageBox.Show(ex.Message, "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                // ✅ FIX: Hiển thị dialog lỗi
+                UI_Dat_Ve_May_Bay.Services.DialogService.ShowError(ex.Message, "Lỗi tải thông báo");
             }
         }
 
@@ -156,12 +161,18 @@ namespace UI_Dat_Ve_May_Bay.ViewModels
 
                 Status = "Đã xóa. Đang tải lại...";
                 Error = "";
+                
+                // ✅ FIX: Hiển thị dialog thành công
+                UI_Dat_Ve_May_Bay.Services.DialogService.ShowSuccess("Đã xóa thông báo thành công.", "Xóa thành công");
+                
                 await LoadAsync();
             }
             catch (Exception ex)
             {
                 Status = "Lỗi xóa.";
                 Error = ex.Message;
+                // ✅ FIX: Hiển thị dialog lỗi
+                UI_Dat_Ve_May_Bay.Services.DialogService.ShowError(ex.Message, "Lỗi xóa thông báo");
             }
         }
     }

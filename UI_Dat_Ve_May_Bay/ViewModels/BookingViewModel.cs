@@ -949,8 +949,16 @@ namespace UI_Dat_Ve_May_Bay.ViewModels
                 await LoadSeatsAsync();
                 await LoadVouchersAsync();
                 
-                // ✅ FIX: Hiển thị dialog ở cuối sau khi tất cả xử lý thành công
-                DialogService.ShowSuccess(finalMsg, "Thông báo");
+                // ✅ FIX: Tạo message đẹp hơn cho dialog thành công
+                var successMsg = $"✈️ Đặt vé thành công!\n\n" +
+                    $"📋 Chuyến bay: {SelectedSchedule.TenSanBayDi} → {SelectedSchedule.TenSanBayDen}\n" +
+                    $"📅 Ngày bay: {SelectedSchedule.GioDiLocal:dd/MM/yyyy}\n" +
+                    $"🕐 Giờ khởi hành: {SelectedSchedule.GioDi}\n" +
+                    $"💺 Số ghế: {string.Join(", ", _myBookedSeatIds.TakeLast(_heldSeatIds.Count))}\n" +
+                    $"💰 Tổng tiền: {Total:N0} VNĐ\n\n" +
+                    $"Vui lòng kiểm tra email để nhận xác nhận chi tiết.";
+                
+                DialogService.ShowSuccess(successMsg, "🎉 Đặt vé thành công");
             }
             catch (Exception ex)
             {

@@ -501,8 +501,10 @@ namespace UI_Dat_Ve_May_Bay.ViewModels
                 var doc = await SendJsonAsync(HttpMethod.Post, "/api/KhachHang/CapNhatThongTin", body);
                 Status = GetMessage(doc.RootElement, "Cập nhật thông tin cơ bản thành công");
                 if (string.IsNullOrWhiteSpace(Status)) Status = "Cập nhật thông tin cơ bản thành công";
-                // ✅ FIX: Chỉ dùng Status message, không hiển thị dialog
-                // Để tránh dialog che phủ form và code tiếp tục chạy
+                
+                // ✅ FIX: Hiển thị dialog thành công
+                UI_Dat_Ve_May_Bay.Services.DialogService.ShowSuccess(Status, "Cập nhật thành công");
+                
                 await LoadBasicAsync();
             });
         }
@@ -528,7 +530,10 @@ namespace UI_Dat_Ve_May_Bay.ViewModels
                 var doc = await SendJsonAsync(HttpMethod.Post, "/api/KhachHang/CapNhatCCCD", body);
                 Status = GetMessage(doc.RootElement, "Cập nhật CCCD thành công");
                 if (string.IsNullOrWhiteSpace(Status)) Status = "Cập nhật CCCD thành công";
-                // ✅ FIX: Chỉ dùng Status message
+                
+                // ✅ FIX: Hiển thị dialog thành công
+                UI_Dat_Ve_May_Bay.Services.DialogService.ShowSuccess(Status, "Cập nhật thành công");
+                
                 await TryLoadCccdAsync();
             });
         }
@@ -561,7 +566,10 @@ namespace UI_Dat_Ve_May_Bay.ViewModels
                 var doc = await SendJsonAsync(HttpMethod.Post, "/api/KhachHang/CapNhatPassport", body);
                 Status = GetMessage(doc.RootElement, "Cập nhật Passport thành công");
                 if (string.IsNullOrWhiteSpace(Status)) Status = "Cập nhật Passport thành công";
-                // ✅ FIX: Chỉ dùng Status message
+                
+                // ✅ FIX: Hiển thị dialog thành công
+                UI_Dat_Ve_May_Bay.Services.DialogService.ShowSuccess(Status, "Cập nhật thành công");
+                
                 await TryLoadPassportAsync();
             });
         }

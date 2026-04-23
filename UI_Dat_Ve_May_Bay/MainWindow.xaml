@@ -32,6 +32,9 @@ Title="UI Đặt Vé Máy Bay" Height="800" Width="1200"
         <DataTemplate DataType="{x:Type vm:AiChatViewModel}">
             <views:AiChatView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:PolicyTabViewModel}">
+            <views:PolicyView/>
+        </DataTemplate>
         <DataTemplate DataType="{x:Type vm:AuthViewModel}">
             <views:AuthView/>
         </DataTemplate>
@@ -136,6 +139,13 @@ Title="UI Đặt Vé Máy Bay" Height="800" Width="1200"
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="AI" FontSize="13" FontWeight="Bold" Margin="0,0,16,0" Width="20" TextAlignment="Center"/>
                             <TextBlock Text="Hỏi đáp với AI"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Style="{StaticResource SideNavButtonStyle}" Command="{Binding GoPolicyCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="📋" FontSize="18" Margin="0,0,16,0" Width="20" TextAlignment="Center"/>
+                            <TextBlock Text="Chính sách"/>
                         </StackPanel>
                     </Button>
 

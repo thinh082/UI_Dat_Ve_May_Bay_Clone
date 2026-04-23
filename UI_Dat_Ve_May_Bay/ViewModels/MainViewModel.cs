@@ -10,7 +10,7 @@ namespace UI_Dat_Ve_May_Bay.ViewModels
     public class MainViewModel : ObservableObject
     {
         public MainViewModel()
-            : this(new ApiClient("https://localhost:7242"), new TokenStore())
+            : this(new ApiClient("https://audrina-subultimate-ghostily.ngrok-free.dev"), new TokenStore())
         { }
 
         private readonly ApiClient _apiClient;
@@ -24,6 +24,7 @@ namespace UI_Dat_Ve_May_Bay.ViewModels
         private ProfileViewModel? _profileVM;
         private AiChatViewModel? _aiChatVM;
         private AdminMainViewModel? _adminMainVM;
+        private PolicyTabViewModel? _policyVM;
 
         private FlightViewModel? _flightVM;
         private BookingViewModel? _bookingVM;
@@ -57,6 +58,7 @@ namespace UI_Dat_Ve_May_Bay.ViewModels
         public RelayCommand GoMyFlightsCommand { get; }
         public RelayCommand GoProfileCommand { get; }
         public RelayCommand GoAiChatCommand { get; }
+        public RelayCommand GoPolicyCommand { get; }
 
         public RelayCommand LogoutCommand { get; }
         public RelayCommand ClearTokenCommand { get; }
@@ -158,6 +160,15 @@ namespace UI_Dat_Ve_May_Bay.ViewModels
                 CurrentViewModel = _aiChatVM;
             });
 
+            GoPolicyCommand = new RelayCommand(() =>
+            {
+                if (!EnsureLoggedIn()) return;
+
+                _policyVM ??= new PolicyTabViewModel();
+                CurrentTabName = "Chính sách";
+                CurrentViewModel = _policyVM;
+            });
+
             LogoutCommand = new RelayCommand(() =>
             {
                 _tokenStore.Clear();
@@ -169,6 +180,7 @@ namespace UI_Dat_Ve_May_Bay.ViewModels
                 _myFlightsVM = null;
                 _profileVM = null;
                 _aiChatVM = null;
+                _policyVM = null;
                 _adminMainVM = null;
 
                 CurrentTabName = "Đăng nhập";
@@ -188,6 +200,7 @@ namespace UI_Dat_Ve_May_Bay.ViewModels
                 _myFlightsVM = null;
                 _profileVM = null;
                 _aiChatVM = null;
+                _policyVM = null;
                 _adminMainVM = null;
 
                 DialogService.ShowInfo("Đã xóa token. App sẽ quay về đăng nhập.", "Token cleared");
@@ -264,6 +277,7 @@ namespace UI_Dat_Ve_May_Bay.ViewModels
             _voucherVM = null;
             _profileVM = null;
             _aiChatVM = null;
+            _policyVM = null;
             _adminMainVM = null;
 
             ReloadTokenToApiClient();
@@ -320,6 +334,7 @@ namespace UI_Dat_Ve_May_Bay.ViewModels
             _bookingVM = null;
             _profileVM = null;
             _aiChatVM = null;
+            _policyVM = null;
             _adminMainVM = null;
 
             CurrentTabName = "Đăng nhập";

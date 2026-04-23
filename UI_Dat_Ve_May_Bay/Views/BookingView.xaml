@@ -51,14 +51,6 @@
                                 <Setter TargetName="border" Property="BorderBrush" Value="#008291"/>
                             </Trigger>
                             
-                            <!-- 1. HẾT CHỖ (Đỏ nhạt #FFD6D6): Đã đặt + đã thanh toán (IsEnabled = False, IsBookedByMe = False) -->
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter TargetName="border" Property="Background" Value="#FFD6D6"/>
-                                <Setter TargetName="border" Property="BorderBrush" Value="#FCA5A5"/>
-                                <Setter Property="Opacity" Value="0.9"/>
-                                <Setter Property="Foreground" Value="#991B1B"/>
-                            </Trigger>
-                            
                             <!-- 2. ĐANG GIỮ CHỖ (Vàng nhạt #FFEBB7): Người khác đang giữ, chưa thanh toán (IsReserved = True) -->
                             <DataTrigger Binding="{Binding IsReserved}" Value="True">
                                 <Setter TargetName="border" Property="Background" Value="#FFEBB7"/>
@@ -66,6 +58,14 @@
                                 <Setter Property="Opacity" Value="0.9"/>
                                 <Setter Property="Foreground" Value="#92400E"/>
                             </DataTrigger>
+                            
+                            <!-- 1. HẾT CHỖ (Đỏ nhạt #FFD6D6): Đã đặt + đã thanh toán (IsEnabled = False) - ƯU TIÊN CAO HƠN VÀNG -->
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="border" Property="Background" Value="#FFD6D6"/>
+                                <Setter TargetName="border" Property="BorderBrush" Value="#FCA5A5"/>
+                                <Setter Property="Opacity" Value="0.9"/>
+                                <Setter Property="Foreground" Value="#991B1B"/>
+                            </Trigger>
                             
                             <!-- 3. ĐÃ CHỌN (Xanh lá #28B463): Người dùng hiện tại đang chọn (IsChecked = True) - ƯU TIÊN CAO NHẤT -->
                             <Trigger Property="IsChecked" Value="True">

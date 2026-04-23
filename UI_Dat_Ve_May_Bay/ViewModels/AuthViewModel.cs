@@ -52,9 +52,9 @@ namespace UI_Dat_Ve_May_Bay.ViewModels
 
         // Hub BE: app.MapHub<NotificationHub>("/hubs/notify");
 
-        private const string HubUrlHttps = "https://localhost:7242/hubs/notify";
+        private const string HubUrlHttps = "https://audrina-subultimate-ghostily.ngrok-free.dev/hubs/notify";
 
-        private const string HubUrlHttp = "http://localhost:5231/hubs/notify";
+        private const string HubUrlHttp = "https://audrina-subultimate-ghostily.ngrok-free.dev/hubs/notify";
 
 
 
@@ -116,7 +116,7 @@ namespace UI_Dat_Ve_May_Bay.ViewModels
 
                   // MainViewModel hiện đã truyền đúng ApiClient; overload này giữ lại để tránh lỗi khi ai đó lỡ dùng.
 
-                  new ApiClient("https://localhost:7242"),
+                  new ApiClient("https://audrina-subultimate-ghostily.ngrok-free.dev"),
 
                   onLoginSuccess)
 

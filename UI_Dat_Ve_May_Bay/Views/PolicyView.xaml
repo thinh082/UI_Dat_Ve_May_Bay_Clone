@@ -1,0 +1,285 @@
+<UserControl x:Class="UI_Dat_Ve_May_Bay.Views.PolicyView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:viewmodels="clr-namespace:UI_Dat_Ve_May_Bay.ViewModels"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance Type=viewmodels:PolicyTabViewModel}"
+             d:DesignHeight="720" d:DesignWidth="1100" 
+             Background="White" 
+             FontFamily="Segoe UI">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Background="#F8F9FA">
+        <StackPanel Margin="48,32" MaxWidth="900">
+            <TextBlock Text="CHÍNH SÁCH VÀ ĐIỀU KHOẢN DỊCH VỤ"
+                       FontSize="28"
+                       FontWeight="Bold"
+                       Foreground="#212529"
+                       Margin="0,0,0,16"
+                       TextAlignment="Left"/>
+
+            <TextBlock Text="Cập nhật lần cuối: 23/04/2026"
+                       FontSize="12"
+                       Foreground="#6C757D"
+                       Margin="0,0,0,32"/>
+
+            <TextBlock Text="Để bảo đảm quá trình đặt vé diễn ra rõ ràng, minh bạch và hạn chế phát sinh sai sót, hệ thống áp dụng một số chính sách cụ thể đối với khách hàng trong suốt quá trình tìm chuyến bay, chọn ghế, đặt vé, thanh toán và hủy vé. Khi sử dụng dịch vụ, khách hàng được xem là đã đọc và đồng ý với các điều khoản dưới đây."
+                       TextWrapping="Wrap" 
+                       Foreground="#495057" 
+                       Margin="0,0,0,32" 
+                       LineHeight="24"
+                       FontSize="14"/>
+
+            <!-- Section 1 -->
+            <Border Background="White" 
+                    CornerRadius="12" 
+                    Padding="24" 
+                    Margin="0,0,0,16"
+                    BorderBrush="#E5E7EB"
+                    BorderThickness="1">
+                <StackPanel>
+                    <TextBlock Text="1. Điều khoản chung" 
+                               FontSize="18" 
+                               FontWeight="Bold" 
+                               Foreground="#212529" 
+                               Margin="0,0,0,16"/>
+                    <TextBlock Text="Khách hàng cần cung cấp đúng thông tin khi đăng ký tài khoản, đăng nhập và đặt vé. Mọi thông tin hành khách phải được nhập chính xác để tránh ảnh hưởng đến quá trình xác nhận vé và làm thủ tục chuyến bay. Hệ thống có quyền từ chối xử lý đối với các trường hợp thông tin không đầy đủ, không hợp lệ hoặc có dấu hiệu sai lệch."
+                               TextWrapping="Wrap" 
+                               Foreground="#495057" 
+                               LineHeight="22"
+                               FontSize="14"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Section 2 -->
+            <Border Background="White" 
+                    CornerRadius="12" 
+                    Padding="24" 
+                    Margin="0,0,0,16"
+                    BorderBrush="#E5E7EB"
+                    BorderThickness="1">
+                <StackPanel>
+                    <TextBlock Text="2. Chính sách tìm kiếm và đặt vé" 
+                               FontSize="18" 
+                               FontWeight="Bold" 
+                               Foreground="#212529" 
+                               Margin="0,0,0,16"/>
+                    <TextBlock TextWrapping="Wrap" 
+                               Foreground="#495057" 
+                               LineHeight="22"
+                               FontSize="14">
+                        Hệ thống cho phép khách hàng tìm kiếm chuyến bay theo các tiêu chí cơ bản như điểm đi, điểm đến, ngày bay và số lượng hành khách. Sau khi chọn được chuyến bay phù hợp, khách hàng có thể tiếp tục chọn ghế, nhập thông tin hành khách và tạo đơn đặt vé.<LineBreak/><LineBreak/>
+                        Để bảo đảm quyền lợi cho người dùng, hệ thống áp dụng các quy định sau:<LineBreak/>
+                        • Khách hàng chỉ có thể đặt vé khi đã chọn đúng chuyến bay và ghế còn trống.<LineBreak/>
+                        • Vé chỉ được xác nhận khi khách hàng hoàn tất thanh toán thành công.<LineBreak/>
+                        • Đơn đặt vé chưa thanh toán sẽ chưa được xem là vé hợp lệ.
+                    </TextBlock>
+                </StackPanel>
+            </Border>
+
+            <!-- Section 3 -->
+            <Border Background="White" 
+                    CornerRadius="12" 
+                    Padding="24" 
+                    Margin="0,0,0,16"
+                    BorderBrush="#E5E7EB"
+                    BorderThickness="1">
+                <StackPanel>
+                    <TextBlock Text="3. Chính sách giữ ghế" 
+                               FontSize="18" 
+                               FontWeight="Bold" 
+                               Foreground="#212529" 
+                               Margin="0,0,0,16"/>
+                    <TextBlock TextWrapping="Wrap" 
+                               Foreground="#495057" 
+                               LineHeight="22"
+                               FontSize="14">
+                        Khi khách hàng chọn ghế, hệ thống sẽ giữ ghế tạm thời trong 5 phút để khách hàng có thời gian hoàn tất các bước tiếp theo. Trong khoảng thời gian này, ghế đã chọn sẽ không hiển thị là ghế trống cho người dùng khác.<LineBreak/><LineBreak/>
+                        Quy định giữ ghế được áp dụng như sau:<LineBreak/>
+                        • Thời gian giữ ghế tạm thời là 10 phút kể từ lúc chọn ghế.<LineBreak/>
+                        • Nếu khách hàng không tiếp tục thao tác hoặc thoát giữa chừng, ghế sẽ tự động được mở lại.<LineBreak/>
+                        • Nếu ghế đã được người khác giữ trước, khách hàng sẽ không thể chọn ghế đó.<LineBreak/>
+                        • Việc giữ ghế không đồng nghĩa với việc vé đã được xác nhận thành công.
+                    </TextBlock>
+                </StackPanel>
+            </Border>
+
+            <!-- Section 4 -->
+            <Border Background="White" 
+                    CornerRadius="12" 
+                    Padding="24" 
+                    Margin="0,0,0,16"
+                    BorderBrush="#E5E7EB"
+                    BorderThickness="1">
+                <StackPanel>
+                    <TextBlock Text="4. Chính sách thanh toán" 
+                               FontSize="18" 
+                               FontWeight="Bold" 
+                               Foreground="#212529" 
+                               Margin="0,0,0,16"/>
+                    <TextBlock TextWrapping="Wrap" 
+                               Foreground="#495057" 
+                               LineHeight="22"
+                               FontSize="14">
+                        Sau khi hoàn tất bước chọn ghế và nhập thông tin hành khách, khách hàng sẽ chuyển sang bước thanh toán. Hệ thống chỉ xác nhận vé khi giao dịch thanh toán được thực hiện thành công.<LineBreak/><LineBreak/>
+                        Các quy định thanh toán gồm:<LineBreak/>
+                        • Đơn đặt vé sẽ được giữ ở trạng thái chờ thanh toán trong 15 phút.<LineBreak/>
+                        • Nếu quá 15 phút mà khách hàng chưa thanh toán thành công, đơn có thể hết hiệu lực.<LineBreak/>
+                        • Trường hợp thanh toán không thành công, hệ thống sẽ không xác nhận vé.<LineBreak/>
+                        • Khách hàng cần kiểm tra kỹ số tiền và thông tin đơn hàng trước khi xác nhận thanh toán.
+                    </TextBlock>
+                </StackPanel>
+            </Border>
+
+            <!-- Section 5 -->
+            <Border Background="White" 
+                    CornerRadius="12" 
+                    Padding="24" 
+                    Margin="0,0,0,16"
+                    BorderBrush="#E5E7EB"
+                    BorderThickness="1">
+                <StackPanel>
+                    <TextBlock Text="5. Chính sách xác nhận vé" 
+                               FontSize="18" 
+                               FontWeight="Bold" 
+                               Foreground="#212529" 
+                               Margin="0,0,0,16"/>
+                    <TextBlock TextWrapping="Wrap" 
+                               Foreground="#495057" 
+                               LineHeight="22"
+                               FontSize="14">
+                        Sau khi thanh toán thành công, hệ thống sẽ ghi nhận giao dịch và xác nhận đặt vé cho khách hàng. Khi đó, vé mới được xem là hợp lệ và có thể dùng cho các bước tiếp theo.<LineBreak/><LineBreak/>
+                        Khách hàng cần lưu ý:<LineBreak/>
+                        • Vé chỉ có giá trị khi hệ thống hiển thị trạng thái đặt vé thành công.<LineBreak/>
+                        • Sau khi xác nhận, thông tin vé cần được lưu lại để tra cứu khi cần.<LineBreak/>
+                        • Khách hàng nên kiểm tra lại thông tin vé ngay sau khi giao dịch hoàn tất.
+                    </TextBlock>
+                </StackPanel>
+            </Border>
+
+            <!-- Section 6 -->
+            <Border Background="White" 
+                    CornerRadius="12" 
+                    Padding="24" 
+                    Margin="0,0,0,16"
+                    BorderBrush="#E5E7EB"
+                    BorderThickness="1">
+                <StackPanel>
+                    <TextBlock Text="6. Chính sách hủy vé" 
+                               FontSize="18" 
+                               FontWeight="Bold" 
+                               Foreground="#212529" 
+                               Margin="0,0,0,16"/>
+                    <TextBlock TextWrapping="Wrap" 
+                               Foreground="#495057" 
+                               LineHeight="22"
+                               FontSize="14">
+                        Hệ thống cho phép khách hàng hủy vé trong phạm vi điều kiện được chấp nhận. Tuy nhiên, không phải mọi vé đều có thể hủy ở mọi thời điểm.<LineBreak/><LineBreak/>
+                        Các trường hợp áp dụng gồm:<LineBreak/>
+                        • Khách hàng không được hủy vé nếu thời điểm hủy còn dưới 24 giờ trước giờ khởi hành.<LineBreak/>
+                        • Vé đã check-in sẽ không được hủy.<LineBreak/>
+                        • Vé đã hủy trước đó sẽ không thể tiếp tục hủy lại.<LineBreak/>
+                        • Nếu hủy vé thành công, trạng thái vé sẽ được cập nhật tương ứng trên hệ thống.
+                    </TextBlock>
+                </StackPanel>
+            </Border>
+
+            <!-- Section 7 -->
+            <Border Background="White" 
+                    CornerRadius="12" 
+                    Padding="24" 
+                    Margin="0,0,0,16"
+                    BorderBrush="#E5E7EB"
+                    BorderThickness="1">
+                <StackPanel>
+                    <TextBlock Text="7. Chính sách check-in" 
+                               FontSize="18" 
+                               FontWeight="Bold" 
+                               Foreground="#212529" 
+                               Margin="0,0,0,16"/>
+                    <TextBlock TextWrapping="Wrap" 
+                               Foreground="#495057" 
+                               LineHeight="22"
+                               FontSize="14">
+                        Sau khi vé được xác nhận, khách hàng có thể sử dụng vé để thực hiện các bước tiếp theo của chuyến đi. Khi vé đã được check-in, hệ thống sẽ cập nhật trạng thái của vé nhằm tránh việc sử dụng lặp hoặc hủy vé không hợp lệ.<LineBreak/><LineBreak/>
+                        Cụ thể:<LineBreak/>
+                        • Vé sau khi check-in sẽ được ghi nhận là đã sử dụng cho bước làm thủ tục.<LineBreak/>
+                        • Vé đã check-in sẽ không được hủy.<LineBreak/>
+                        • Khách hàng cần kiểm tra kỹ thông tin trước khi thực hiện check-in.
+                    </TextBlock>
+                </StackPanel>
+            </Border>
+
+            <!-- Section 8 -->
+            <Border Background="White" 
+                    CornerRadius="12" 
+                    Padding="24" 
+                    Margin="0,0,0,16"
+                    BorderBrush="#E5E7EB"
+                    BorderThickness="1">
+                <StackPanel>
+                    <TextBlock Text="8. Chính sách thông tin tài khoản và dữ liệu giao dịch" 
+                               FontSize="18" 
+                               FontWeight="Bold" 
+                               Foreground="#212529" 
+                               Margin="0,0,0,16"/>
+                    <TextBlock TextWrapping="Wrap" 
+                               Foreground="#495057" 
+                               LineHeight="22"
+                               FontSize="14">
+                        Khách hàng có trách nhiệm bảo mật tài khoản và mật khẩu của mình. Hệ thống lưu trữ các thông tin cần thiết như thông tin khách hàng, mã đặt vé, trạng thái vé và trạng thái thanh toán để phục vụ tra cứu và hỗ trợ giao dịch.<LineBreak/><LineBreak/>
+                        Khách hàng cần lưu ý:<LineBreak/>
+                        • Không chia sẻ tài khoản cho người khác.<LineBreak/>
+                        • Kiểm tra kỹ thông tin trước khi xác nhận đặt vé.<LineBreak/>
+                        • Chủ động theo dõi trạng thái giao dịch trên hệ thống sau mỗi bước thao tác.
+                    </TextBlock>
+                </StackPanel>
+            </Border>
+
+            <!-- Section 9 -->
+            <Border Background="White" 
+                    CornerRadius="12" 
+                    Padding="24" 
+                    Margin="0,0,0,16"
+                    BorderBrush="#E5E7EB"
+                    BorderThickness="1">
+                <StackPanel>
+                    <TextBlock Text="9. Chính sách hỗ trợ khách hàng" 
+                               FontSize="18" 
+                               FontWeight="Bold" 
+                               Foreground="#212529" 
+                               Margin="0,0,0,16"/>
+                    <TextBlock TextWrapping="Wrap" 
+                               Foreground="#495057" 
+                               LineHeight="22"
+                               FontSize="14">
+                        Trong trường hợp phát sinh lỗi khi đặt vé, thanh toán hoặc tra cứu giao dịch, khách hàng cần liên hệ bộ phận hỗ trợ và cung cấp các thông tin cần thiết như mã đặt vé, thời gian giao dịch và thông tin tài khoản để được xử lý nhanh hơn.
+                    </TextBlock>
+                </StackPanel>
+            </Border>
+
+            <!-- Footer note -->
+            <Border Background="#F0F9FF" 
+                    CornerRadius="12" 
+                    Padding="24" 
+                    Margin="0,16,0,48"
+                    BorderBrush="#BFDBFE"
+                    BorderThickness="1">
+                <StackPanel>
+                    <TextBlock Text="📋 Lưu ý quan trọng" 
+                               FontSize="16" 
+                               FontWeight="Bold" 
+                               Foreground="#1E40AF" 
+                               Margin="0,0,0,12"/>
+                    <TextBlock TextWrapping="Wrap" 
+                               Foreground="#1E3A8A" 
+                               LineHeight="22"
+                               FontSize="14">
+                        Bằng việc sử dụng dịch vụ đặt vé máy bay của chúng tôi, bạn xác nhận rằng đã đọc, hiểu và đồng ý tuân thủ tất cả các điều khoản và chính sách được nêu trên. Nếu có bất kỳ thắc mắc nào, vui lòng liên hệ bộ phận hỗ trợ khách hàng để được giải đáp.
+                    </TextBlock>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

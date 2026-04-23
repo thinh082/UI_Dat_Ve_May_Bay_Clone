@@ -10,7 +10,7 @@ namespace UI_Dat_Ve_May_Bay.Services
         public async Task ConnectAsync(string hubUrl)
         {
             _conn = new HubConnectionBuilder()
-                .WithUrl(hubUrl) // https://localhost:5231/hubs/notify
+                .WithUrl(hubUrl) // https://audrina-subultimate-ghostily.ngrok-free.dev/hubs/notify
                 .WithAutomaticReconnect()
                 .Build();
 

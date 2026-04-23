@@ -46,20 +46,34 @@
                             </Grid>
                         </Border>
                         <ControlTemplate.Triggers>
+                            <!-- Hover effect (chỉ khi enabled) -->
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="border" Property="BorderBrush" Value="#008291"/>
                             </Trigger>
+                            
+                            <!-- 1. HẾT CHỖ (Đỏ nhạt #FFD6D6): Đã đặt + đã thanh toán (IsEnabled = False, IsBookedByMe = False) -->
                             <Trigger Property="IsEnabled" Value="False">
-                                <Setter TargetName="border" Property="Background" Value="#FEE2E2"/>
+                                <Setter TargetName="border" Property="Background" Value="#FFD6D6"/>
                                 <Setter TargetName="border" Property="BorderBrush" Value="#FCA5A5"/>
-                                <Setter Property="Opacity" Value="0.8"/>
+                                <Setter Property="Opacity" Value="0.9"/>
                                 <Setter Property="Foreground" Value="#991B1B"/>
                             </Trigger>
+                            
+                            <!-- 2. ĐANG GIỮ CHỖ (Vàng nhạt #FFEBB7): Người khác đang giữ, chưa thanh toán (IsReserved = True) -->
+                            <DataTrigger Binding="{Binding IsReserved}" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#FFEBB7"/>
+                                <Setter TargetName="border" Property="BorderBrush" Value="#FCD34D"/>
+                                <Setter Property="Opacity" Value="0.9"/>
+                                <Setter Property="Foreground" Value="#92400E"/>
+                            </DataTrigger>
+                            
+                            <!-- 3. ĐÃ CHỌN (Xanh lá #28B463): Người dùng hiện tại đang chọn (IsChecked = True) - ƯU TIÊN CAO NHẤT -->
                             <Trigger Property="IsChecked" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="#10B981"/>
-                                <Setter TargetName="border" Property="BorderBrush" Value="#059669"/>
+                                <Setter TargetName="border" Property="Background" Value="#28B463"/>
+                                <Setter TargetName="border" Property="BorderBrush" Value="#1E8449"/>
                                 <Setter TargetName="indicator" Property="Opacity" Value="1"/>
                                 <Setter Property="Foreground" Value="White"/>
+                                <Setter Property="Opacity" Value="1"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -235,15 +249,19 @@
                                 <!-- Legend -->
                                 <WrapPanel Margin="0,0,0,24">
                                     <StackPanel Orientation="Horizontal" Margin="0,0,24,0">
-                                        <Border Width="16" Height="16" CornerRadius="4" Background="#FEE2E2" BorderBrush="#FCA5A5" BorderThickness="1" Margin="0,0,8,0"/>
+                                        <Border Width="16" Height="16" CornerRadius="4" Background="#FFD6D6" BorderBrush="#FCA5A5" BorderThickness="1" Margin="0,0,8,0"/>
                                         <TextBlock Text="Hết chỗ" Foreground="#991B1B" FontSize="13" FontWeight="SemiBold"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,24,0">
+                                        <Border Width="16" Height="16" CornerRadius="4" Background="#FFEBB7" BorderBrush="#FCD34D" BorderThickness="1" Margin="0,0,8,0"/>
+                                        <TextBlock Text="Đang giữ chỗ" Foreground="#92400E" FontSize="13" FontWeight="SemiBold"/>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal" Margin="0,0,24,0">
                                         <Border Width="16" Height="16" CornerRadius="4" Background="White" BorderBrush="#E5E7EB" BorderThickness="1" Margin="0,0,8,0"/>
                                         <TextBlock Text="Trống" Foreground="#64748B" FontSize="13"/>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal">
-                                        <Border Width="16" Height="16" CornerRadius="4" Background="#10B981" BorderBrush="#059669" BorderThickness="1" Margin="0,0,8,0"/>
+                                        <Border Width="16" Height="16" CornerRadius="4" Background="#28B463" BorderBrush="#1E8449" BorderThickness="1" Margin="0,0,8,0"/>
                                         <TextBlock Text="Đã chọn" Foreground="#64748B" FontSize="13"/>
                                     </StackPanel>
                                 </WrapPanel>

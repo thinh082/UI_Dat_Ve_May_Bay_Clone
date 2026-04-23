@@ -58,6 +58,7 @@ namespace UI_Dat_Ve_May_Bay.ViewModels
 
         private readonly HashSet<long> _heldSeatIds = new();
         private readonly HashSet<long> _myBookedSeatIds = new();
+        private readonly HashSet<long> _myPendingSeats = new(); // Ghế đang giữ chỗ của mình (chưa thanh toán)
 
         public int SelectedSeatCount => _heldSeatIds.Count;
 
@@ -69,6 +70,15 @@ namespace UI_Dat_Ve_May_Bay.ViewModels
             var dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "UI_Dat_Ve_May_Bay");
             Directory.CreateDirectory(dir);
             return Path.Combine(dir, $"booked_seats_{userId}.json");
+        }
+
+        private string GetPendingSeatsFilePath()
+        {
+            var userId = _apiClient.GetUserIdFromToken() ?? "anonymous";
+            userId = string.Join("_", userId.Split(Path.GetInvalidFileNameChars()));
+            var dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "UI_Dat_Ve_May_Bay");
+            Directory.CreateDirectory(dir);
+            return Path.Combine(dir, $"pending_seats_{userId}.json");
         }
 
         private void LoadMyBookedSeats()
@@ -91,12 +101,43 @@ namespace UI_Dat_Ve_May_Bay.ViewModels
             catch { }
         }
 
+        private void LoadMyPendingSeats()
+        {
+            _myPendingSeats.Clear();
+            try
+            {
+                var userId = _apiClient.GetUserIdFromToken();
+                if (string.IsNullOrWhiteSpace(userId) || userId == "anonymous") return;
+
+                var path = GetPendingSeatsFilePath();
+                if (!File.Exists(path)) return;
+                var json = File.ReadAllText(path);
+                var ids = JsonSerializer.Deserialize<List<long>>(json);
+                if (ids != null)
+                {
+                    foreach (var id in ids) _myPendingSeats.Add(id);
+                }
+            }
+            catch { }
+        }
+
         private void SaveMyBookedSeats()
         {
             try
             {
                 var path = GetBookedSeatsFilePath();
                 var json = JsonSerializer.Serialize(_myBookedSeatIds.ToList());
+                File.WriteAllText(path, json);
+            }
+            catch { }
+        }
+
+        private void SaveMyPendingSeats()
+        {
+            try
+            {
+                var path = GetPendingSeatsFilePath();
+                var json = JsonSerializer.Serialize(_myPendingSeats.ToList());
                 File.WriteAllText(path, json);
             }
             catch { }
@@ -226,6 +267,16 @@ namespace UI_Dat_Ve_May_Bay.ViewModels
             {
                 try
                 {
+                    // ✅ Lưu ghế đang giữ chỗ trước khi release
+                    if (_heldSeatIds.Count > 0)
+                    {
+                        foreach (var id in _heldSeatIds)
+                        {
+                            _myPendingSeats.Add(id);
+                        }
+                        SaveMyPendingSeats();
+                    }
+                    
                     await ReleaseAllHeldSeatsAsync();
                 }
                 catch { }
@@ -234,6 +285,7 @@ namespace UI_Dat_Ve_May_Bay.ViewModels
 
             // auto-load (best-effort)
             LoadMyBookedSeats();
+            LoadMyPendingSeats(); // ✅ Load pending seats
             _ = ManualRefreshSeatsAsync();
             _ = LoadVouchersAsync();
         }
@@ -388,6 +440,7 @@ namespace UI_Dat_Ve_May_Bay.ViewModels
                 IsBusy = true;
 
                 LoadMyBookedSeats();
+                LoadMyPendingSeats(); // ✅ Load ghế đang giữ chỗ của mình
                 LoaiVe1Seats.Clear();
                 LoaiVe3Seats.Clear();
                 LoaiVe4Seats.Clear();
@@ -466,6 +519,15 @@ namespace UI_Dat_Ve_May_Bay.ViewModels
         {
             var isHeld = _heldSeatIds.Contains(dto.IdGheNgoi);
             var isBooked = _myBookedSeatIds.Contains(dto.IdGheNgoi);
+            var isPending = _myPendingSeats.Contains(dto.IdGheNgoi);
+            
+            // ✅ FIX: Logic màu ghế dựa vào trạng thái thanh toán
+            // - IdTrangThai = 2 (đang giữ chỗ, chưa thanh toán):
+            //   + Nếu là ghế của mình (isPending) → cho phép chọn lại (IsReserved = false, IsAvailable = true)
+            //   + Nếu là ghế của người khác → màu vàng, không cho chọn (IsReserved = true)
+            // - IdTrangThai = 1 (đã đặt, đã thanh toán) → màu đỏ (IsEnabled = false)
+            // - IdTrangThai = 0 (trống) → màu trắng (IsAvailable = true)
+            var isReserved = dto.IdTrangThai == 2 && !isHeld && !isBooked && !isPending;
 
             return new SeatVm
             {
@@ -473,7 +535,8 @@ namespace UI_Dat_Ve_May_Bay.ViewModels
                 SoGhe = dto.SoGhe ?? "",
                 IdTrangThai = dto.IdTrangThai,
                 IsBookedByMe = isBooked,
-                IsSelected = isHeld || isBooked
+                IsSelected = isHeld || isBooked || isPending, // Ghế pending cũng được chọn
+                IsReserved = isReserved
             };
         }
 
@@ -483,8 +546,15 @@ namespace UI_Dat_Ve_May_Bay.ViewModels
             {
                 var isHeld = _heldSeatIds.Contains(s.IdGheNgoi);
                 var isBooked = _myBookedSeatIds.Contains(s.IdGheNgoi);
+                var isPending = _myPendingSeats.Contains(s.IdGheNgoi);
                 s.IsBookedByMe = isBooked;
-                s.IsSelected = isHeld || isBooked;
+                s.IsSelected = isHeld || isBooked || isPending; // ✅ Pending seats cũng được mark là selected
+                
+                // ✅ Nếu là pending seat, add vào _heldSeatIds để có thể thanh toán tiếp
+                if (isPending && !isHeld)
+                {
+                    _heldSeatIds.Add(s.IdGheNgoi);
+                }
             }
         }
 
@@ -944,6 +1014,13 @@ namespace UI_Dat_Ve_May_Bay.ViewModels
                 // Save booked seats locally
                 foreach(var id in _heldSeatIds) _myBookedSeatIds.Add(id);
                 SaveMyBookedSeats();
+
+                // ✅ Clear pending seats sau khi thanh toán thành công
+                foreach(var id in _heldSeatIds)
+                {
+                    _myPendingSeats.Remove(id);
+                }
+                SaveMyPendingSeats();
 
                 _heldSeatIds.Clear();
                 await LoadSeatsAsync();
@@ -1446,9 +1523,21 @@ namespace UI_Dat_Ve_May_Bay.ViewModels
                 set { if (SetProperty(ref _isBookedByMe, value)) OnPropertyChanged(nameof(IsAvailable)); }
             }
 
-            // ✅ Enabled nếu là ghế trống (0) HOẶC là ghế đang giữ để đặt (IsSelected)
-            // NHƯNG nếu đã thanh toán thành công (IsBookedByMe) thì nên khóa lại.
-            public bool IsAvailable => (IdTrangThai == 0 || IsSelected) && !IsBookedByMe;
+            private bool _isReserved;
+            public bool IsReserved 
+            { 
+                get => _isReserved; 
+                set { if (SetProperty(ref _isReserved, value)) OnPropertyChanged(nameof(IsAvailable)); }
+            }
+
+            // ✅ Logic IsAvailable dựa vào trạng thái thanh toán:
+            // - IdTrangThai = 0 (trống) → có thể chọn
+            // - IdTrangThai = 1 (đã thanh toán) → không thể chọn (màu đỏ, IsEnabled = false)
+            // - IdTrangThai = 2 (đang giữ chỗ, chưa thanh toán) → không thể chọn (màu vàng, IsReserved = true)
+            // - IsSelected = true → có thể chọn (ghế đang giữ của mình)
+            // - IsBookedByMe = true → không thể chọn (đã thanh toán)
+            // - IsReserved = true → không thể chọn (người khác đang giữ)
+            public bool IsAvailable => (IdTrangThai == 0 || IsSelected) && !IsBookedByMe && !IsReserved && IdTrangThai != 1;
 
             private bool _isSelected;
             public bool IsSelected 

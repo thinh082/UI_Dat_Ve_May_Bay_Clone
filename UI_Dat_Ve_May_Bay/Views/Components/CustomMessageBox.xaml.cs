@@ -1,4 +1,5 @@
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 
@@ -33,11 +34,16 @@ namespace UI_Dat_Ve_May_Bay.Views.Components
             
             this.BeginAnimation(OpacityProperty, fadeIn);
             
-            var scaleTransform = new ScaleTransform(0.95, 0.95);
-            this.RenderTransform = scaleTransform;
-            this.RenderTransformOrigin = new Point(0.5, 0.5);
-            scaleTransform.BeginAnimation(ScaleTransform.ScaleXProperty, scaleIn);
-            scaleTransform.BeginAnimation(ScaleTransform.ScaleYProperty, scaleIn);
+            // ✅ FIX: Apply RenderTransform to Grid (root content) instead of Window
+            var rootGrid = this.Content as Grid;
+            if (rootGrid != null)
+            {
+                var scaleTransform = new ScaleTransform(0.95, 0.95);
+                rootGrid.RenderTransform = scaleTransform;
+                rootGrid.RenderTransformOrigin = new Point(0.5, 0.5);
+                scaleTransform.BeginAnimation(ScaleTransform.ScaleXProperty, scaleIn);
+                scaleTransform.BeginAnimation(ScaleTransform.ScaleYProperty, scaleIn);
+            }
         }
 
         private void SetAppearanceBaseOnType(MessageBoxType type)

@@ -11,7 +11,7 @@ namespace UI_Dat_Ve_May_Bay.Services
     public class GroqChatService
     {
         private static readonly HttpClient SharedHttpClient = new HttpClient();
-        private readonly string _apiKey = "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";
+        private readonly string _apiKey = "sk-or-v1-";
         private readonly string _baseUrl = "https://openrouter.ai/api/v1";
         private readonly string _model = "openrouter/free";
 
